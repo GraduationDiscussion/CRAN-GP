@@ -87,6 +87,7 @@ MobilityHelper::SetMobilityModel (std::string type,
                                   std::string n8, const AttributeValue &v8,
                                   std::string n9, const AttributeValue &v9)
 {
+  NS_LOG_FUNCTION("<mohamed> L:89,MobilityHelper::SetMobilityModel, setting the mobility model <mohamed>");
   m_mobility.SetTypeId (type);
   m_mobility.Set (n1, v1);
   m_mobility.Set (n2, v2);

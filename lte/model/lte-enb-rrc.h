@@ -654,14 +654,14 @@ public:
    * \param s the CPHY SAP Provider
    */
   void SetLteEnbCphySapProvider (LteEnbCphySapProvider * s);
-
+  void SetLteEnbCphy2SapProvider (LteEnbCphySapProvider * s);
   /**
    *
    *
    * \return s the CPHY SAP User interface offered to the PHY by this RRC
    */
   LteEnbCphySapUser* GetLteEnbCphySapUser ();
-
+  LteEnbCphySapUser* GetLteEnbCphy2SapUser ();
   /** 
    * 
    * 
@@ -1085,8 +1085,10 @@ private:
 
   /// Receive API calls from the eNodeB PHY instance.
   LteEnbCphySapUser* m_cphySapUser;
+  LteEnbCphySapUser* m_cphy2SapUser;
   /// Interface to the eNodeB PHY instance.
   LteEnbCphySapProvider* m_cphySapProvider;
+  LteEnbCphySapProvider* m_cphy2SapProvider; //added
 
   /// True if ConfigureCell() has been completed.
   bool m_configured;

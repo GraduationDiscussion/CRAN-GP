@@ -190,6 +190,7 @@ ObjectBase::DoSet (Ptr<const AttributeAccessor> accessor,
 void
 ObjectBase::SetAttribute (std::string name, const AttributeValue &value)
 {
+  NS_LOG_INFO(name << "Hi,THERE(inside set attribute)");
   NS_LOG_FUNCTION (this << name << &value);
   struct TypeId::AttributeInformation info;
   TypeId tid = GetInstanceTypeId ();

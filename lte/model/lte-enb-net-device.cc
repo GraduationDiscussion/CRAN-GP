@@ -49,7 +49,7 @@ namespace ns3 {
 
 NS_LOG_COMPONENT_DEFINE ("LteEnbNetDevice");
 
-NS_OBJECT_ENSURE_REGISTERED ( LteEnbNetDevice);
+NS_OBJECT_ENSURE_REGISTERED (LteEnbNetDevice);
 
 TypeId LteEnbNetDevice::GetTypeId (void)
 {
@@ -93,6 +93,13 @@ TypeId LteEnbNetDevice::GetTypeId (void)
                    PointerValue (),
                    MakePointerAccessor (&LteEnbNetDevice::m_phy),
                    MakePointerChecker <LteEnbPhy> ())
+	//---------------------------added
+	.AddAttribute ("LteEnbPhy2",
+	               "The PHY associated to this EnbNetDevice",
+	               PointerValue (),
+	               MakePointerAccessor (&LteEnbNetDevice::m_phy2),
+	               MakePointerChecker <LteEnbPhy> ())
+	//--------------------------added
     .AddAttribute ("UlBandwidth",
                    "Uplink Transmission Bandwidth Configuration in number of Resource Blocks",
                    UintegerValue (25),
@@ -182,6 +189,10 @@ LteEnbNetDevice::DoDispose ()
   m_phy->Dispose ();
   m_phy = 0;
 
+  //---------------------added
+  m_phy2->Dispose ();
+  m_phy2 = 0;
+  //--------------------added
   LteNetDevice::DoDispose ();
 }
 
@@ -327,6 +338,7 @@ LteEnbNetDevice::DoInitialize (void)
   m_isConstructed = true;
   UpdateConfig ();
   m_phy->Initialize ();
+  m_phy2->Initialize ();
   m_mac->Initialize ();
   m_rrc->Initialize ();
   m_handoverAlgorithm->Initialize ();

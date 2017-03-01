@@ -113,12 +113,16 @@ public:
   * \return a pointer to the SAP User of the PHY
   */
   LteEnbPhySapUser* GetLteEnbPhySapUser ();
+  LteEnbPhySapUser* GetLteEnbPhy2SapUser ();//added
+
 
   /**
   * \brief Set the PHY SAP Provider
   * \param s a pointer to the PHY SAP provider
   */
   void SetLteEnbPhySapProvider (LteEnbPhySapProvider* s);
+  void SetLteEnbPhy2SapProvider (LteEnbPhySapProvider* s);//added
+
 
   /**
    * TracedCallback signature for DL scheduling events.
@@ -243,7 +247,9 @@ private:
 
   // PHY-SAP
   LteEnbPhySapProvider* m_enbPhySapProvider;
+  LteEnbPhySapProvider* m_enbPhy2SapProvider; //added
   LteEnbPhySapUser* m_enbPhySapUser;
+  LteEnbPhySapUser* m_enbPhy2SapUser; //added
 
   uint32_t m_frameNo;
   uint32_t m_subframeNo;
@@ -262,7 +268,7 @@ private:
                  uint8_t, uint16_t> m_ulScheduling;
   
   uint8_t m_macChTtiDelay; // delay of MAC, PHY and channel in terms of TTIs
-
+  uint8_t m_macChTtiDelay2; // added
 
   std::map <uint16_t, DlHarqProcessesBuffer_t> m_miDlHarqProcessesPackets; // Packet under trasmission of the DL HARQ process
   

@@ -157,6 +157,7 @@ LteEnbPhy::LteEnbPhy (Ptr<LteSpectrumPhy> dlPhy, Ptr<LteSpectrumPhy> ulPhy)
 TypeId
 LteEnbPhy::GetTypeId (void)
 {
+  NS_LOG_FUNCTION("<mohamed> calling the GetTypeId <mohamed>");
   static TypeId tid = TypeId ("ns3::LteEnbPhy")
     .SetParent<LtePhy> ()
     .SetGroupName("Lte")
@@ -277,19 +278,21 @@ LteEnbPhy::DoInitialize ()
 void
 LteEnbPhy::SetLteEnbPhySapUser (LteEnbPhySapUser* s)
 {
+  NS_LOG_FUNCTION(this << s << "<mohamed> L:280,LteEnbPac::SetLteEnbSapUser, Connecting connecting PHY to MAC <mohamed>");
   m_enbPhySapUser = s;
 }
 
 LteEnbPhySapProvider*
 LteEnbPhy::GetLteEnbPhySapProvider ()
 {
+  NS_LOG_FUNCTION(this << "<mohamed> L:287,LteEnbPac::SetLteEnbSapUser, Connecting connecting PHY to MAC <mohamed>");
   return (m_enbPhySapProvider);
 }
 
 void
 LteEnbPhy::SetLteEnbCphySapUser (LteEnbCphySapUser* s)
 {
-  NS_LOG_FUNCTION (this);
+  NS_LOG_FUNCTION (this << s);
   m_enbCphySapUser = s;
 }
 
@@ -1105,6 +1108,7 @@ LteEnbPhy::DoSetSystemInformationBlockType1 (LteRrcSap::SystemInformationBlockTy
 void
 LteEnbPhy::SetHarqPhyModule (Ptr<LteHarqPhy> harq)
 {
+  NS_LOG_FUNCTION("<mohamed>Set the HARQ PHY module for the LTE eNB PHY<mohamed>");
   m_harqPhyModule = harq;
 }
 

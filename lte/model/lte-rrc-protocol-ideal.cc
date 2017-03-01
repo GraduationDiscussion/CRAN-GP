@@ -252,6 +252,7 @@ LteEnbRrcProtocolIdeal::GetLteEnbRrcSapUser ()
 void 
 LteEnbRrcProtocolIdeal::SetCellId (uint16_t cellId)
 {
+  NS_LOG_FUNCTION("<mohamed>L:255,LteRrcProtocolIdeal::SetCellId, Setting the eNB Cell ID<mohamed>");
   m_cellId = cellId;
 }
 

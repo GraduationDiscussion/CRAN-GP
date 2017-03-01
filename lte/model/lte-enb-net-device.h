@@ -191,6 +191,9 @@ private:
   Ptr<LteEnbMac> m_mac;
 
   Ptr<LteEnbPhy> m_phy;
+  //---------------------------added
+  Ptr<LteEnbPhy> m_phy2;
+  //---------------------------added
 
   Ptr<LteEnbRrc> m_rrc;
 

@@ -43,6 +43,11 @@ namespace ns3 {
 NS_LOG_COMPONENT_DEFINE ("LteEnbMac");
 
 NS_OBJECT_ENSURE_REGISTERED (LteEnbMac);
+//badria
+//register an object subclass with the same type of LteEnbMac i.e type elegwa el () y3ni.
+// fe 7ga esmha registeration class dayman by create an object meno we type bt3o 3la 7sab elobject hna kan lteEnbMac
+//we yebtedi ye4t33'al bel object dah
+//end
 
 
 
@@ -53,20 +58,52 @@ NS_OBJECT_ENSURE_REGISTERED (LteEnbMac);
 
 class EnbMacMemberLteEnbCmacSapProvider : public LteEnbCmacSapProvider
 {
+//badria
+//inherited from CMac sap
+//the part of the SAP that contains the MAC methods called by the RRC 
+//y3ni dah elSAP ele ben elMac wel RRC
+//eh ele5lnah 3refna enha lel RRC m4 lel fu2eha ele heya RLC
+//34an feha C abl mac i.e. ay 7ga ablha C zay Cphy masln Wasla lel RRC 3latol
+//end
 public:
   EnbMacMemberLteEnbCmacSapProvider (LteEnbMac* mac);
-
+//badria
+//constructor
+//LteEnbMac dah class by implement elMac layer 
+//hna 5ad meno pointer we pass it lel constructer 
+//gwa elconstructor m_mac(mac) 
+//end
   // inherited from LteEnbCmacSapProvider
   virtual void ConfigureMac (uint8_t ulBandwidth, uint8_t dlBandwidth);
+//by5ud el uplink wel downlink bw we ye configure beh el mac ele kan mepasseha lel constructor
   virtual void AddUe (uint16_t rnti);
+//Radio Network Temporary Identifier. RNTIs are used to differentiate/identify a connected mode UE in the cell
+//elfn deh bt5ud el rnti dah we  ted5ul fn tanya gwa elmac : m_mac->DoAddUe (rnti); we tezwed el ue dah 
   virtual void RemoveUe (uint16_t rnti);
+//nfs Addue bs btmasa7 ele ue ele leha rnti dah:m_mac->DoRemoveUe (rnti);
   virtual void AddLc (LcInfo lcinfo, LteMacSapUser* msu);
+//by add logical channel fa by5ud el 2 saps as a parameters:"LteEnbCmacSapProvider::LcInfo  	lcinfo","LteMacSapUser *  msu"
+//eh huma fe word esmo logical ch. 
   virtual void ReconfigureLc (LcInfo lcinfo);
+//by reconfigure of existing Lc fa bypass leh el sap provider bs
+// dah ele gwaha :m_mac->DoReconfigureLc (lcinfo);we gwa dorecon:NS_FATAL_ERROR ("not implemented");
+//hwa 3'lban kda byd5ul el fn yetked enha implemented wla l2 we m4 fahmaha awi
   virtual void ReleaseLc (uint16_t rnti, uint8_t lcid);
+//Find user based on rnti and then erase lcid stored against the same
+// kman byru7 ye3rad el cscheed provider sap en el rnti dah bel lcid dah 7aslhum relesase we bysgelo 3ndo
   virtual void UeUpdateConfigurationReq (UeConfig params);
+//propagates to scheduler bm3na by5ud mn el params deh 1.rnti wel 2.transmission mode we by5ali el 3.reconfiguration flag true
+//we yeru7 ye3rfha lel Cshed  3n tre2 elsatr dah: m_cschedSapProvider->CschedUeConfigReq (req);
+//note req dah object 4yel el info ele fu2
   virtual RachConfig GetRachConfig ();
+//gwaha:return m_mac->DoGetRachConfig ()
+//dogetconf fn  bt return object esmo rc "RachConf" ele by carry 3 info: 1.number of preambles 2.preamble trans. max 3.ra response widow size
   virtual AllocateNcRaPreambleReturnValue AllocateNcRaPreamble (uint16_t rnti);
-  
+//Allocate a random access preamble for non-contention based random access (e.g., for handover)
+//btd5ul te3mel for loop 3al 64 preambles btu3ha te4uf ya2ema elfadi aw w7ed yekun el expire time bta3o 5les 
+//lw la2et bt5li var esmo found true we te5rug te check found dah true wla l2 lw true bt return object fe:
+//valid=true .. ret.raPreambleId = preambleId (btba3t elpreamble ele la2eto ..ret.raPrachMaskIndex = 0(m4 3rfa eh dah : D)
+// lw false hyb2a valid = false  raPreambleId = 0, we 25er w7ed zay ma hwa
 
 private:
   LteEnbMac* m_mac;
@@ -132,15 +169,20 @@ EnbMacMemberLteEnbCmacSapProvider::AllocateNcRaPreamble (uint16_t rnti)
   return m_mac->DoAllocateNcRaPreamble (rnti);
 }
 
+// --------------schedular sap user------------
 
 class EnbMacMemberFfMacSchedSapUser : public FfMacSchedSapUser
 {
 public:
-  EnbMacMemberFfMacSchedSapUser (LteEnbMac* mac);
+  EnbMacMemberFfMacSchedSapUser (LteEnbMac* mac);//constructor
 
 
   virtual void SchedDlConfigInd (const struct SchedDlConfigIndParameters& params);
+//m7mad hay5las we ye2ulha
   virtual void SchedUlConfigInd (const struct SchedUlConfigIndParameters& params);
+//by loop 3la dci list size we ye set elvalues bta3thum we yeb3atha lel phy sap (btb2a control msg)
+//we by loop tani 3al size  dah we byb3at lel ul scheduling frame and sub frame numbers wel rnti w carrierComponentId we Tb_size
+// w mcs(modulation and coding scheme)
 private:
   LteEnbMac* m_mac;
 };
@@ -166,7 +208,7 @@ EnbMacMemberFfMacSchedSapUser::SchedUlConfigInd (const struct SchedUlConfigIndPa
   m_mac->DoSchedUlConfigInd (params);
 }
 
-
+/*--------------Csched sap user*/
 
 class EnbMacMemberFfMacCschedSapUser : public FfMacCschedSapUser
 {
@@ -194,42 +236,53 @@ EnbMacMemberFfMacCschedSapUser::EnbMacMemberFfMacCschedSapUser (LteEnbMac* mac)
 void
 EnbMacMemberFfMacCschedSapUser::CschedCellConfigCnf (const struct CschedCellConfigCnfParameters& params)
 {
+//ele by7sal 72e2i fel program m4 eno byb3at lel cshed hwa by5ud el params deh we ye print-ha
   m_mac->DoCschedCellConfigCnf (params);
 }
 
 void
 EnbMacMemberFfMacCschedSapUser::CschedUeConfigCnf (const struct CschedUeConfigCnfParameters& params)
 {
+//nfs elklam byprint elparams bs hna bta3t el UE
   m_mac->DoCschedUeConfigCnf (params);
 }
 
 void
 EnbMacMemberFfMacCschedSapUser::CschedLcConfigCnf (const struct CschedLcConfigCnfParameters& params)
 {
+//by print bs brdo bs hna fel site 3mel coomment le cmd :m_cschedSap->LcConfigCompleted()
+//by call beha csched primitive
   m_mac->DoCschedLcConfigCnf (params);
 }
 
 void
 EnbMacMemberFfMacCschedSapUser::CschedLcReleaseCnf (const struct CschedLcReleaseCnfParameters& params)
 {
+//print only
   m_mac->DoCschedLcReleaseCnf (params);
 }
 
 void
 EnbMacMemberFfMacCschedSapUser::CschedUeReleaseCnf (const struct CschedUeReleaseCnfParameters& params)
 {
+//print only
   m_mac->DoCschedUeReleaseCnf (params);
 }
 
 void
 EnbMacMemberFfMacCschedSapUser::CschedUeConfigUpdateInd (const struct CschedUeConfigUpdateIndParameters& params)
 {
+//hna b2a by print brdo plus by propagates this info to RRC by doing the following
+//create object (ueConfigUpdate) its type is:LteEnbCmacSapUser::UeConfig
+//ya5ud el rnti wel transmission mode we yeb3ato lel fn deh:>RrcConfigurationUpdateInd (ele bt notify the rrc of a ue config updated
+// requested by the mac << we b3den te5li el cmac sap user ye4wer 3la elfn deh 
   m_mac->DoCschedUeConfigUpdateInd (params);
 }
 
 void
 EnbMacMemberFfMacCschedSapUser::CschedCellConfigUpdateInd (const struct CschedCellConfigUpdateIndParameters& params)
 {
+//print only
   m_mac->DoCschedCellConfigUpdateInd (params);
 }
 
@@ -264,30 +317,45 @@ EnbMacMemberLteEnbPhySapUser::EnbMacMemberLteEnbPhySapUser (LteEnbMac* mac) : m_
 void
 EnbMacMemberLteEnbPhySapUser::ReceivePhyPdu (Ptr<Packet> p)
 {
+//called by PHY to notify mac the reception of a new pdu
   m_mac->DoReceivePhyPdu (p);
 }
 
 void
 EnbMacMemberLteEnbPhySapUser::SubframeIndication (uint32_t frameNo, uint32_t subframeNo)
 {
+//1.byb3at lel scheduler cqi we byzwedha fel cqi list ul & dl
+//2.bt4uf eltrigger (34an teb2a synchronised) we bt4uf elpreamble (DL)
+//3. Send BSR reports to the scheduler (BSR:buffer status report0 UL
+//4.Get uplink transmission opportunities (by3rfak el subframes we frame ele ue hayb3a 3lehum)
+//we kman by3rfo TTI delay mac ch delay
+//5.Forward DL HARQ feebacks collected during last TTI (y3ni by2ra harq feedbaks we ye7tha fe ul param ele byb3tha lel scheduler 
   m_mac->DoSubframeIndication (frameNo, subframeNo);
 }
 
 void
 EnbMacMemberLteEnbPhySapUser::ReceiveLteControlMessage (Ptr<LteControlMessage> msg)
 {
+// check the type of control msg
+//if >> cqi then >> hay3mel pointer ye4wer 3la elmsg deh we b3den yeb3tha le: ReceiveDlCqiLteControlMessage 
+//if >>BSR then >>hay3mel pointer ye4wer 3la elmsg deh we b3den yeb3tha le ReceiveBsrMessage
+//if >>dl harq >>hay3mel pointer ye4wer 3la elmsg deh we b3den yeb3tha le:DoDlInfoListElementHarqFeeback
+//note: Dynamic cast by2nel pointer mn elclass elkber lel inherited mno
   m_mac->DoReceiveLteControlMessage (msg);
 }
 
 void
 EnbMacMemberLteEnbPhySapUser::ReceiveRachPreamble (uint32_t prachId)
 {
+//just record that the preamble has been received we byzwed elcounter f 7alet n l preamble da msh mwgood abl kda  ( 3shn s3at bykonn mwgood
+//abl kda bs not used dlw2ti) 
   m_mac->DoReceiveRachPreamble (prachId);
 }
 
 void
 EnbMacMemberLteEnbPhySapUser::UlCqiReport (FfMacSchedSapProvider::SchedUlCqiInfoReqParameters ulcqi)
 {
+//i7na hanb3at el ulcqi lel:m_ulCqiReceived
   m_mac->DoUlCqiReport (ulcqi);
 }
 
@@ -316,6 +384,31 @@ LteEnbMac::GetTypeId (void)
     .SetParent<Object> ()
     .SetGroupName("Lte")
     .AddConstructor<LteEnbMac> ()
+	//addAttribute deh y3ni:see also struct typeid
+	/**
+	   * Record in this TypeId the fact that a new attribute exists.
+	   *
+	   * \param [in] name The name of the new attribute
+	   * \param [in] help Some help text which describes the purpose of this
+	   *             attribute.
+	   * \param [in] initialValue The initial value for this attribute.
+	   * \param [in] accessor An instance of the associated AttributeAccessor
+	   *             subclass.
+	   * \param [in] checker An instance of the associated AttributeChecker
+	   *             subclass.
+	   * \param [in] supportLevel Support/deprecation status of the attribute.
+	   * \param [in] supportMsg Upgrade hint if this attribute is no longer
+	   *             supported.  If the attribute is \c DEPRECATED the attribute
+	   *             behavior still exists, but user code should be updated
+	   *             following guidance in the hint..
+	   *             If the attribute is \c OBSOLETE, the hint should indicate
+	   *             which class the attribute functional has been moved to,
+	   *             or that the functionality is no longer supported.
+	   *             See test file \file type-id-test-suite.cc for examples.
+	   * \returns This TypeId instance
+	   */
+	//accessor allow setting and getting the value of an attribute
+	//checker: represent the type of the attribute
     .AddAttribute ("NumberOfRaPreambles",
                    "how many random access preambles are available for the contention based RACH process",
                    UintegerValue (50),
@@ -353,6 +446,7 @@ LteEnbMac::LteEnbMac ()
   m_schedSapUser = new EnbMacMemberFfMacSchedSapUser (this);
   m_cschedSapUser = new EnbMacMemberFfMacCschedSapUser (this);
   m_enbPhySapUser = new EnbMacMemberLteEnbPhySapUser (this);
+  m_enbPhy2SapUser = new EnbMacMemberLteEnbPhySapUser (this);//added here and in .h file line 247
 }
 
 
@@ -376,12 +470,14 @@ LteEnbMac::DoDispose ()
   delete m_schedSapUser;
   delete m_cschedSapUser;
   delete m_enbPhySapUser;
+  delete m_enbPhy2SapUser; //added
 }
 
-
+//set the value sent to sap provider and get value to sap user
 void
 LteEnbMac::SetFfMacSchedSapProvider (FfMacSchedSapProvider* s)
 {
+  NS_LOG_FUNCTION(this << "<mohamed>L480,LteEnbMac::SetFfMacSchecdSapProvider, Connecting FFMAC Scehd Sap<mohamed>");
   m_schedSapProvider = s;
 }
 
@@ -394,6 +490,7 @@ LteEnbMac::GetFfMacSchedSapUser (void)
 void
 LteEnbMac::SetFfMacCschedSapProvider (FfMacCschedSapProvider* s)
 {
+  NS_LOG_FUNCTION(this << "<mohamed>L493,LteEnbMac::SetFfMacSchecdSapProvider, Connecting FFMAC CScehd Sap<mohamed>");
   m_cschedSapProvider = s;
 }
 
@@ -432,16 +529,28 @@ LteEnbMac::GetLteEnbCmacSapProvider (void)
 void
 LteEnbMac::SetLteEnbPhySapProvider (LteEnbPhySapProvider* s)
 {
+  NS_LOG_FUNCTION(this << s << "<mohamed> L:532,LteEnbMac::SetLteEnbPhySapUser, Connecting connecting PHY to MAC <mohamed>");
   m_enbPhySapProvider = s;
 }
-
+void
+LteEnbMac::SetLteEnbPhy2SapProvider (LteEnbPhySapProvider* s)//added
+{
+  NS_LOG_FUNCTION(this << s << "<mohamed> L:538,LteEnbMac::SetLteEnbPhy2SapUser, Connecting connecting PHY to MAC <mohamed>");
+  m_enbPhy2SapProvider = s;
+}
 
 LteEnbPhySapUser*
 LteEnbMac::GetLteEnbPhySapUser ()
 {
+  NS_LOG_FUNCTION(this << "<mohamed> L545,LteEnbMac::GetLteEnbPhySapUser, Connecting connecting PHY to MAC <mohamed>");
   return m_enbPhySapUser;
 }
-
+LteEnbPhySapUser*
+LteEnbMac::GetLteEnbPhy2SapUser () //added
+{
+  NS_LOG_FUNCTION(this << "<mohamed> L551,LteEnbMac::GetLteEnbPhy2SapUser, Connecting connecting PHY to MAC <mohamed>");
+  return m_enbPhy2SapUser;
+}
 
 
 void
@@ -737,6 +846,7 @@ LteEnbMac::DoConfigureMac (uint8_t ulBandwidth, uint8_t dlBandwidth)
   params.m_ulBandwidth = ulBandwidth;
   params.m_dlBandwidth = dlBandwidth;
   m_macChTtiDelay = m_enbPhySapProvider->GetMacChTtiDelay ();
+  m_macChTtiDelay2 = m_enbPhy2SapProvider->GetMacChTtiDelay (); //added
   // ...more parameters can be configured
   m_cschedSapProvider->CschedCellConfigReq (params);
 }
@@ -777,6 +887,7 @@ LteEnbMac::DoAddUe (uint16_t rnti)
   buf.push_back (dlHarqLayer0pkt);
   buf.push_back (dlHarqLayer1pkt);
   m_miDlHarqProcessesPackets.insert (std::pair <uint16_t, DlHarqProcessesBuffer_t> (rnti, buf));
+//last line may be changed
 }
 
 void
@@ -824,7 +935,7 @@ LteEnbMac::DoAddLc (LteEnbCmacSapProvider::LcInfo lcinfo, LteMacSapUser* msu)
       struct LogicalChannelConfigListElement_s lccle;
       lccle.m_logicalChannelIdentity = lcinfo.lcId;
       lccle.m_logicalChannelGroup = lcinfo.lcGroup;
-      lccle.m_direction = LogicalChannelConfigListElement_s::DIR_BOTH;
+      lccle.m_direction = LogicalChannelConfigListElement_s::DIR_DL;//kanet >>DIR_BOTH; //changed
       lccle.m_qosBearerType = lcinfo.isGbr ? LogicalChannelConfigListElement_s::QBT_GBR : LogicalChannelConfigListElement_s::QBT_NON_GBR;
       lccle.m_qci = lcinfo.qci;
       lccle.m_eRabMaximulBitrateUl = lcinfo.mbrUl;
@@ -940,6 +1051,8 @@ LteEnbMac::DoTransmitPdu (LteMacSapProvider::TransmitPduParameters params)
   //(*it).second.at (params.layer).at (params.harqProcessId) = params.pdu;//->Copy ();
   (*it).second.at (params.layer).at (params.harqProcessId)->AddPacket (params.pdu);
   m_enbPhySapProvider->SendMacPdu (params.pdu);
+  m_enbPhy2SapProvider->SendMacPdu (params.pdu); //added
+
 }
 
 void
@@ -1017,6 +1130,7 @@ LteEnbMac::DoSchedDlConfigInd (FfMacSchedSapUser::SchedDlConfigIndParameters ind
                         {
                           Ptr<Packet> pkt = (*j)->Copy ();
                           m_enbPhySapProvider->SendMacPdu (pkt);
+                          m_enbPhy2SapProvider->SendMacPdu (pkt);//added
                         }
                     }
                 }
@@ -1026,6 +1140,8 @@ LteEnbMac::DoSchedDlConfigInd (FfMacSchedSapUser::SchedDlConfigIndParameters ind
       Ptr<DlDciLteControlMessage> msg = Create<DlDciLteControlMessage> ();
       msg->SetDci (ind.m_buildDataList.at (i).m_dci);
       m_enbPhySapProvider->SendLteControlMessage (msg);
+      m_enbPhy2SapProvider->SendLteControlMessage (msg);
+
     }
 
   // Fire the trace with the DL information
@@ -1062,6 +1178,7 @@ LteEnbMac::DoSchedDlConfigInd (FfMacSchedSapUser::SchedDlConfigIndParameters ind
   // see TS 36.321 5.1.4;  preambles were sent two frames ago
   // (plus 3GPP counts subframes from 0, not 1)
   uint16_t raRnti;
+  //control subframes are the first 3 subframes in each frame
   if (m_subframeNo < 3)
     {
       raRnti = m_subframeNo + 7; // equivalent to +10-3
@@ -1087,6 +1204,7 @@ LteEnbMac::DoSchedDlConfigInd (FfMacSchedSapUser::SchedDlConfigIndParameters ind
   if (ind.m_buildRarList.size () > 0)
     {
       m_enbPhySapProvider->SendLteControlMessage (rarMsg);
+      m_enbPhy2SapProvider->SendLteControlMessage (rarMsg);
     }
   m_rapIdRntiMap.clear ();
 }
@@ -1103,6 +1221,7 @@ LteEnbMac::DoSchedUlConfigInd (FfMacSchedSapUser::SchedUlConfigIndParameters ind
       Ptr<UlDciLteControlMessage> msg = Create<UlDciLteControlMessage> ();
       msg->SetDci (ind.m_dciList.at (i));
       m_enbPhySapProvider->SendLteControlMessage (msg);
+      m_enbPhy2SapProvider->SendLteControlMessage (msg);   //added
     }
 
   // Fire the trace with the UL information

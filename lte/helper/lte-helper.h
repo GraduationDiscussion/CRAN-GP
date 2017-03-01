@@ -18,6 +18,11 @@
  * Author: Nicola Baldo <nbaldo@cttc.es>
  */
 
+
+/******************
+ *  this is a modified version notice that the header name is not correct
+ * **************/
+
 #ifndef LTE_HELPER_H
 #define LTE_HELPER_H
 
@@ -127,14 +132,26 @@ public:
    * \param type type of path loss model, must be a type name of any class
    *             inheriting from ns3::PropagationLossModel, for example:
    *             "ns3::FriisPropagationLossModel"
+   *
+   * ---------------------mohamed---------------------------------
+   * this part needs to be changed as contains both Dl and Ul
+   * first thought:each Dl and Ul needs to be assigned to a new path loss model
+   * ---------------------mohamed-----------------------------------
    */
   void SetPathlossModelType (std::string type);
 
   /**
+   *
    * Set an attribute for the path loss models to be created.
    * 
    * \param n the name of the attribute
    * \param v the value of the attribute
+   *
+   * ---------------------mohamed-----------------------------------
+   * this part needs to be changed as contains both Dl and Ul
+   * first thought:each DL and Ul needs to be assigned to a new attributes
+   * ---------------------mohamed-----------------------------------
+   *
    */
   void SetPathlossModelAttribute (std::string n, const AttributeValue &v);
 
@@ -146,12 +163,27 @@ public:
    *             "ns3::PfFfMacScheduler"
    *
    * Equivalent with setting the `Scheduler` attribute.
+   *
+   * ---------------------mohamed---------------------------------
+   * this part needs to be changed as the scheduler deals with different UEs but
+   * not with different phys each mush have its own ID(feature we will add) and each
+   * phy has its own # of users that will be served with the defined schedular.
+   * first thought:There are 2 thoughts till now
+   * 				1- each phy is scheduled in different way <difficult way>
+   * 				2- all phys are scheduled in one way
+   * ---------------------mohamed-----------------------------------
    */
   void SetSchedulerType (std::string type);
 
   /**
    *
    * \return the scheduler type
+   *
+   * ---------------------mohamed-----------------------------------
+   * 	<<< not sure must be checked after changing the scheduler>>>
+   * this part needs to be changed as the scheduler will be changed
+   * first thought: must be checked after modification in scheduler file
+   * ---------------------mohamed-----------------------------------
    */
   std::string GetSchedulerType () const; 
 
@@ -160,6 +192,12 @@ public:
    * 
    * \param n the name of the attribute
    * \param v the value of the attribute
+   *
+   * ---------------------mohamed-----------------------------------
+   *    <<<check first>>
+   * this part needs to be changed as
+   * first thought:
+   * ---------------------mohamed-----------------------------------
    */
   void SetSchedulerAttribute (std::string n, const AttributeValue &v);
 
@@ -177,6 +215,11 @@ public:
   /**
    *
    * \return the FFR algorithm type
+   *
+   * ---------------------mohamed-----------------------------------
+   * we will use static frequency reuse so this part is not important
+   * first thought: disable FFR
+   * ---------------------mohamed-----------------------------------
    */
   std::string GetFfrAlgorithmType () const;
 
@@ -185,6 +228,11 @@ public:
    *
    * \param n the name of the attribute
    * \param v the value of the attribute
+   *
+   * ---------------------mohamed-----------------------------------
+   * this part needs to be changed as
+   * first thought:disable FFR
+   * ---------------------mohamed-----------------------------------
    */
   void SetFfrAlgorithmAttribute (std::string n, const AttributeValue &v);
 
@@ -196,12 +244,24 @@ public:
    *             "ns3::NoOpHandoverAlgorithm"
    *
    * Equivalent with setting the `HandoverAlgorithm` attribute.
+   *
+   * ---------------------mohamed-----------------------------------
+   * 		<<<disable>>>
+   * this part needs to be changed as
+   * first thought: disable Handover
+   * ---------------------mohamed-----------------------------------
    */
   void SetHandoverAlgorithmType (std::string type);
 
   /**
    *
    * \return the handover algorithm type
+   *
+   * ---------------------mohamed-----------------------------------
+   * 		<<< disable >>>
+   * this part needs to be changed as
+   * first thought: disable
+   * ---------------------mohamed-----------------------------------
    */
   std::string GetHandoverAlgorithmType () const;
 
@@ -210,6 +270,12 @@ public:
    *
    * \param n the name of the attribute
    * \param v the value of the attribute
+   *
+   * ---------------------mohamed-----------------------------------
+   * 			<<< disable >>>
+   * this part needs to be changed as
+   * first thought: disable
+   * ---------------------mohamed-----------------------------------
    */
   void SetHandoverAlgorithmAttribute (std::string n, const AttributeValue &v);
 
@@ -218,6 +284,12 @@ public:
    * 
    * \param n the name of the attribute.
    * \param v the value of the attribute
+   *
+   *---------------------mohamed-----------------------------------
+   *		<<< check it >>>
+   * this part needs to be changed as
+   * first thought:
+   * ---------------------mohamed-----------------------------------
    */
   void SetEnbDeviceAttribute (std::string n, const AttributeValue &v);
 
@@ -227,6 +299,11 @@ public:
    * \param type type of antenna model, must be a type name of any class
    *             inheriting from ns3::AntennaModel, for example:
    *             "ns3::IsotropicAntennaModel"
+   *
+   *---------------------mohamed-----------------------------------
+   * this part needs to be changed as there are multiple antenea now
+   * first thought: set all the antenas to the specified type
+   * ---------------------mohamed-----------------------------------
    */
   void SetEnbAntennaModelType (std::string type);
 
@@ -235,6 +312,11 @@ public:
    * 
    * \param n the name of the attribute.
    * \param v the value of the attribute
+   *
+   * ---------------------mohamed-----------------------------------
+   * this part needs to be changed as these attributes must be set to all antenas
+   * first thought:
+   * ---------------------mohamed-----------------------------------
    */
   void SetEnbAntennaModelAttribute (std::string n, const AttributeValue &v);
 
@@ -269,6 +351,12 @@ public:
    * \param type type of spectrum channel model, must be a type name of any
    *             class inheriting from ns3::SpectrumChannel, for example:
    *             "ns3::MultiModelSpectrumChannel"
+   *
+   *---------------------mohamed-----------------------------------
+   *
+   * this part needs to be changed as
+   * first thought:
+   * ---------------------mohamed-----------------------------------
    */
   void SetSpectrumChannelType (std::string type);
 
@@ -285,6 +373,12 @@ public:
    *
    * \param c the node container where the devices are to be installed
    * \return the NetDeviceContainer with the newly created devices
+   *
+   * ---------------------mohamed-----------------------------------
+   * this part needs to be changed as the devices will be connected to enbs that
+   * consists to phys only
+   * first thought: we need to know the difference bet. InstallEnb/UeDevice
+   * ---------------------mohamed-----------------------------------
    */
   NetDeviceContainer InstallEnbDevice (NodeContainer c);
 
@@ -293,6 +387,11 @@ public:
    *
    * \param c the node container where the devices are to be installed
    * \return the NetDeviceContainer with the newly created devices
+   *
+   * ---------------------mohamed-----------------------------------
+   * this part needs to be changed as the devices will be connected to phys only
+   * first thought: we need to know the difference bet. InstallEnb/UeDevice
+   * ---------------------mohamed-----------------------------------
    */
   NetDeviceContainer InstallUeDevice (NodeContainer c);
 
@@ -312,6 +411,11 @@ public:
    * camps to a suitable cell).
    *
    * Note that this function can only be used in EPC-enabled simulation.
+   *
+   * ---------------------mohamed-----------------------------------
+   * this part needs to be changed as to attach the UEs to The eNB
+   * first thought: attach the UEs to the phys
+   * ---------------------mohamed-----------------------------------
    */
   void Attach (NetDeviceContainer ueDevices);
 
@@ -331,6 +435,11 @@ public:
    * camps to a suitable cell).
    *
    * Note that this function can only be used in EPC-enabled simulation.
+   *
+   * ---------------------mohamed-----------------------------------
+   * this part needs to be changed as (same as the previous one)
+   * first thought:
+   * ---------------------mohamed-----------------------------------
    */
   void Attach (Ptr<NetDevice> ueDevice);
 
@@ -346,6 +455,11 @@ public:
    * The function can be used in both LTE-only and EPC-enabled simulations.
    * Note that this function will disable Idle mode initial cell selection
    * procedure.
+   *
+   * ---------------------mohamed-----------------------------------
+   * this part needs to be changed as (same as the previous one)
+   * first thought:
+   * ---------------------mohamed-----------------------------------
    */
   void Attach (NetDeviceContainer ueDevices, Ptr<NetDevice> enbDevice);
 
@@ -360,6 +474,11 @@ public:
    * The function can be used in both LTE-only and EPC-enabled simulations.
    * Note that this function will disable Idle mode initial cell selection
    * procedure.
+   *
+   *---------------------mohamed-----------------------------------
+   * this part needs to be changed as (same as the previous one)
+   * first thought:
+   * ---------------------mohamed-----------------------------------
    */
   void Attach (Ptr<NetDevice> ueDevice, Ptr<NetDevice> enbDevice);
 
@@ -376,6 +495,12 @@ public:
    * instead of this function.
    * 
    * \sa LteHelper::Attach(NetDeviceContainer ueDevices);
+   *
+   * ---------------------mohamed-----------------------------------
+   * 		<<< just check If we need to use It make It ur least priorty >>>
+   * this part needs to be changed as
+   * first thought:
+   * ---------------------mohamed-----------------------------------
    */
   void AttachToClosestEnb (NetDeviceContainer ueDevices, NetDeviceContainer enbDevices);
 
@@ -392,6 +517,12 @@ public:
    * instead of this function.
    *
    * \sa LteHelper::Attach(Ptr<NetDevice> ueDevice);
+   *
+   * ---------------------mohamed-----------------------------------
+   * 		<<< same as the previous one >>>
+   * this part needs to be changed as
+   * first thought:
+   * ---------------------mohamed-----------------------------------
    */
   void AttachToClosestEnb (Ptr<NetDevice> ueDevice, NetDeviceContainer enbDevices);
 
@@ -401,6 +532,8 @@ public:
    * \param ueDevices the set of UE devices
    * \param bearer the characteristics of the bearer to be activated
    * \param tft the Traffic Flow Template that identifies the traffic to go on this bearer
+   *
+   *
    */
   uint8_t ActivateDedicatedEpsBearer (NetDeviceContainer ueDevices, EpsBearer bearer, Ptr<EpcTft> tft);
 
@@ -479,6 +612,12 @@ public:
    * \param type type of fading model, must be a type name of any class
    *             inheriting from ns3::SpectrumPropagationLossModel, for
    *             example: "ns3::TraceFadingLossModel"
+   *
+   *
+   *---------------------mohamed-----------------------------------
+   * this part needs to be changed as for both Ul and Dl
+   * first thought:
+   * ---------------------mohamed-----------------------------------
    */
   void SetFadingModel (std::string type);
 
@@ -487,10 +626,16 @@ public:
    *
    * \param n the name of the attribute
    * \param v the value of the attribute
+   *
+   * ---------------------mohamed-----------------------------------
+   * 		<<< same as the previous one >>>
+   * this part needs to be changed as
+   * first thought:
+   * ---------------------mohamed-----------------------------------
    */
   void SetFadingModelAttribute (std::string n, const AttributeValue &v);
 
-  /**
+  /*
    * Enables full-blown logging for major components of the LENA architecture.
    */
   void EnableLogComponents (void);
@@ -639,14 +784,31 @@ private:
 
 
   /// The downlink LTE channel used in the simulation.
+  /*
+    * ---------------------mohamed-----------------------------------
+    * Repeat one uplink and another one for downlink for each phy
+    * ---------------------mohamed-----------------------------------
+    * */
+
   Ptr<SpectrumChannel> m_downlinkChannel;
   /// The uplink LTE channel used in the simulation.
   Ptr<SpectrumChannel> m_uplinkChannel;
+  //---------------------------------added
+  Ptr<SpectrumChannel> m_downlinkChannel2;
+  Ptr<SpectrumChannel> m_uplinkChannel2;
+  //---------------------------------added
   /// The path loss model used in the downlink channel.
   Ptr<Object> m_downlinkPathlossModel;
+
+  //------------------------added
+  Ptr<Object> m_downlinkPathlossModel2;
+  //------------------------added
+
   /// The path loss model used in the uplink channel.
   Ptr<Object> m_uplinkPathlossModel;
-
+  //-------------------added
+  Ptr<Object> m_uplinkPathlossModel2;
+  //-------------------added
   /// Factory of MAC scheduler object.
   ObjectFactory m_schedulerFactory;
   /// Factory of FFR (frequency reuse) algorithm object.
@@ -654,10 +816,28 @@ private:
   /// Factory of handover algorithm object.
   ObjectFactory m_handoverAlgorithmFactory;
   /// Factory of LteEnbNetDevice objects.
+  /*
+  * ---------------------mohamed-----------------------------------
+  * check It not sure about it
+  * ---------------------mohamed-----------------------------------
+  * */
   ObjectFactory m_enbNetDeviceFactory;
   /// Factory of antenna object for eNodeB.
+  /*
+    * ---------------------mohamed-----------------------------------
+    * 2 scenarios:
+    * 1- same antenna model for all phys
+    * 2- different antenna models for different phys <the hard way>
+    * must have # of m_enbAntennaModelFactory = # of phys
+    * ---------------------mohamed-----------------------------------
+    * */
   ObjectFactory m_enbAntennaModelFactory;
   /// Factory for LteUeNetDevice objects.
+  /*
+    * ---------------------mohamed-----------------------------------
+    * check It not sure about all the comming ones
+    * ---------------------mohamed-----------------------------------
+    * */
   ObjectFactory m_ueNetDeviceFactory;
   /// Factory of antenna object for UE.
   ObjectFactory m_ueAntennaModelFactory;
