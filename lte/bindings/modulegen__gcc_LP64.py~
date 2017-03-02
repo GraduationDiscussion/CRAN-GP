@@ -1407,9 +1407,9 @@ def register_types(module):
     typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, unsigned int, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, unsigned int > > >', u'ns3::Uint32Map')
     typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, unsigned int, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, unsigned int > > >*', u'ns3::Uint32Map*')
     typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, unsigned int, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, unsigned int > > >&', u'ns3::Uint32Map&')
-    typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, unsigned long long, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, unsigned long long > > >', u'ns3::Uint64Map')
-    typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, unsigned long long, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, unsigned long long > > >*', u'ns3::Uint64Map*')
-    typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, unsigned long long, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, unsigned long long > > >&', u'ns3::Uint64Map&')
+    typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, unsigned long, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, unsigned long > > >', u'ns3::Uint64Map')
+    typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, unsigned long, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, unsigned long > > >*', u'ns3::Uint64Map*')
+    typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, unsigned long, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, unsigned long > > >&', u'ns3::Uint64Map&')
     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::Packet const >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >', u'ns3::GenericPhyTxEndCallback')
     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::Packet const >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::GenericPhyTxEndCallback*')
     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::Ptr< ns3::Packet const >, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::GenericPhyTxEndCallback&')
@@ -1487,9 +1487,9 @@ def register_types(module):
     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::UlInfoListElement_s, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >', u'ns3::LtePhyUlHarqFeedbackCallback')
     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::UlInfoListElement_s, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >*', u'ns3::LtePhyUlHarqFeedbackCallback*')
     typehandlers.add_type_alias(u'ns3::Callback< void, ns3::UlInfoListElement_s, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty, ns3::empty >&', u'ns3::LtePhyUlHarqFeedbackCallback&')
-    typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, ns3::Ptr< ns3::MinMaxAvgTotalCalculator< unsigned long long > >, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, ns3::Ptr< ns3::MinMaxAvgTotalCalculator< unsigned long long > > > > >', u'ns3::Uint64StatsMap')
-    typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, ns3::Ptr< ns3::MinMaxAvgTotalCalculator< unsigned long long > >, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, ns3::Ptr< ns3::MinMaxAvgTotalCalculator< unsigned long long > > > > >*', u'ns3::Uint64StatsMap*')
-    typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, ns3::Ptr< ns3::MinMaxAvgTotalCalculator< unsigned long long > >, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, ns3::Ptr< ns3::MinMaxAvgTotalCalculator< unsigned long long > > > > >&', u'ns3::Uint64StatsMap&')
+    typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, ns3::Ptr< ns3::MinMaxAvgTotalCalculator< unsigned long > >, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, ns3::Ptr< ns3::MinMaxAvgTotalCalculator< unsigned long > > > > >', u'ns3::Uint64StatsMap')
+    typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, ns3::Ptr< ns3::MinMaxAvgTotalCalculator< unsigned long > >, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, ns3::Ptr< ns3::MinMaxAvgTotalCalculator< unsigned long > > > > >*', u'ns3::Uint64StatsMap*')
+    typehandlers.add_type_alias(u'std::map< ns3::ImsiLcidPair_t, ns3::Ptr< ns3::MinMaxAvgTotalCalculator< unsigned long > >, std::less< ns3::ImsiLcidPair_t >, std::allocator< std::pair< ns3::ImsiLcidPair_t const, ns3::Ptr< ns3::MinMaxAvgTotalCalculator< unsigned long > > > > >&', u'ns3::Uint64StatsMap&')
     typehandlers.add_type_alias(u'std::vector< std::vector< ns3::RlcPduListElement_s, std::allocator< ns3::RlcPduListElement_s > >, std::allocator< std::vector< ns3::RlcPduListElement_s, std::allocator< ns3::RlcPduListElement_s > > > >', u'ns3::RlcPduList_t')
     typehandlers.add_type_alias(u'std::vector< std::vector< ns3::RlcPduListElement_s, std::allocator< ns3::RlcPduListElement_s > >, std::allocator< std::vector< ns3::RlcPduListElement_s, std::allocator< ns3::RlcPduListElement_s > > > >*', u'ns3::RlcPduList_t*')
     typehandlers.add_type_alias(u'std::vector< std::vector< ns3::RlcPduListElement_s, std::allocator< ns3::RlcPduListElement_s > >, std::allocator< std::vector< ns3::RlcPduListElement_s, std::allocator< ns3::RlcPduListElement_s > > > >&', u'ns3::RlcPduList_t&')
@@ -3539,7 +3539,7 @@ def register_Ns3EpcX2SapErabsSubjectToStatusTransferItem_methods(root_module, cl
     ## epc-x2-sap.h (module 'lte'): ns3::EpcX2Sap::ErabsSubjectToStatusTransferItem::erabId [variable]
     cls.add_instance_attribute('erabId', 'uint16_t', is_const=False)
     ## epc-x2-sap.h (module 'lte'): ns3::EpcX2Sap::ErabsSubjectToStatusTransferItem::receiveStatusOfUlPdcpSdus [variable]
-    cls.add_instance_attribute('receiveStatusOfUlPdcpSdus', 'std::bitset< 4096u >', is_const=False)
+    cls.add_instance_attribute('receiveStatusOfUlPdcpSdus', 'std::bitset< 4096ul >', is_const=False)
     ## epc-x2-sap.h (module 'lte'): ns3::EpcX2Sap::ErabsSubjectToStatusTransferItem::ulHfn [variable]
     cls.add_instance_attribute('ulHfn', 'uint32_t', is_const=False)
     ## epc-x2-sap.h (module 'lte'): ns3::EpcX2Sap::ErabsSubjectToStatusTransferItem::ulPdcpSn [variable]
@@ -12276,50 +12276,50 @@ def register_Ns3Asn1Header_methods(root_module, cls):
                    'void', 
                    [param('ns3::Buffer::Iterator', 'bIterator')], 
                    is_const=True, is_virtual=True)
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitset(std::bitset<8u> * data, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitset(std::bitset<8ul> * data, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeBitset', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 8u > *', 'data'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 8ul > *', 'data'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<1u> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<1ul> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeBitstring', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 1u > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 1ul > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<2u> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<2ul> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeBitstring', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 2u > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 2ul > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<8u> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<8ul> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeBitstring', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 8u > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 8ul > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<10u> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<10ul> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeBitstring', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 10u > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 10ul > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<16u> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<16ul> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeBitstring', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 16u > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 16ul > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<27u> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<27ul> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeBitstring', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 27u > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 27ul > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<28u> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<28ul> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeBitstring', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 28u > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 28ul > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<32u> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBitstring(std::bitset<32ul> * bitstring, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeBitstring', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 32u > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 32ul > *', 'bitstring'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
     ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeBoolean(bool * value, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeBoolean', 
@@ -12346,55 +12346,55 @@ def register_Ns3Asn1Header_methods(root_module, cls):
                    'ns3::Buffer::Iterator', 
                    [param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<0u> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<0ul> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeSequence', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 0u > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 0ul > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<1u> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<1ul> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeSequence', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 1u > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 1ul > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<2u> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<2ul> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeSequence', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 2u > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 2ul > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<3u> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<3ul> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeSequence', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 3u > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 3ul > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<4u> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<4ul> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeSequence', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 4u > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 4ul > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<5u> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<5ul> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeSequence', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 5u > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 5ul > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<6u> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<6ul> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeSequence', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 6u > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 6ul > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<9u> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<9ul> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeSequence', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 9u > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 9ul > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<10u> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<10ul> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeSequence', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 10u > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 10ul > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<11u> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
+    ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequence(std::bitset<11ul> * optionalOrDefaultMask, bool isExtensionMarkerPresent, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeSequence', 
                    'ns3::Buffer::Iterator', 
-                   [param('std::bitset< 11u > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
+                   [param('std::bitset< 11ul > *', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent'), param('ns3::Buffer::Iterator', 'bIterator')], 
                    visibility='protected')
     ## lte-asn1-header.h (module 'lte'): ns3::Buffer::Iterator ns3::Asn1Header::DeserializeSequenceOf(int * numElems, int nMax, int nMin, ns3::Buffer::Iterator bIterator) [member function]
     cls.add_method('DeserializeSequenceOf', 
@@ -12406,45 +12406,45 @@ def register_Ns3Asn1Header_methods(root_module, cls):
                    'void', 
                    [], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<1u> bitstring) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<1ul> bitstring) const [member function]
     cls.add_method('SerializeBitstring', 
                    'void', 
-                   [param('std::bitset< 1u >', 'bitstring')], 
+                   [param('std::bitset< 1ul >', 'bitstring')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<2u> bitstring) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<2ul> bitstring) const [member function]
     cls.add_method('SerializeBitstring', 
                    'void', 
-                   [param('std::bitset< 2u >', 'bitstring')], 
+                   [param('std::bitset< 2ul >', 'bitstring')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<8u> bitstring) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<8ul> bitstring) const [member function]
     cls.add_method('SerializeBitstring', 
                    'void', 
-                   [param('std::bitset< 8u >', 'bitstring')], 
+                   [param('std::bitset< 8ul >', 'bitstring')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<10u> bitstring) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<10ul> bitstring) const [member function]
     cls.add_method('SerializeBitstring', 
                    'void', 
-                   [param('std::bitset< 10u >', 'bitstring')], 
+                   [param('std::bitset< 10ul >', 'bitstring')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<16u> bitstring) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<16ul> bitstring) const [member function]
     cls.add_method('SerializeBitstring', 
                    'void', 
-                   [param('std::bitset< 16u >', 'bitstring')], 
+                   [param('std::bitset< 16ul >', 'bitstring')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<27u> bitstring) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<27ul> bitstring) const [member function]
     cls.add_method('SerializeBitstring', 
                    'void', 
-                   [param('std::bitset< 27u >', 'bitstring')], 
+                   [param('std::bitset< 27ul >', 'bitstring')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<28u> bitstring) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<28ul> bitstring) const [member function]
     cls.add_method('SerializeBitstring', 
                    'void', 
-                   [param('std::bitset< 28u >', 'bitstring')], 
+                   [param('std::bitset< 28ul >', 'bitstring')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<32u> bitstring) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBitstring(std::bitset<32ul> bitstring) const [member function]
     cls.add_method('SerializeBitstring', 
                    'void', 
-                   [param('std::bitset< 32u >', 'bitstring')], 
+                   [param('std::bitset< 32ul >', 'bitstring')], 
                    is_const=True, visibility='protected')
     ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeBoolean(bool value) const [member function]
     cls.add_method('SerializeBoolean', 
@@ -12471,55 +12471,55 @@ def register_Ns3Asn1Header_methods(root_module, cls):
                    'void', 
                    [], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<0u> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<0ul> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
     cls.add_method('SerializeSequence', 
                    'void', 
-                   [param('std::bitset< 0u >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
+                   [param('std::bitset< 0ul >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<1u> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<1ul> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
     cls.add_method('SerializeSequence', 
                    'void', 
-                   [param('std::bitset< 1u >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
+                   [param('std::bitset< 1ul >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<2u> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<2ul> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
     cls.add_method('SerializeSequence', 
                    'void', 
-                   [param('std::bitset< 2u >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
+                   [param('std::bitset< 2ul >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<3u> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<3ul> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
     cls.add_method('SerializeSequence', 
                    'void', 
-                   [param('std::bitset< 3u >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
+                   [param('std::bitset< 3ul >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<4u> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<4ul> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
     cls.add_method('SerializeSequence', 
                    'void', 
-                   [param('std::bitset< 4u >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
+                   [param('std::bitset< 4ul >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<5u> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<5ul> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
     cls.add_method('SerializeSequence', 
                    'void', 
-                   [param('std::bitset< 5u >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
+                   [param('std::bitset< 5ul >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<6u> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<6ul> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
     cls.add_method('SerializeSequence', 
                    'void', 
-                   [param('std::bitset< 6u >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
+                   [param('std::bitset< 6ul >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<9u> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<9ul> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
     cls.add_method('SerializeSequence', 
                    'void', 
-                   [param('std::bitset< 9u >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
+                   [param('std::bitset< 9ul >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<10u> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<10ul> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
     cls.add_method('SerializeSequence', 
                    'void', 
-                   [param('std::bitset< 10u >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
+                   [param('std::bitset< 10ul >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
                    is_const=True, visibility='protected')
-    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<11u> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
+    ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequence(std::bitset<11ul> optionalOrDefaultMask, bool isExtensionMarkerPresent) const [member function]
     cls.add_method('SerializeSequence', 
                    'void', 
-                   [param('std::bitset< 11u >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
+                   [param('std::bitset< 11ul >', 'optionalOrDefaultMask'), param('bool', 'isExtensionMarkerPresent')], 
                    is_const=True, visibility='protected')
     ## lte-asn1-header.h (module 'lte'): void ns3::Asn1Header::SerializeSequenceOf(int numElems, int nMax, int nMin) const [member function]
     cls.add_method('SerializeSequenceOf', 
@@ -16543,7 +16543,7 @@ def register_Ns3LteHelper_methods(root_module, cls):
     ## lte-helper.h (module 'lte'): ns3::NetDeviceContainer ns3::LteHelper::InstallUeDevice(ns3::NodeContainer c, const char PhyId) [member function]
     cls.add_method('InstallUeDevice', 
                    'ns3::NetDeviceContainer', 
-                   [param('ns3::NodeContainer', 'c'),param('const char', 'PhyId')])
+                   [param('ns3::NodeContainer', 'c'), param('const char')])
     ## lte-helper.h (module 'lte'): void ns3::LteHelper::SetEnbAntennaModelAttribute(std::string n, ns3::AttributeValue const & v) [member function]
     cls.add_method('SetEnbAntennaModelAttribute', 
                    'void', 
@@ -21821,14 +21821,14 @@ def register_Ns3RrcConnectionRequestHeader_methods(root_module, cls):
                    'ns3::LteRrcSap::RrcConnectionRequest', 
                    [], 
                    is_const=True)
-    ## lte-rrc-header.h (module 'lte'): std::bitset<8u> ns3::RrcConnectionRequestHeader::GetMmec() const [member function]
+    ## lte-rrc-header.h (module 'lte'): std::bitset<8ul> ns3::RrcConnectionRequestHeader::GetMmec() const [member function]
     cls.add_method('GetMmec', 
-                   'std::bitset< 8u >', 
+                   'std::bitset< 8ul >', 
                    [], 
                    is_const=True)
-    ## lte-rrc-header.h (module 'lte'): std::bitset<32u> ns3::RrcConnectionRequestHeader::GetMtmsi() const [member function]
+    ## lte-rrc-header.h (module 'lte'): std::bitset<32ul> ns3::RrcConnectionRequestHeader::GetMtmsi() const [member function]
     cls.add_method('GetMtmsi', 
-                   'std::bitset< 32u >', 
+                   'std::bitset< 32ul >', 
                    [], 
                    is_const=True)
     ## lte-rrc-header.h (module 'lte'): static ns3::TypeId ns3::RrcConnectionRequestHeader::GetTypeId() [member function]

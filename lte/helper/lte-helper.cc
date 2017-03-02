@@ -273,6 +273,10 @@ LteHelper::DoDispose ()
   NS_LOG_FUNCTION (this);
   m_downlinkChannel = 0;
   m_uplinkChannel = 0;
+  //----------------added
+  m_downlinkChannel2 = 0;
+  m_uplinkChannel2 = 0;
+  //----------------added
   Object::DoDispose ();
 }
 
@@ -459,14 +463,15 @@ LteHelper::InstallEnbDevice (NodeContainer c)
 }
 
 NetDeviceContainer
-LteHelper::InstallUeDevice (NodeContainer c)
+LteHelper::InstallUeDevice (NodeContainer c, const char PhyId)
 {
   NS_LOG_FUNCTION (this << "<mohamed>***********************install UE device************************* <moahmed>");
   NetDeviceContainer devices;
   for (NodeContainer::Iterator i = c.Begin (); i != c.End (); ++i)
     {
       Ptr<Node> node = *i;
-      Ptr<NetDevice> device = InstallSingleUeDevice (node);
+      //------------ added <must be changed to be dynamic>
+      Ptr<NetDevice> device = InstallSingleUeDevice (node,PhyId);
       devices.Add (device);
     }
   NS_LOG_FUNCTION (this << "<mohamed>*********************install UE device*************************** <moahmed>");
@@ -961,8 +966,15 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
   return dev;
 }
 
+/*--------------------moahmed---------------
+ * this method is modified such that It the UE can choose the PHY to connect to
+ * If phyId = 1 ==> connect to spectrum channel no. 1
+ * if phyId = 2 ==> connect to spectrum channel no. 2
+ * else error
+ * -------------------mohamed---------------
+ */
 Ptr<NetDevice>
-LteHelper::InstallSingleUeDevice (Ptr<Node> n)
+LteHelper::InstallSingleUeDevice (Ptr<Node> n,const char PhyId)
 {
   NS_LOG_FUNCTION (this);
   Ptr<LteSpectrumPhy> dlPhy = CreateObject<LteSpectrumPhy> ();
@@ -1006,9 +1018,24 @@ LteHelper::InstallSingleUeDevice (Ptr<Node> n)
     }
 
 
-
-  dlPhy->SetChannel (m_downlinkChannel);
-  ulPhy->SetChannel (m_uplinkChannel);
+  if(PhyId == 1)
+  {
+	  NS_LOG_FUNCTION("<mohamed> UE channel is connected to PHY [1] <mohamed>");
+	  dlPhy->SetChannel (m_downlinkChannel);
+	  ulPhy->SetChannel (m_uplinkChannel);
+	  NS_LOG_FUNCTION("<mohamed> end of set -> channel is connected to PHY [1] <mohamed>");
+  }
+  else if(PhyId == 2)
+  {
+	  NS_LOG_FUNCTION("<mohamed> UE channel is connected to PHY [2] <mohamed>");
+	  dlPhy->SetChannel (m_downlinkChannel2);
+	  ulPhy->SetChannel (m_uplinkChannel2);
+	  NS_LOG_FUNCTION("<mohamed> end of set -> channel is connected to PHY [2] <mohamed>");
+  }
+  else
+  {
+	NS_LOG_ERROR("L120,<mohamed> Indicate the spectrum channel to connect to <mohamed>");
+  }
 
   Ptr<MobilityModel> mm = n->GetObject<MobilityModel> ();
   NS_ASSERT_MSG (mm, "MobilityModel needs to be set on node before calling LteHelper::InstallUeDevice ()");
@@ -1160,6 +1187,7 @@ LteHelper::Attach (Ptr<NetDevice> ueDevice, Ptr<NetDevice> enbDevice)
 
   if (m_epcHelper != 0)
     {
+	  NS_LOG_FUNCTION("epcHelper exists");
       // activate default EPS bearer
       m_epcHelper->ActivateEpsBearer (ueDevice, ueLteDevice->GetImsi (), EpcTft::Default (), EpsBearer (EpsBearer::NGBR_VIDEO_TCP_DEFAULT));
     }
@@ -1167,6 +1195,7 @@ LteHelper::Attach (Ptr<NetDevice> ueDevice, Ptr<NetDevice> enbDevice)
   // tricks needed for the simplified LTE-only simulations 
   if (m_epcHelper == 0)
     {
+	  NS_LOG_FUNCTION("epcHelper doesn't exist");
       ueDevice->GetObject<LteUeNetDevice> ()->SetTargetEnb (enbDevice->GetObject<LteEnbNetDevice> ());
     }
 }
@@ -1428,11 +1457,12 @@ LteHelper::DoDeActivateDedicatedEpsBearer (Ptr<NetDevice> ueDevice, Ptr<NetDevic
 void 
 LteHelper::ActivateDataRadioBearer (NetDeviceContainer ueDevices, EpsBearer bearer)
 {
-  NS_LOG_FUNCTION (this);
+  NS_LOG_FUNCTION (this << "<mohamed>-----------------Start of Txion---------------<mohamed>");
   for (NetDeviceContainer::Iterator i = ueDevices.Begin (); i != ueDevices.End (); ++i)
     {
       ActivateDataRadioBearer (*i, bearer);
     }
+  NS_LOG_FUNCTION (this << "<mohamed>-----------------End of Txion---------------<mohamed>");
 }
 
 void

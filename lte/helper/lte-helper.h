@@ -393,7 +393,7 @@ public:
    * first thought: we need to know the difference bet. InstallEnb/UeDevice
    * ---------------------mohamed-----------------------------------
    */
-  NetDeviceContainer InstallUeDevice (NodeContainer c);
+  NetDeviceContainer InstallUeDevice (NodeContainer c,const char PhyId);
 
   /**
    * \brief Enables automatic attachment of a set of UE devices to a suitable
@@ -752,7 +752,7 @@ private:
    * \param n the node where the device is to be installed
    * \return pointer to the created device
    */
-  Ptr<NetDevice> InstallSingleUeDevice (Ptr<Node> n);
+  Ptr<NetDevice> InstallSingleUeDevice (Ptr<Node> n, const char PhyId);
 
   /**
    * The actual function to trigger a manual handover.

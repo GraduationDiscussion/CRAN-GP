@@ -16540,10 +16540,10 @@ def register_Ns3LteHelper_methods(root_module, cls):
     cls.add_method('InstallEnbDevice', 
                    'ns3::NetDeviceContainer', 
                    [param('ns3::NodeContainer', 'c')])
-    ## lte-helper.h (module 'lte'): ns3::NetDeviceContainer ns3::LteHelper::InstallUeDevice(ns3::NodeContainer c) [member function]
+    ## lte-helper.h (module 'lte'): ns3::NetDeviceContainer ns3::LteHelper::InstallUeDevice(ns3::NodeContainer c, const char PhyId) [member function]
     cls.add_method('InstallUeDevice', 
                    'ns3::NetDeviceContainer', 
-                   [param('ns3::NodeContainer', 'c')])
+                   [param('ns3::NodeContainer', 'c'), param('const char', 'PhyId')])
     ## lte-helper.h (module 'lte'): void ns3::LteHelper::SetEnbAntennaModelAttribute(std::string n, ns3::AttributeValue const & v) [member function]
     cls.add_method('SetEnbAntennaModelAttribute', 
                    'void', 
