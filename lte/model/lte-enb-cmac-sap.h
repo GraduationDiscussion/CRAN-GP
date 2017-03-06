@@ -84,7 +84,7 @@ public:
    * \param lcinfo
    * \param msu
    */
-  virtual void AddLc (LcInfo lcinfo, LteMacSapUser* msu) = 0;
+  virtual void AddLc (LcInfo lcinfo,LcInfo lcinfo2, LteMacSapUser* msu) = 0;
 
 
   /**
@@ -92,7 +92,7 @@ public:
    *
    * \param lcinfo
    */
-  virtual void ReconfigureLc (LcInfo lcinfo) = 0;
+  virtual void ReconfigureLc (LcInfo lcinfo,LcInfo lcinfo2) = 0;
 
 
   /**
@@ -101,7 +101,7 @@ public:
    * \param rnti
    * \param lcid
    */
-  virtual void ReleaseLc (uint16_t rnti, uint8_t lcid) = 0;
+  virtual void ReleaseLc (uint16_t rnti, uint8_t lcid,uint16_t rnti2, uint8_t lcid2) = 0;
   
   /**
    * \brief Parameters for [re]configuring the UE 
@@ -123,7 +123,7 @@ public:
    * 
    * \param params 
    */
-  virtual void UeUpdateConfigurationReq (UeConfig params) = 0;
+  virtual void UeUpdateConfigurationReq (UeConfig params,UeConfig params2) = 0;
 
 
   /**
