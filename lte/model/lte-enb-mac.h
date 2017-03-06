@@ -53,6 +53,7 @@ class LteEnbMac :   public Object
   friend class EnbMacMemberLteMacSapProvider<LteEnbMac>;
   friend class EnbMacMemberFfMacSchedSapUser;
   friend class EnbMacMemberFfMacCschedSapUser;
+  //this class inherited from LteEnbPhySap (ya3ny kol func ely gwah byt3mlha call mra fe phy de w mra fe phy de fmsh m7tag a3ml duplicate)???
   friend class EnbMacMemberLteEnbPhySapUser;
 
 public:
@@ -67,24 +68,22 @@ public:
    * \brief Set the scheduler SAP provider
    * \param s a pointer SAP provider of the FF packet scheduler
    */
-  void SetFfMacSchedSapProvider (FfMacSchedSapProvider* s);
+  void SetFfMacSchedSapProvider (FfMacSchedSapProvider* s,FfMacSchedSapProvider* s2);
   /**
    * \brief Get the scheduler SAP user
    * \return a pointer to the SAP user of the scheduler
    */
-  FfMacSchedSapUser* GetFfMacSchedSapUser (void);
+  FfMacSchedSapUser* GetFfMacSchedSapUser (uint8_t i);
   /**
    * \brief Set the control scheduler SAP provider
    * \param s a pointer to the control scheduler SAP provider
    */
-  void SetFfMacCschedSapProvider (FfMacCschedSapProvider* s);
+  void SetFfMacCschedSapProvider (FfMacCschedSapProvider* s,FfMacCschedSapProvider* s2);
   /**
    * \brief Get the control scheduler SAP user
    * \return a pointer to the control scheduler SAP user
    */
-  FfMacCschedSapUser* GetFfMacCschedSapUser (void);
-
-
+  FfMacCschedSapUser* GetFfMacCschedSapUser (uint8_t i);
 
   /**
    * \brief Set the MAC SAP user
@@ -112,16 +111,15 @@ public:
   * \brief Get the eNB-PHY SAP User
   * \return a pointer to the SAP User of the PHY
   */
-  LteEnbPhySapUser* GetLteEnbPhySapUser ();
-  LteEnbPhySapUser* GetLteEnbPhy2SapUser ();//added
+  LteEnbPhySapUser* GetLteEnbPhySapUser (uint8_t i);
+
 
 
   /**
   * \brief Set the PHY SAP Provider
   * \param s a pointer to the PHY SAP provider
   */
-  void SetLteEnbPhySapProvider (LteEnbPhySapProvider* s);
-  void SetLteEnbPhy2SapProvider (LteEnbPhySapProvider* s);//added
+  void SetLteEnbPhySapProvider (LteEnbPhySapProvider* s,LteEnbPhySapProvider* s2);
 
 
   /**
@@ -159,18 +157,20 @@ private:
   * \brief Receive a DL CQI ideal control message
   * \param msg the DL CQI message
   */
+
+  // not modified as they're related to ue
   void ReceiveDlCqiLteControlMessage  (Ptr<DlCqiLteControlMessage> msg);
 
-  void DoReceiveLteControlMessage (Ptr<LteControlMessage> msg);
+  void DoReceiveLteControlMessage (Ptr<LteControlMessage> msg,Ptr<LteControlMessage> msg2);
 
   /**
   * \brief Receive a CE element containing the buffer status report
   * \param bsr the BSR message
   */
-  void ReceiveBsrMessage  (MacCeListElement_s bsr);
+  void ReceiveBsrMessage  (MacCeListElement_s bsr,MacCeListElement_s bsr2);
 
  
-  void DoUlCqiReport (FfMacSchedSapProvider::SchedUlCqiInfoReqParameters ulcqi);
+  void DoUlCqiReport (FfMacSchedSapProvider::SchedUlCqiInfoReqParameters ulcqi,FfMacSchedSapProvider::SchedUlCqiInfoReqParameters ulcqi2);
 
 
 
@@ -178,53 +178,53 @@ private:
   void DoConfigureMac (uint8_t ulBandwidth, uint8_t dlBandwidth);
   void DoAddUe (uint16_t rnti);
   void DoRemoveUe (uint16_t rnti);
-  void DoAddLc (LteEnbCmacSapProvider::LcInfo lcinfo, LteMacSapUser* msu);
-  void DoReconfigureLc (LteEnbCmacSapProvider::LcInfo lcinfo);
-  void DoReleaseLc (uint16_t  rnti, uint8_t lcid);
-  void DoUeUpdateConfigurationReq (LteEnbCmacSapProvider::UeConfig params);
+  void DoAddLc (LteEnbCmacSapProvider::LcInfo lcinfo,LteEnbCmacSapProvider::LcInfo lcinfo2, LteMacSapUser* msu);
+  void DoReconfigureLc (LteEnbCmacSapProvider::LcInfo lcinfo,LteEnbCmacSapProvider::LcInfo lcinfo2);
+  void DoReleaseLc (uint16_t  rnti, uint8_t lcid,uint16_t  rnti2, uint8_t lcid2);
+  void DoUeUpdateConfigurationReq (LteEnbCmacSapProvider::UeConfig params,LteEnbCmacSapProvider::UeConfig params2);
   LteEnbCmacSapProvider::RachConfig DoGetRachConfig ();
   LteEnbCmacSapProvider::AllocateNcRaPreambleReturnValue DoAllocateNcRaPreamble (uint16_t rnti);
 
   // forwarded from LteMacSapProvider
-  void DoTransmitPdu (LteMacSapProvider::TransmitPduParameters);
-  void DoReportBufferStatus (LteMacSapProvider::ReportBufferStatusParameters);
+  void DoTransmitPdu (LteMacSapProvider::TransmitPduParameters params,LteMacSapProvider::TransmitPduParameters params2);
+  void DoReportBufferStatus (LteMacSapProvider::ReportBufferStatusParameters params,LteMacSapProvider::ReportBufferStatusParameters params2);
 
 
   // forwarded from FfMacCchedSapUser
-  void DoCschedCellConfigCnf (FfMacCschedSapUser::CschedCellConfigCnfParameters params);
-  void DoCschedUeConfigCnf (FfMacCschedSapUser::CschedUeConfigCnfParameters params);
-  void DoCschedLcConfigCnf (FfMacCschedSapUser::CschedLcConfigCnfParameters params);
-  void DoCschedLcReleaseCnf (FfMacCschedSapUser::CschedLcReleaseCnfParameters params);
-  void DoCschedUeReleaseCnf (FfMacCschedSapUser::CschedUeReleaseCnfParameters params);
-  void DoCschedUeConfigUpdateInd (FfMacCschedSapUser::CschedUeConfigUpdateIndParameters params);
-  void DoCschedCellConfigUpdateInd (FfMacCschedSapUser::CschedCellConfigUpdateIndParameters params);
+  void DoCschedCellConfigCnf (FfMacCschedSapUser::CschedCellConfigCnfParameters params,FfMacCschedSapUser::CschedCellConfigCnfParameters params2);
+  void DoCschedUeConfigCnf (FfMacCschedSapUser::CschedUeConfigCnfParameters params,FfMacCschedSapUser::CschedUeConfigCnfParameters params2);
+  void DoCschedLcConfigCnf (FfMacCschedSapUser::CschedLcConfigCnfParameters params,FfMacCschedSapUser::CschedLcConfigCnfParameters params2);
+  void DoCschedLcReleaseCnf (FfMacCschedSapUser::CschedLcReleaseCnfParameters params,FfMacCschedSapUser::CschedLcReleaseCnfParameters params2);
+  void DoCschedUeReleaseCnf (FfMacCschedSapUser::CschedUeReleaseCnfParameters params,FfMacCschedSapUser::CschedUeReleaseCnfParameters params2);
+  void DoCschedUeConfigUpdateInd (FfMacCschedSapUser::CschedUeConfigUpdateIndParameters params,FfMacCschedSapUser::CschedUeConfigUpdateIndParameters params2);
+  void DoCschedCellConfigUpdateInd (FfMacCschedSapUser::CschedCellConfigUpdateIndParameters params,FfMacCschedSapUser::CschedCellConfigUpdateIndParameters params2);
 
   // forwarded from FfMacSchedSapUser
-  void DoSchedDlConfigInd (FfMacSchedSapUser::SchedDlConfigIndParameters ind);
-  void DoSchedUlConfigInd (FfMacSchedSapUser::SchedUlConfigIndParameters params);
+  void DoSchedDlConfigInd (FfMacSchedSapUser::SchedDlConfigIndParameters ind,FfMacSchedSapUser::SchedDlConfigIndParameters ind2);
+  void DoSchedUlConfigInd (FfMacSchedSapUser::SchedUlConfigIndParameters params,FfMacSchedSapUser::SchedUlConfigIndParameters params2);
 
   // forwarded from LteEnbPhySapUser
   void DoSubframeIndication (uint32_t frameNo, uint32_t subframeNo);
-  void DoReceiveRachPreamble (uint8_t prachId);
+  void DoReceiveRachPreamble (uint8_t prachId,uint8_t prachId2);
 
 public:
   // legacy public for use the Phy callback
-  void DoReceivePhyPdu (Ptr<Packet> p);
+  void DoReceivePhyPdu (Ptr<Packet> p,Ptr<Packet> p2);
 
 private:
-  void DoUlInfoListElementHarqFeeback (UlInfoListElement_s params);
-  void DoDlInfoListElementHarqFeeback (DlInfoListElement_s params);
+  void DoUlInfoListElementHarqFeeback (UlInfoListElement_s params,UlInfoListElement_s params2);
+  void DoDlInfoListElementHarqFeeback (DlInfoListElement_s params,DlInfoListElement_s params2);
 
   //            rnti,             lcid, SAP of the RLC instance
   std::map <uint16_t, std::map<uint8_t, LteMacSapUser*> > m_rlcAttached;
 
-  std::vector <CqiListElement_s> m_dlCqiReceived; // DL-CQI received
-  std::vector <FfMacSchedSapProvider::SchedUlCqiInfoReqParameters> m_ulCqiReceived; // UL-CQI received
-  std::vector <MacCeListElement_s> m_ulCeReceived; // CE received (BSR up to now)
+  std::vector <CqiListElement_s> m_dlCqiReceived,m_dlCqiReceived2; // DL-CQI received
+  std::vector <FfMacSchedSapProvider::SchedUlCqiInfoReqParameters> m_ulCqiReceived,m_ulCqiReceived2; // UL-CQI received
+  std::vector <MacCeListElement_s> m_ulCeReceived,m_ulCeReceived2; // CE received (BSR up to now)
 
-  std::vector <DlInfoListElement_s> m_dlInfoListReceived; // DL HARQ feedback received
+  std::vector <DlInfoListElement_s> m_dlInfoListReceived,m_dlInfoListReceived2; // DL HARQ feedback received
 
-  std::vector <UlInfoListElement_s> m_ulInfoListReceived; // UL HARQ feedback received
+  std::vector <UlInfoListElement_s> m_ulInfoListReceived,m_ulInfoListReceived2; // UL HARQ feedback received
 
 
   /*
@@ -241,15 +241,19 @@ private:
 
 
   FfMacSchedSapProvider* m_schedSapProvider;
+  FfMacSchedSapProvider* m_schedSapProvider2;//added
   FfMacCschedSapProvider* m_cschedSapProvider;
+  FfMacCschedSapProvider* m_cschedSapProvider2;//added
   FfMacSchedSapUser* m_schedSapUser;
+  FfMacSchedSapUser* m_schedSapUser2;//added
   FfMacCschedSapUser* m_cschedSapUser;
+  FfMacCschedSapUser* m_cschedSapUser2;//added
 
   // PHY-SAP
   LteEnbPhySapProvider* m_enbPhySapProvider;
-  LteEnbPhySapProvider* m_enbPhy2SapProvider; //added
+  LteEnbPhySapProvider* m_enbPhySapProvider2; //added
   LteEnbPhySapUser* m_enbPhySapUser;
-  LteEnbPhySapUser* m_enbPhy2SapUser; //added
+  LteEnbPhySapUser* m_enbPhySapUser2; //added
 
   uint32_t m_frameNo;
   uint32_t m_subframeNo;
@@ -271,7 +275,7 @@ private:
   uint8_t m_macChTtiDelay2; // added
 
   std::map <uint16_t, DlHarqProcessesBuffer_t> m_miDlHarqProcessesPackets; // Packet under trasmission of the DL HARQ process
-  
+  std::map <uint16_t, DlHarqProcessesBuffer_t> m_miDlHarqProcessesPackets2;
   uint8_t m_numberOfRaPreambles;
   uint8_t m_preambleTransMax;
   uint8_t m_raResponseWindowSize;
@@ -293,9 +297,9 @@ private:
    */
   std::map<uint8_t, NcRaPreambleInfo> m_allocatedNcRaPreambleMap;
  
-  std::map<uint8_t, uint32_t> m_receivedRachPreambleCount;
+  std::map<uint8_t, uint32_t> m_receivedRachPreambleCount,m_receivedRachPreambleCount2;
 
-  std::map<uint8_t, uint32_t> m_rapIdRntiMap;
+  std::map<uint8_t, uint32_t> m_rapIdRntiMap,m_rapIdRntiMap2;
 };
 
 } // end namespace ns3
