@@ -201,6 +201,13 @@ public:
    */
   void Install (std::string nodeName) const;
 
+  /**---------------------added by <mohamed>
+   *sets Mobility Model to the phys not the nodes
+   * ----------------------added by <mohamed>
+   */
+  //void Install (Ptr<LteEnbPhy> node) const;
+
+
   /**
    * \brief Layout a collection of nodes according to the current position allocator type.
    *

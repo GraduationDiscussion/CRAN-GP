@@ -832,6 +832,10 @@ private:
     * ---------------------mohamed-----------------------------------
     * */
   ObjectFactory m_enbAntennaModelFactory;
+
+  //----------------added
+  ObjectFactory m_enbMobilityModelFactory;
+  //---------------added
   /// Factory for LteUeNetDevice objects.
   /*
     * ---------------------mohamed-----------------------------------

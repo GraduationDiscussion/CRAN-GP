@@ -585,21 +585,27 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
   //------------------------------------added
 
 /*--------------------------------------------mohamed---------------------------
- * you need to set the mobiltity model to constant and set the different phys in different postions.
+ * you need to set the mobility model to constant and set the different phys in different postions.
  * ------------------------------------------mohamed----------------------------
  */
+
   // mm will store the mobility model attribute set by the user in the script
   Ptr<MobilityModel> mm = n->GetObject<MobilityModel> ();
-  Ptr<MobilityModel> mm2 = n->GetObject<MobilityModel> ();
+
+  //----------added
+  m_enbMobilityModelFactory.SetTypeId("ns3::ConstantPositionMobilityModel");
+  Ptr<MobilityModel> mm2 = m_enbMobilityModelFactory.Create()->GetObject<MobilityModel> ();
+  //---------added
+
   NS_LOG_FUNCTION("mobility model type:" << mm->GetTypeId() << "	" << mm2->GetTypeId());
   // assert_msg checks the size of mm so if the size is zero will print the assert msg.
   NS_ASSERT_MSG (mm,"MobilityModel needs to be set on node before calling LteHelper::InstallUeDevice ()");
-  mm -> SetPosition(Vector(0,0,0));
+  mm -> SetPosition(Vector(-3000,0,0));
   dlPhy->SetMobility (mm);
   ulPhy->SetMobility (mm);
 
   //-------------------------------------added <there is a problem here that the mobility model contains the position so the 2 positions are the same>
-  mm2 -> SetPosition(Vector(50,50,50));
+  mm2 -> SetPosition(Vector(3000,0,0));
   dlPhy2->SetMobility (mm2);
   ulPhy2->SetMobility (mm2);
   //-------------------------------------added
@@ -609,14 +615,17 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
    * ------------------------------------------mohamed----------------------------
    */
 
-  Ptr<AntennaModel> antenna = (m_enbAntennaModelFactory.Create ())->GetObject<AntennaModel> ();
+  Ptr<AntennaModel> antenna = (m_enbAntennaModelFactory.Create())->GetObject<AntennaModel> ();
+  Ptr<AntennaModel> antenna2 = (m_enbAntennaModelFactory.Create())->GetObject<AntennaModel> ();
+
   NS_ASSERT_MSG (antenna, "error in creating the AntennaModel object");
   dlPhy->SetAntenna (antenna);
   ulPhy->SetAntenna (antenna);
 
   //----------------------------added
-  dlPhy2->SetAntenna (antenna);
-  ulPhy2->SetAntenna (antenna);
+  NS_ASSERT_MSG (antenna2, "error in creating the AntennaModel object");
+  dlPhy2->SetAntenna (antenna2);
+  ulPhy2->SetAntenna (antenna2);
   //----------------------------added
 
   /*--------------------------------------------mohamed---------------------------
@@ -962,6 +971,18 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
       x2->SetEpcX2SapUser (rrc->GetEpcX2SapUser ());
       rrc->SetEpcX2SapProvider (x2->GetEpcX2SapProvider ());
     }
+
+  /* ----------------mohamed------------------
+   * This loop returns the aggregated objects to the node
+   * result: the aggregate buffer of the node contains the node and the mobility model only
+   */
+  /*//-----------added
+  AggregateIterator node_it = n->GetAggregateIterator();
+    do
+    {
+  	  std::cout << (node_it.Next()) << std::endl;
+    }while(node_it.HasNext());
+    //-----------added*/
 
   return dev;
 }

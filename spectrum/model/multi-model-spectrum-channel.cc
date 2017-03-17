@@ -144,6 +144,9 @@ void
 MultiModelSpectrumChannel::AddRx (Ptr<SpectrumPhy> phy)
 {
   NS_LOG_FUNCTION (this << phy);
+  //-----------added
+  std::cout << "AddRx to phy of address: " << phy << std::endl;
+  //-----------added
 
   Ptr<const SpectrumModel> rxSpectrumModel = phy->GetRxSpectrumModel ();
 
