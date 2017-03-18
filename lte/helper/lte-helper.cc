@@ -1135,7 +1135,7 @@ LteHelper::InstallSingleUeDevice (Ptr<Node> n,const char PhyId)
       m_epcHelper->AddUe (dev, dev->GetImsi ());
     }
 
-  dev->Initialize ();
+  dev-> Initialize ();
 
   return dev;
 }
