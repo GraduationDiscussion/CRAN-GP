@@ -65,7 +65,7 @@ class UeManager : public Object
 
 public:
 
-
+  uint16_t m_phyId;
   /**
    * The state of the UeManager at the eNB RRC
    * 
@@ -96,7 +96,7 @@ public:
    * 
    * \return 
    */
-  UeManager (Ptr<LteEnbRrc> rrc, uint16_t rnti, State s);
+  UeManager (Ptr<LteEnbRrc> rrc, uint16_t rnti, State s,uint16_t phyId);
 
   virtual ~UeManager (void);
 
@@ -432,6 +432,7 @@ private:
    * The `C-RNTI` attribute. Cell Radio Network Temporary Identifier.
    */
   uint16_t m_rnti;
+  //uint16_t m_phyId;
   /**
    * International Mobile Subscriber Identity assigned to this UE. A globally
    * unique UE identifier.
@@ -654,14 +655,16 @@ public:
    * \param s the CPHY SAP Provider
    */
   void SetLteEnbCphySapProvider (LteEnbCphySapProvider * s);
-  void SetLteEnbCphy2SapProvider (LteEnbCphySapProvider * s);
+  void SetLteEnbCphySapProvider2 (LteEnbCphySapProvider * s);
+
   /**
    *
    *
    * \return s the CPHY SAP User interface offered to the PHY by this RRC
    */
   LteEnbCphySapUser* GetLteEnbCphySapUser ();
-  LteEnbCphySapUser* GetLteEnbCphy2SapUser ();
+  LteEnbCphySapUser* GetLteEnbCphySapUser2 ();
+
   /** 
    * 
    * 
@@ -902,7 +905,7 @@ private:
 
   // CMAC SAP methods
 
-  uint16_t DoAllocateTemporaryCellRnti ();
+  uint16_t DoAllocateTemporaryCellRnti (uint16_t phyId);
   void DoNotifyLcConfigResult (uint16_t rnti, uint8_t lcid, bool success);
   void DoRrcConfigurationUpdateInd (LteEnbCmacSapUser::UeConfig params);
 
@@ -931,7 +934,7 @@ private:
    *
    * \return the newly allocated RNTI
    */
-  uint16_t AddUe (UeManager::State state);
+  uint16_t AddUe (UeManager::State state,uint16_t phyId);
 
   /**
    * remove a UE from the cell
@@ -1085,10 +1088,11 @@ private:
 
   /// Receive API calls from the eNodeB PHY instance.
   LteEnbCphySapUser* m_cphySapUser;
-  LteEnbCphySapUser* m_cphy2SapUser;
+  LteEnbCphySapUser* m_cphySapUser2;
   /// Interface to the eNodeB PHY instance.
   LteEnbCphySapProvider* m_cphySapProvider;
-  LteEnbCphySapProvider* m_cphy2SapProvider; //added
+  LteEnbCphySapProvider* m_cphySapProvider2;
+
 
   /// True if ConfigureCell() has been completed.
   bool m_configured;

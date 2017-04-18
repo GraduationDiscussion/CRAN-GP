@@ -87,7 +87,6 @@ MobilityHelper::SetMobilityModel (std::string type,
                                   std::string n8, const AttributeValue &v8,
                                   std::string n9, const AttributeValue &v9)
 {
-  NS_LOG_FUNCTION("<mohamed> L:89,MobilityHelper::SetMobilityModel, setting the mobility model <mohamed>");
   m_mobility.SetTypeId (type);
   m_mobility.Set (n1, v1);
   m_mobility.Set (n2, v2);
@@ -132,19 +131,16 @@ MobilityHelper::Install (Ptr<Node> node) const
 {
   Ptr<Object> object = node;
   Ptr<MobilityModel> model = object->GetObject<MobilityModel> ();
-
   if (model == 0)
     {
-	  NS_LOG_FUNCTION("entering the mobility model install");
-	  model = m_mobility.Create ()->GetObject<MobilityModel> ();
-	  if (model == 0)
+      model = m_mobility.Create ()->GetObject<MobilityModel> ();
+      if (model == 0)
         {
           NS_FATAL_ERROR ("The requested mobility model is not a mobility model: \""<< 
                           m_mobility.GetTypeId ().GetName ()<<"\"");
         }
       if (m_mobilityStack.empty ())
         {
-    	  NS_LOG_FUNCTION("mobility stach is empty");
           NS_LOG_DEBUG ("node="<<object<<", mob="<<model);
           object->AggregateObject (model);
         }
@@ -154,7 +150,7 @@ MobilityHelper::Install (Ptr<Node> node) const
           Ptr<MobilityModel> parent = m_mobilityStack.back ();
           Ptr<MobilityModel> hierarchical = 
             CreateObjectWithAttributes<HierarchicalMobilityModel> ("Child", PointerValue (model),
-                                                                 "Parent", PointerValue (parent));
+                                                                   "Parent", PointerValue (parent));
           object->AggregateObject (hierarchical);
           NS_LOG_DEBUG ("node="<<object<<", mob="<<hierarchical);
         }
@@ -162,49 +158,6 @@ MobilityHelper::Install (Ptr<Node> node) const
   Vector position = m_position->GetNext ();
   model->SetPosition (position);
 }
-
-/*---------------------mohamed----------------
- * This method is used to aggregete the mobility model to phy
- * you must use this method if you have multiple phys or If you have a single phy
- * use install(enb)
- *---------------------mohamed----------------
- */
-/*void
-MobilityHelper::Install (Ptr<LteEnbPhy> EnbPhy) const
-{
-  Ptr<Object> object = EnbPhy;
-  Ptr<MobilityModel> model = object->GetObject<MobilityModel> ();
-
-  if (model == 0)
-    {
-	  NS_LOG_FUNCTION("entering the mobility model install");
-	  model = m_mobility.Create ()->GetObject<MobilityModel> ();
-	  if (model == 0)
-        {
-          NS_FATAL_ERROR ("The requested mobility model is not a mobility model: \""<<
-                          m_mobility.GetTypeId ().GetName ()<<"\"");
-        }
-      if (m_mobilityStack.empty ())
-        {
-    	  NS_LOG_FUNCTION("mobility stach is empty");
-          NS_LOG_DEBUG ("node="<<object<<", mob="<<model);
-          object->AggregateObject (model);
-        }
-      else
-        {
-          // we need to setup a hierarchical mobility model
-          Ptr<MobilityModel> parent = m_mobilityStack.back ();
-          Ptr<MobilityModel> hierarchical =
-            CreateObjectWithAttributes<HierarchicalMobilityModel> ("Child", PointerValue (model),
-                                                                 "Parent", PointerValue (parent));
-          object->AggregateObject (hierarchical);
-          NS_LOG_DEBUG ("node="<<object<<", mob="<<hierarchical);
-        }
-    }
-  Vector position = m_position->GetNext ();
-  model->SetPosition (position);
-}
-*/
 
 void
 MobilityHelper::Install (std::string nodeName) const

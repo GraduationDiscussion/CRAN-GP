@@ -96,14 +96,40 @@ public:
   static TypeId GetTypeId (void);
 
   // inherited from FfMacScheduler
-  virtual void SetFfMacCschedSapUser (FfMacCschedSapUser* s);
-  virtual void SetFfMacSchedSapUser (FfMacSchedSapUser* s);
-  virtual FfMacCschedSapProvider* GetFfMacCschedSapProvider ();
-  virtual FfMacSchedSapProvider* GetFfMacSchedSapProvider ();
 
-  // FFR SAPs
-  virtual void SetLteFfrSapProvider (LteFfrSapProvider* s);
-  virtual LteFfrSapUser* GetLteFfrSapUser ();
+//----Modified <Abdelrhman>-------------
+      virtual void SetFfMacCschedSapUser (FfMacCschedSapUser* s , FfMacCschedSapUser* s2);
+      virtual void SetFfMacSchedSapUser (FfMacSchedSapUser* s , FfMacSchedSapUser* s2);
+      virtual FfMacCschedSapProvider* GetFfMacCschedSapProvider (uint16_t i);
+      virtual FfMacSchedSapProvider* GetFfMacSchedSapProvider (uint16_t i);
+      virtual void SetLteFfrSapProvider (LteFfrSapProvider* s , LteFfrSapProvider* s2);
+       virtual LteFfrSapUser* GetLteFfrSapUser (uint16_t i);
+//---MOd end
+
+
+//  virtual void SetFfMacCschedSapUser (FfMacCschedSapUser* s);
+//  virtual void SetFfMacSchedSapUser (FfMacSchedSapUser* s);
+//  virtual FfMacCschedSapProvider* GetFfMacCschedSapProvider ();
+//  virtual FfMacSchedSapProvider* GetFfMacSchedSapProvider ();
+//
+//  // FFR SAPs
+//  virtual void SetLteFfrSapProvider (LteFfrSapProvider* s);
+//  virtual LteFfrSapUser* GetLteFfrSapUser ();
+
+
+  //To overcome errors due to modification in rr-ff-mac
+  //--------Added <Abdelrhman>-------------
+//  // inherited from FfMacScheduler
+//   virtual void SetFfMacCschedSapUser2 (FfMacCschedSapUser* s);
+//   virtual void SetFfMacSchedSapUser2 (FfMacSchedSapUser* s);
+//   virtual FfMacCschedSapProvider* GetFfMacCschedSapProvider2 ();
+//   virtual FfMacSchedSapProvider* GetFfMacSchedSapProvider2 ();
+//
+//   // FFR SAPs
+//   virtual void SetLteFfrSapProvider2 (LteFfrSapProvider* s);
+//   virtual LteFfrSapUser* GetLteFfrSapUser2 ();
+
+  //--------------------------------------
 
   friend class TdTbfqSchedulerMemberCschedSapProvider;
   friend class TdTbfqSchedulerMemberSchedSapProvider;

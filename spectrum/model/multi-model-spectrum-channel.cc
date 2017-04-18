@@ -144,9 +144,7 @@ void
 MultiModelSpectrumChannel::AddRx (Ptr<SpectrumPhy> phy)
 {
   NS_LOG_FUNCTION (this << phy);
-  //-----------added
-  std::cout << "AddRx to phy of address: " << phy << std::endl;
-  //-----------added
+  std::clog << this << "AddRx" << std::endl;
 
   Ptr<const SpectrumModel> rxSpectrumModel = phy->GetRxSpectrumModel ();
 
@@ -181,7 +179,11 @@ MultiModelSpectrumChannel::AddRx (Ptr<SpectrumPhy> phy)
     {
       // spectrum model unknown, add it to the list of RxSpectrumModels
       std::pair<RxSpectrumModelInfoMap_t::iterator, bool> ret;
+
       ret = m_rxSpectrumModelInfoMap.insert (std::make_pair (rxSpectrumModelUid, RxSpectrumModelInfo (rxSpectrumModel)));
+
+      std::clog << "<mohamed> ----%%%%%%%%%%%%%%%%%%%%%%%%%%---- <mohamed>  id = " <<rxSpectrumModelUid<<" : address = "<< rxSpectrumModel<< std::endl;
+
       NS_ASSERT (ret.second);
       // also add the phy to the newly created set of SpectrumPhy for this RxSpectrumModel
       std::pair<std::set<Ptr<SpectrumPhy> >::iterator, bool> ret2 = ret.first->second.m_rxPhySet.insert (phy);
@@ -261,25 +263,32 @@ MultiModelSpectrumChannel::StartTx (Ptr<SpectrumSignalParameters> txParams)
 
   NS_ASSERT (txParams->txPhy);
   NS_ASSERT (txParams->psd);
-
-
+  std::clog << this << " MultiModelSpectrumChannel::StartTx <mohamed> ------------1----------<mohamed>" << std::endl;
   Ptr<MobilityModel> txMobility = txParams->txPhy->GetMobility ();
+  std::clog << " MultiModelSpectrumChannel::StartTx <mohamed> -----------2----------- <mohamed>" << std::endl;
   SpectrumModelUid_t txSpectrumModelUid = txParams->psd->GetSpectrumModelUid ();
+  std::clog << " MultiModelSpectrumChannel::StartTx <mohamed> -----------3----------- <mohamed>" << std::endl;
   NS_LOG_LOGIC (" txSpectrumModelUid " << txSpectrumModelUid);
 
   //
   TxSpectrumModelInfoMap_t::const_iterator txInfoIteratorerator = FindAndEventuallyAddTxSpectrumModel (txParams->psd->GetSpectrumModel ());
+  std::clog << " MultiModelSpectrumChannel::StartTx <mohamed> -----------4----------- <mohamed>" << std::endl;
+
   NS_ASSERT (txInfoIteratorerator != m_txSpectrumModelInfoMap.end ());
 
   NS_LOG_LOGIC ("converter map for TX SpectrumModel with Uid " << txInfoIteratorerator->first);
   NS_LOG_LOGIC ("converter map size: " << txInfoIteratorerator->second.m_spectrumConverterMap.size ());
   NS_LOG_LOGIC ("converter map first element: " << txInfoIteratorerator->second.m_spectrumConverterMap.begin ()->first);
+  std::clog << " MultiModelSpectrumChannel::StartTx <mohamed> -----------5----------- <mohamed> " << m_rxSpectrumModelInfoMap.begin()->first << " " << txParams->psd->GetSpectrumModelUid () << std::endl;
+
 
   for (RxSpectrumModelInfoMap_t::const_iterator rxInfoIterator = m_rxSpectrumModelInfoMap.begin ();
        rxInfoIterator != m_rxSpectrumModelInfoMap.end ();
        ++rxInfoIterator)
     {
-      SpectrumModelUid_t rxSpectrumModelUid = rxInfoIterator->second.m_rxSpectrumModel->GetUid ();
+	  std::clog << this << " MultiModelSpectrumChannel::StartTx <mohamed> -----------6----------- <mohamed>" << std::endl;
+
+	  SpectrumModelUid_t rxSpectrumModelUid = rxInfoIterator->second.m_rxSpectrumModel->GetUid ();
       NS_LOG_LOGIC (" rxSpectrumModelUids " << rxSpectrumModelUid);
 
       Ptr <SpectrumValue> convertedTxPowerSpectrum;
@@ -296,21 +305,21 @@ MultiModelSpectrumChannel::StartTx (Ptr<SpectrumSignalParameters> txParams)
           convertedTxPowerSpectrum = rxConverterIterator->second.Convert (txParams->psd);
         }
 
-
+      std::clog << this << " MultiModelSpectrumChannel::StartTx <mohamed> before for loop <mohamed>" << std::endl;
       for (std::set<Ptr<SpectrumPhy> >::const_iterator rxPhyIterator = rxInfoIterator->second.m_rxPhySet.begin ();
            rxPhyIterator != rxInfoIterator->second.m_rxPhySet.end ();
            ++rxPhyIterator)
         {
           NS_ASSERT_MSG ((*rxPhyIterator)->GetRxSpectrumModel ()->GetUid () == rxSpectrumModelUid,
                          "SpectrumModel change was not notified to MultiModelSpectrumChannel (i.e., AddRx should be called again after model is changed)");
-
+          std::clog << "<mohamed> entering the for loop <mohamed>" << std::endl;
           if ((*rxPhyIterator) != txParams->txPhy)
             {
               NS_LOG_LOGIC (" copying signal parameters " << txParams);
               Ptr<SpectrumSignalParameters> rxParams = txParams->Copy ();
               rxParams->psd = Copy<SpectrumValue> (convertedTxPowerSpectrum);
               Time delay = MicroSeconds (0);
-
+              std::clog<< "<mohamed> first get mobility - inside the If <mohamed>" << std::endl;
               Ptr<MobilityModel> receiverMobility = (*rxPhyIterator)->GetMobility ();
 
               if (txMobility && receiverMobility)
@@ -357,6 +366,10 @@ MultiModelSpectrumChannel::StartTx (Ptr<SpectrumSignalParameters> txParams)
                       delay = m_propagationDelay->GetDelay (txMobility, receiverMobility);
                     }
                 }
+              else
+              {
+            	  std::clog << "<mohamed> first get mobility - didn't enter the If<mohamed>"<<std::endl;
+              }
 
               Ptr<NetDevice> netDev = (*rxPhyIterator)->GetDevice ();
               if (netDev)

@@ -52,14 +52,14 @@ public:
                              uint8_t dlBandwidth) = 0;
 
 
-  virtual void AddUe (uint16_t rnti) = 0;
+  virtual void AddUe (uint16_t rnti,uint16_t id) = 0;
 
   /** 
    * remove the UE, e.g., after handover or termination of the RRC connection
    * 
    * \param rnti 
    */
-  virtual void RemoveUe (uint16_t rnti) = 0;
+  virtual void RemoveUe (uint16_t rnti, uint16_t id) = 0;
 
   /**
    * Logical Channel information to be passed to CmacSapProvider::ConfigureLc
@@ -68,6 +68,7 @@ public:
   struct LcInfo
   {
     uint16_t rnti;   /**< C-RNTI identifying the UE */
+    uint16_t phyId   ;
     uint8_t  lcId;    /**< logical channel identifier */
     uint8_t  lcGroup; /**< logical channel group */
     uint8_t  qci;     /**< QoS Class Identifier */
@@ -101,7 +102,7 @@ public:
    * \param rnti
    * \param lcid
    */
-  virtual void ReleaseLc (uint16_t rnti, uint8_t lcid) = 0;
+  virtual void ReleaseLc (uint16_t rnti, uint8_t lcid,uint16_t id) = 0;
   
   /**
    * \brief Parameters for [re]configuring the UE 
@@ -112,6 +113,7 @@ public:
      * UE id within this cell
      */
     uint16_t  m_rnti;
+    uint16_t m_phyId;
     /**
      * Transmission mode [1..7] (i.e., SISO, MIMO, etc.)
      */
@@ -183,7 +185,7 @@ public:
    *
    * \return the T-C-RNTI
    */
-  virtual uint16_t AllocateTemporaryCellRnti () = 0;
+  virtual uint16_t AllocateTemporaryCellRnti (uint16_t phyId) = 0;
 
   /**
    * notify the result of the last LC config operation
@@ -203,6 +205,7 @@ public:
      * UE id within this cell
      */
     uint16_t  m_rnti;
+    uint16_t  m_phyId;
     /**
      * Transmission mode [1..7] (i.e., SISO, MIMO, etc.)
      */

@@ -1286,12 +1286,6 @@ LteUePhy::DoSetDlBandwidth (uint8_t dlBandwidth)
 
       m_noisePsd = LteSpectrumValueHelper::CreateNoisePowerSpectralDensity (m_dlEarfcn, m_dlBandwidth, m_noiseFigure);
       m_downlinkSpectrumPhy->SetNoisePowerSpectralDensity (m_noisePsd);
-
-      /*-------------mohamed----------------
-       * AddRx adds the spectrum phy to the spectrum channel.
-       * m_downlinkSpectrumPhy is the Rxer of packets.
-       * --------------mohamed----------------
-       */
       m_downlinkSpectrumPhy->GetChannel ()->AddRx (m_downlinkSpectrumPhy);
     }
   m_dlConfigured = true;

@@ -691,6 +691,7 @@ void
 LteUeRrc::DoRecvMasterInformationBlock (uint16_t cellId,
                                         LteRrcSap::MasterInformationBlock msg)
 { 
+  NS_LOG_FUNCTION(this << "<mohamed> Dl B.W" << msg.dlBandwidth << "cellId" << cellId << " <mohamed>");
   m_dlBandwidth = msg.dlBandwidth;
   m_cphySapProvider->SetDlBandwidth (msg.dlBandwidth);
   m_hasReceivedMib = true;

@@ -18,7 +18,6 @@
  * Author: Mathieu Lacage <mathieu.lacage@sophia.inria.fr>
  */
 #include "constant-position-mobility-model.h"
-#include <stdio.h>
 
 namespace ns3 {
 
@@ -50,7 +49,6 @@ ConstantPositionMobilityModel::DoGetPosition (void) const
 void
 ConstantPositionMobilityModel::DoSetPosition (const Vector &position)
 {
-  std::clog << "<mohamed> Constant Position Mobility Model <mohamed>" <<std::endl;
   m_position = position;
   NotifyCourseChange ();
 }

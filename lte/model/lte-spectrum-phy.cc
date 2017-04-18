@@ -40,7 +40,9 @@
 #include <ns3/config.h>
 
 namespace ns3 {
+
 NS_LOG_COMPONENT_DEFINE ("LteSpectrumPhy");
+
 
 // duration of SRS portion of UL subframe  
 // = 1 symbol for SRS -1ns as margin to avoid overlapping simulator events
@@ -188,8 +190,6 @@ std::ostream& operator<< (std::ostream& os, LteSpectrumPhy::State s)
 TypeId
 LteSpectrumPhy::GetTypeId (void)
 {
-  NS_LOG_FUNCTION("calling the GetTypeId");
-
   static TypeId tid = TypeId ("ns3::LteSpectrumPhy")
     .SetParent<SpectrumPhy> ()
     .SetGroupName("Lte")
@@ -413,7 +413,6 @@ LteSpectrumPhy::ChangeState (State newState)
 void
 LteSpectrumPhy::SetHarqPhyModule (Ptr<LteHarqPhy> harq)
 {
-  NS_LOG_FUNCTION("<mohamed>Set the HARQ PHY Module for the spectrum<mohamed>");
   m_harqPhyModule = harq;
 }
 
@@ -523,6 +522,7 @@ LteSpectrumPhy::StartTxDlCtrlFrame (std::list<Ptr<LteControlMessage> > ctrlMsgLi
       txParams->cellId = m_cellId;
       txParams->pss = pss;
       txParams->ctrlMsgList = ctrlMsgList;
+      NS_LOG_FUNCTION(this << " <mohamed> state " << m_state << " spectrumPhy " << txParams->txPhy << " Antenna " << txParams->txAntenna << "<mohamed>");
       m_channel->StartTx (txParams);
       m_endTxEvent = Simulator::Schedule (DL_CTRL_DURATION, &LteSpectrumPhy::EndTxDlCtrl, this);
     }

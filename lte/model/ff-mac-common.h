@@ -282,6 +282,7 @@ struct BuildBroadcastListElement_s
 struct UlInfoListElement_s
 {
   uint16_t  m_rnti;
+  uint16_t  m_phyId;
   std::vector <uint16_t> m_ulReception;
   enum ReceptionStatus_e
   {
@@ -406,6 +407,7 @@ struct SiConfiguration_s
 struct DlInfoListElement_s
 {
   uint16_t  m_rnti;
+  uint16_t  m_phyId;
   uint8_t   m_harqProcessId;
   enum HarqStatus_e
   {

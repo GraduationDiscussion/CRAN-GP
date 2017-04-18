@@ -211,7 +211,7 @@ TypeId LteHelper::GetTypeId (void)
                    "The type of scheduler to be used for eNBs. "
                    "The allowed values for this attributes are the type names "
                    "of any class inheriting from ns3::FfMacScheduler.",
-                   StringValue ("ns3::PfFfMacScheduler"),
+                   StringValue ("ns3::RrFfMacScheduler"),
                    MakeStringAccessor (&LteHelper::SetSchedulerType,
                                        &LteHelper::GetSchedulerType),
                    MakeStringChecker ())
@@ -744,6 +744,7 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
   rrc->SetLteHandoverManagementSapProvider (handoverAlgorithm->GetLteHandoverManagementSapProvider ());
   handoverAlgorithm->SetLteHandoverManagementSapUser (rrc->GetLteHandoverManagementSapUser ());
 
+
   /*---------------------------------------------mohamed------------------------------------------------------------
    * Both are from the MAC layer --towards--> MAC scheduler
    * sched : is used in the data Plane
@@ -752,14 +753,29 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
    * --------------------------------------------mohamed-------------------------------------------------------------
    */
 
-  mac->SetFfMacSchedSapProvider (sched->GetFfMacSchedSapProvider ());
-  mac->SetFfMacCschedSapProvider (sched->GetFfMacCschedSapProvider ());
+  /*-------------------------el esh----------------------
+  *
+  * -----------------------el esh----------------------
+  */
+
+  mac->SetFfMacSchedSapProvider (sched->GetFfMacSchedSapProvider (1),sched->GetFfMacSchedSapProvider (2));
+  mac->SetFfMacCschedSapProvider (sched->GetFfMacCschedSapProvider (1),sched->GetFfMacCschedSapProvider (2));
   /*--------------------------------------------mohamed------------------------------------------------------
    *all the way around the previous comment
    * --------------------------------------------mohamed--------------------------------------------------
    */
-  sched->SetFfMacSchedSapUser (mac->GetFfMacSchedSapUser ());
-  sched->SetFfMacCschedSapUser (mac->GetFfMacCschedSapUser ());
+  sched->SetFfMacSchedSapUser (mac->GetFfMacSchedSapUser (1),mac->GetFfMacSchedSapUser (2));
+  sched->SetFfMacCschedSapUser (mac->GetFfMacCschedSapUser (1),mac->GetFfMacCschedSapUser (2));
+
+//  mac->SetFfMacSchedSapProvider (sched->GetFfMacSchedSapProvider ());
+//  mac->SetFfMacCschedSapProvider (sched->GetFfMacCschedSapProvider ());
+  /*--------------------------------------------mohamed------------------------------------------------------
+   *all the way around the previous comment
+   * --------------------------------------------mohamed--------------------------------------------------
+   */
+//  sched->SetFfMacSchedSapUser (mac->GetFfMacSchedSapUser ());
+//  sched->SetFfMacCschedSapUser (mac->GetFfMacCschedSapUser ());
+
   /*---------------------------------------------mohamed------------------------------------------------------
    * connects the Saps between teh PHY and MAC layers
    * provider: from MAC ---towards---> PHY
@@ -772,12 +788,11 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
    * da lazm yt3dl 3la asas ele badria w doha 3mleno
    * ---------------------------mohamed
    */
-  phy->SetLteEnbPhySapUser (mac->GetLteEnbPhySapUser ());
-  mac->SetLteEnbPhySapProvider (phy->GetLteEnbPhySapProvider ());
+  phy->SetLteEnbPhySapUser (mac->GetLteEnbPhySapUser (1));
+  mac->SetLteEnbPhySapProvider (phy->GetLteEnbPhySapProvider (),phy2 ->GetLteEnbPhySapProvider());
 
   //----------------------added
-  phy2->SetLteEnbPhySapUser(mac->GetLteEnbPhy2SapUser());
-  mac->SetLteEnbPhy2SapProvider (phy2->GetLteEnbPhySapProvider ());
+  phy2->SetLteEnbPhySapUser(mac->GetLteEnbPhySapUser(2));
   //----------------------added
 
   /*-------------------------------------------mohamed--------------------------------------------------------
@@ -792,8 +807,8 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
   rrc->SetLteEnbCphySapProvider (phy->GetLteEnbCphySapProvider ());
 
   //------------added
-  phy2->SetLteEnbCphySapUser (rrc->GetLteEnbCphy2SapUser ());
-  rrc->SetLteEnbCphy2SapProvider (phy2->GetLteEnbCphySapProvider ());
+  phy2->SetLteEnbCphySapUser (rrc->GetLteEnbCphySapUser2 ());
+  rrc->SetLteEnbCphySapProvider2 (phy2->GetLteEnbCphySapProvider ());
   //------------added
 
    /*-------------------------------------------mohamed------------------------------------------------------
@@ -802,8 +817,8 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
     * ------------------------------------------mohamed-----------------------------------------------------
     */
   //FFR SAP
-  sched->SetLteFfrSapProvider (ffrAlgorithm->GetLteFfrSapProvider ());
-  ffrAlgorithm->SetLteFfrSapUser (sched->GetLteFfrSapUser ());
+  sched->SetLteFfrSapProvider (ffrAlgorithm->GetLteFfrSapProvider () ,ffrAlgorithm->GetLteFfrSapProvider () );
+  ffrAlgorithm->SetLteFfrSapUser (sched->GetLteFfrSapUser (1));
 
   rrc->SetLteFfrRrcSapProvider (ffrAlgorithm->GetLteFfrRrcSapProvider ());
   ffrAlgorithm->SetLteFfrRrcSapUser (rrc->GetLteFfrRrcSapUser ());
@@ -954,7 +969,7 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
     * ---------------------------------------------mohamed----------------------------------------
     */
   m_uplinkChannel->AddRx (ulPhy);
-
+  m_uplinkChannel2-> AddRx(ulPhy2);
   if (m_epcHelper != 0)
     {
       NS_LOG_INFO ("adding this eNB to the EPC");
@@ -1398,6 +1413,7 @@ LteHelper::ActivateDataRadioBearer (Ptr<NetDevice> ueDevice, EpsBearer bearer)
   Ptr<LteEnbNetDevice> enbLteDevice = ueDevice->GetObject<LteUeNetDevice> ()->GetTargetEnb ();
 
   std::ostringstream path;
+  NS_LOG_FUNCTION("<mohamed> EnbNetDevId " << enbLteDevice->GetNode ()->GetId () <<"Node" << enbLteDevice->GetNode () << " /DeviceList/ " << enbLteDevice->GetIfIndex () << " <mohamed>");
   path << "/NodeList/" << enbLteDevice->GetNode ()->GetId () 
        << "/DeviceList/" << enbLteDevice->GetIfIndex ()
        << "/LteEnbRrc/ConnectionEstablished";
@@ -1498,7 +1514,7 @@ LteHelper::EnableLogComponents (void)
   LogComponentEnable ("LteRlcUm", LOG_LEVEL_ALL);
   LogComponentEnable ("LteRlcAm", LOG_LEVEL_ALL);
   LogComponentEnable ("RrFfMacScheduler", LOG_LEVEL_ALL);
-  LogComponentEnable ("PfFfMacScheduler", LOG_LEVEL_ALL);
+  //LogComponentEnable ("PfFfMacScheduler", LOG_LEVEL_ALL);
 
   LogComponentEnable ("LtePhy", LOG_LEVEL_ALL);
   LogComponentEnable ("LteEnbPhy", LOG_LEVEL_ALL);

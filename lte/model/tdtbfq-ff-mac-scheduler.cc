@@ -297,41 +297,41 @@ TdTbfqFfMacScheduler::GetTypeId (void)
 
 
 
-void
-TdTbfqFfMacScheduler::SetFfMacCschedSapUser (FfMacCschedSapUser* s)
-{
-  m_cschedSapUser = s;
-}
-
-void
-TdTbfqFfMacScheduler::SetFfMacSchedSapUser (FfMacSchedSapUser* s)
-{
-  m_schedSapUser = s;
-}
-
-FfMacCschedSapProvider*
-TdTbfqFfMacScheduler::GetFfMacCschedSapProvider ()
-{
-  return m_cschedSapProvider;
-}
-
-FfMacSchedSapProvider*
-TdTbfqFfMacScheduler::GetFfMacSchedSapProvider ()
-{
-  return m_schedSapProvider;
-}
-
-void
-TdTbfqFfMacScheduler::SetLteFfrSapProvider (LteFfrSapProvider* s)
-{
-  m_ffrSapProvider = s;
-}
-
-LteFfrSapUser*
-TdTbfqFfMacScheduler::GetLteFfrSapUser ()
-{
-  return m_ffrSapUser;
-}
+//void
+//TdTbfqFfMacScheduler::SetFfMacCschedSapUser (FfMacCschedSapUser* s)
+//{
+//  m_cschedSapUser = s;
+//}
+//
+//void
+//TdTbfqFfMacScheduler::SetFfMacSchedSapUser (FfMacSchedSapUser* s)
+//{
+//  m_schedSapUser = s;
+//}
+//
+//FfMacCschedSapProvider*
+//TdTbfqFfMacScheduler::GetFfMacCschedSapProvider ()
+//{
+//  return m_cschedSapProvider;
+//}
+//
+//FfMacSchedSapProvider*
+//TdTbfqFfMacScheduler::GetFfMacSchedSapProvider ()
+//{
+//  return m_schedSapProvider;
+//}
+//
+//void
+//TdTbfqFfMacScheduler::SetLteFfrSapProvider (LteFfrSapProvider* s)
+//{
+//  m_ffrSapProvider = s;
+//}
+//
+//LteFfrSapUser*
+//TdTbfqFfMacScheduler::GetLteFfrSapUser ()
+//{
+//  return m_ffrSapUser;
+//}
 
 void
 TdTbfqFfMacScheduler::DoCschedCellConfigReq (const struct FfMacCschedSapProvider::CschedCellConfigReqParameters& params)

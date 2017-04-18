@@ -31,10 +31,15 @@ LteFlowId_t::LteFlowId_t ()
 {
 }
 
-LteFlowId_t::LteFlowId_t (const uint16_t a, const uint8_t b)
-  : m_rnti (a),
-    m_lcId (b)
+LteFlowId_t::LteFlowId_t (const uint16_t a, const uint8_t b) //,const uint16_t c)
+//  : m_rnti (a),
+//    m_lcId (b),
+//	m_phyId(c)
 {
+	m_rnti = a;
+	m_lcId = b;
+	//m_phyId = c;
+
 }
 
 bool
@@ -337,4 +342,3 @@ EutranMeasurementMapping::IeValue2ActualQQualMin (int8_t qQualMinIeValue)
 }
 
 }; // namespace ns3
-

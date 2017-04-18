@@ -285,9 +285,11 @@ int
 LteAmc::GetTbSizeFromMcs (int mcs, int nprb)
 {
   NS_LOG_FUNCTION (mcs);
-
+  std::clog << this << " <mohamed> mcs= " << mcs << " nprb= " << nprb << "<moahamed>" << std::endl;
   NS_ASSERT_MSG (mcs < 29, "MCS=" << mcs);
+  std::clog << this << " <mohamed> --------- 1 ---------------- <mohamed>" << std::endl;
   NS_ASSERT_MSG (nprb < 111, "NPRB=" << nprb);
+  std::clog << this << " <mohamed> --------- 2 ---------------- <mohamed>" << std::endl;
 
   int itbs = McsToItbs[mcs];
   return (TransportBlockSizeTable[nprb - 1][itbs]);
