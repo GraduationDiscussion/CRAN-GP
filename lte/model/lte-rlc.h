@@ -54,6 +54,7 @@ class LteRlc : public Object // SimpleRefCount<LteRlc>
 public:
   LteRlc ();
   virtual ~LteRlc ();
+  uint16_t m_phyId;	//added
   static TypeId GetTypeId (void);
   virtual void DoDispose ();
 
@@ -144,6 +145,7 @@ protected:
   uint16_t m_rnti;
   uint8_t m_lcid;
 
+
   /**
    * Used to inform of a PDU delivery to the MAC SAP provider
    */
@@ -152,6 +154,7 @@ protected:
    * Used to inform of a PDU reception from the MAC SAP user
    */
   TracedCallback<uint16_t, uint8_t, uint32_t, uint64_t> m_rxPdu;
+
 
 };
 

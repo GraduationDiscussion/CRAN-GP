@@ -412,6 +412,7 @@ UeManager::SetupDataRadioBearer (EpsBearer bearer, uint8_t bearerId, uint32_t gt
   lcinfo.mbrDl = bearer.gbrQosInfo.mbrDl;
   lcinfo.gbrUl = bearer.gbrQosInfo.gbrUl;
   lcinfo.gbrDl = bearer.gbrQosInfo.gbrDl;
+  lcinfo.phyId = m_phyId; // added
   m_rrc->m_cmacSapProvider->AddLc (lcinfo, rlc->GetLteMacSapUser ());
 
   if (rlcTypeId == LteRlcAm::GetTypeId ())
@@ -450,17 +451,19 @@ UeManager::RecordDataRadioBearersToBeStarted ()
       m_drbsToBeStarted.push_back (it->first);
     }
 }
-
+//-------------------------done-------------------------------
 void
 UeManager::StartDataRadioBearers ()
 {
   NS_LOG_FUNCTION (this << (uint32_t) m_rnti);
+
   for (std::list <uint8_t>::iterator drbIdIt = m_drbsToBeStarted.begin ();
        drbIdIt != m_drbsToBeStarted.end ();
        ++drbIdIt)
     {
       std::map <uint8_t, Ptr<LteDataRadioBearerInfo> >::iterator drbIt = m_drbMap.find (*drbIdIt);
       NS_ASSERT (drbIt != m_drbMap.end ());
+      drbIt->second->m_rlc->m_phyId = m_phyId;//added
       drbIt->second->m_rlc->Initialize ();
       if (drbIt->second->m_pdcp)
         {
@@ -2537,7 +2540,7 @@ LteEnbRrc::GetLogicalChannelPriority (EpsBearer bearer)
 {
   return bearer.qci;
 }
-
+//need to modify
 void
 LteEnbRrc::SendSystemInformation ()
 {

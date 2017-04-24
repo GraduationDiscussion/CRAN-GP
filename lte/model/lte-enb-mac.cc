@@ -156,8 +156,8 @@ EnbMacMemberFfMacSchedSapUser::EnbMacMemberFfMacSchedSapUser (LteEnbMac* mac)
 void
 EnbMacMemberFfMacSchedSapUser::SchedDlConfigInd (const struct SchedDlConfigIndParameters& params)
 {
-  NS_LOG_FUNCTION("<mohamed> -------------- ^_^ ----------------- <mohamed>");
-  std::clog << this << " hi there ^_^" << std::endl;
+  NS_LOG_FUNCTION("<mohamed> PhyId" << params.m_phyId << "<mohamed>");
+  std::clog << this << " hi there ^_^ PhyId= " << params.m_phyId << std::endl;
   m_mac->DoSchedDlConfigInd (params);
 }
 
@@ -1154,7 +1154,7 @@ LteEnbMac::DoAddLc (LteEnbCmacSapProvider::LcInfo lcinfo, LteMacSapUser* msu)
       lccle.m_eRabGuaranteedBitrateUl = lcinfo.gbrUl;
       lccle.m_eRabGuaranteedBitrateDl = lcinfo.gbrDl;
       params.m_logicalChannelConfigList.push_back (lccle);
-
+      NS_LOG_FUNCTION("<mohamed> PhyId= " << lcinfo.phyId);
       //-----------------------------added---------------------------
       if(lcinfo.phyId==1)
        {
@@ -1290,7 +1290,7 @@ LteEnbMac::DoAllocateNcRaPreamble (uint16_t rnti)
 void
 LteEnbMac::DoTransmitPdu (LteMacSapProvider::TransmitPduParameters params)
 {
-  NS_LOG_FUNCTION (this);
+  NS_LOG_FUNCTION (this << "PhyId= " << params.phyId);
   LteRadioBearerTag tag (params.rnti, params.lcid, params.layer); //,params.phyId);
   params.pdu->AddPacketTag (tag);
   if(params.phyId==1)
@@ -1324,6 +1324,7 @@ void
 LteEnbMac::DoReportBufferStatus (LteMacSapProvider::ReportBufferStatusParameters params)
 {
   NS_LOG_FUNCTION (this);
+  NS_LOG_FUNCTION ("<mohamed>" << params.phyId);
   FfMacSchedSapProvider::SchedDlRlcBufferReqParameters req;
   if(params.phyId==1)
   {
@@ -1360,65 +1361,57 @@ LteEnbMac::DoReportBufferStatus (LteMacSapProvider::ReportBufferStatusParameters
 //------------------------------------------------done----------------------------------------
 
 void
-LteEnbMac::DoSchedDlConfigInd (FfMacSchedSapUser::SchedDlConfigIndParameters ind)
+LteEnbMac::DoSchedDlConfigInd (FfMacSchedSapUser::SchedDlConfigIndParameters ind) //ind comes from Round Robin
 {
-  NS_LOG_FUNCTION (this);
+  NS_LOG_FUNCTION (this << " PhyId " << ind.m_phyId);
   // Create DL PHY PDU
   Ptr<PacketBurst> pb = CreateObject<PacketBurst> ();
-  std::map <LteFlowId_t, LteMacSapUser* >::iterator it;
+  std::map <LteFlowId_t, LteMacSapUser* >::iterator it; 	//LteMacSapUser connection with RLC
 
+  if(ind.m_phyId == 1)
+  {
+	  NS_LOG_FUNCTION("<mohamed> Phy 1 <mohamed>");
   for (unsigned int i = 0; i < ind.m_buildDataList.size (); i++)
-    {
-      for (uint16_t layer = 0; layer < ind.m_buildDataList.at (i).m_dci.m_ndi.size (); layer++)
-        {
-          if (ind.m_buildDataList.at (i).m_dci.m_ndi.at (layer) == 1)
-            {
-        	  if(ind.m_phyId==1)
-        	  {
-        		  // new data -> force emptying correspondent harq pkt buffer
-                  std::map <uint16_t, DlHarqProcessesBuffer_t>::iterator it = m_miDlHarqProcessesPackets.find (ind.m_buildDataList.at (i).m_rnti);
-                  NS_ASSERT (it != m_miDlHarqProcessesPackets.end ());
-                  for (uint16_t lcId = 0; lcId < (*it).second.size (); lcId++)
-                    {
-                      Ptr<PacketBurst> pb = CreateObject <PacketBurst> ();
-                      (*it).second.at (lcId).at (ind.m_buildDataList.at (i).m_dci.m_harqProcess) = pb;
-                    }
-        	  }
-                if(ind.m_phyId==2)
-                     {
-                      // new data -> force emptying correspondent harq pkt buffer
-                       std::map <uint16_t, DlHarqProcessesBuffer_t>::iterator it = m_miDlHarqProcessesPackets2.find (ind.m_buildDataList.at (i).m_rnti);
-                       NS_ASSERT (it != m_miDlHarqProcessesPackets2.end ());
-                       for (uint16_t lcId = 0; lcId < (*it).second.size (); lcId++)
-                           {
-                             Ptr<PacketBurst> pb = CreateObject <PacketBurst> ();
-                             (*it).second.at (lcId).at (ind.m_buildDataList.at (i).m_dci.m_harqProcess) = pb;
-                           }
-        	          }
-        }
-      for (unsigned int j = 0; j < ind.m_buildDataList.at (i).m_rlcPduList.size (); j++)
-        {
-          for (uint16_t k = 0; k < ind.m_buildDataList.at (i).m_rlcPduList.at (j).size (); k++)
-            {
-              if (ind.m_buildDataList.at (i).m_dci.m_ndi.at (k) == 1)
-                {
-                  // New Data -> retrieve it from RLC
-                  uint16_t rnti = ind.m_buildDataList.at (i).m_rnti;
-                  uint8_t lcid = ind.m_buildDataList.at (i).m_rlcPduList.at (j).at (k).m_logicalChannelIdentity;
-                  std::map <uint16_t, std::map<uint8_t, LteMacSapUser*> >::iterator rntiIt = m_rlcAttached.find (rnti);
-                  NS_ASSERT_MSG (rntiIt != m_rlcAttached.end (), "could not find RNTI" << rnti);
-                  std::map<uint8_t, LteMacSapUser*>::iterator lcidIt = rntiIt->second.find (lcid);
-                  NS_ASSERT_MSG (lcidIt != rntiIt->second.end (), "could not find LCID" << lcid);
-                  NS_LOG_DEBUG (this << " rnti= " << rnti << " lcid= " << (uint32_t) lcid << " layer= " << k);
-                  (*lcidIt).second->NotifyTxOpportunity (ind.m_buildDataList.at (i).m_rlcPduList.at (j).at (k).m_size, k, ind.m_buildDataList.at (i).m_dci.m_harqProcess);
-                }
-              else
-                {
-                  if (ind.m_buildDataList.at (i).m_dci.m_tbsSize.at (k) > 0)
-                    {
-                	  if(ind.m_phyId==1)
-                	  {
-                		  // HARQ retransmission -> retrieve TB from HARQ buffer
+      {
+	  NS_LOG_FUNCTION("<mohamed> --------------- 1 --------------- <mohamed>");
+        for (uint16_t layer = 0; layer < ind.m_buildDataList.at (i).m_dci.m_ndi.size (); layer++)
+          {
+        	NS_LOG_FUNCTION("<mohamed> ------------- 2 ------------- <mohamed>");
+            if (ind.m_buildDataList.at (i).m_dci.m_ndi.at (layer) == 1)
+              {
+                // new data -> force emptying correspondent harq pkt buffer
+          	  // <mohamed> it da ele hwa bymlah fe el 2a5r f mmkn n7tag mno etnen
+                std::map <uint16_t, DlHarqProcessesBuffer_t>::iterator it = m_miDlHarqProcessesPackets.find (ind.m_buildDataList.at (i).m_rnti);
+                NS_ASSERT (it != m_miDlHarqProcessesPackets.end ());
+                for (uint16_t lcId = 0; lcId < (*it).second.size (); lcId++)
+                  {
+                    Ptr<PacketBurst> pb = CreateObject <PacketBurst> ();
+                    (*it).second.at (lcId).at (ind.m_buildDataList.at (i).m_dci.m_harqProcess) = pb;
+                  }
+              }
+          }
+        for (unsigned int j = 0; j < ind.m_buildDataList.at (i).m_rlcPduList.size (); j++)
+          {
+        	NS_LOG_FUNCTION("<mohamed> ------------- 3 ------------- <mohamed>");
+            for (uint16_t k = 0; k < ind.m_buildDataList.at (i).m_rlcPduList.at (j).size (); k++)
+              {
+                if (ind.m_buildDataList.at (i).m_dci.m_ndi.at (k) == 1)
+                  {
+                    // New Data -> retrieve it from RLC
+                    uint16_t rnti = ind.m_buildDataList.at (i).m_rnti;
+                    uint8_t lcid = ind.m_buildDataList.at (i).m_rlcPduList.at (j).at (k).m_logicalChannelIdentity;
+                    std::map <uint16_t, std::map<uint8_t, LteMacSapUser*> >::iterator rntiIt = m_rlcAttached.find (rnti);
+                    NS_ASSERT_MSG (rntiIt != m_rlcAttached.end (), "could not find RNTI" << rnti);
+                    std::map<uint8_t, LteMacSapUser*>::iterator lcidIt = rntiIt->second.find (lcid);
+                    NS_ASSERT_MSG (lcidIt != rntiIt->second.end (), "could not find LCID" << lcid);
+                    NS_LOG_DEBUG (this << " rnti= " << rnti << " lcid= " << (uint32_t) lcid << " layer= " << k);
+                    (*lcidIt).second->NotifyTxOpportunity (ind.m_buildDataList.at (i).m_rlcPduList.at (j).at (k).m_size, k, ind.m_buildDataList.at (i).m_dci.m_harqProcess);
+                  }
+                else
+                  {
+                    if (ind.m_buildDataList.at (i).m_dci.m_tbsSize.at (k) > 0)
+                      {
+                        // HARQ retransmission -> retrieve TB from HARQ buffer
                         std::map <uint16_t, DlHarqProcessesBuffer_t>::iterator it = m_miDlHarqProcessesPackets.find (ind.m_buildDataList.at (i).m_rnti);
                         NS_ASSERT (it != m_miDlHarqProcessesPackets.end ());
                         Ptr<PacketBurst> pb = (*it).second.at (k).at ( ind.m_buildDataList.at (i).m_dci.m_harqProcess);
@@ -1427,129 +1420,208 @@ LteEnbMac::DoSchedDlConfigInd (FfMacSchedSapUser::SchedDlConfigIndParameters ind
                             Ptr<Packet> pkt = (*j)->Copy ();
                             m_enbPhySapProvider->SendMacPdu (pkt);
                           }
-                	  }
-                	  if(ind.m_phyId==2)
-                	     {
-                	       // HARQ retransmission -> retrieve TB from HARQ buffer
-                	      std::map <uint16_t, DlHarqProcessesBuffer_t>::iterator it = m_miDlHarqProcessesPackets2.find (ind.m_buildDataList.at (i).m_rnti);
-                	      NS_ASSERT (it != m_miDlHarqProcessesPackets2.end ());
-                	      Ptr<PacketBurst> pb = (*it).second.at (k).at ( ind.m_buildDataList.at (i).m_dci.m_harqProcess);
-                	        for (std::list<Ptr<Packet> >::const_iterator j = pb->Begin (); j != pb->End (); ++j)
-                	              {
-                	                 Ptr<Packet> pkt = (*j)->Copy ();
-                	                    m_enbPhySapProvider2->SendMacPdu (pkt);
-                	               }
-                	           }
-
-                    }
-                }
-            }
-        }
-      if(ind.m_phyId==1)
-      {// send the relative DCI
-          Ptr<DlDciLteControlMessage> msg = Create<DlDciLteControlMessage> ();
-          msg->SetDci (ind.m_buildDataList.at (i).m_dci);
-          m_enbPhySapProvider->SendLteControlMessage (msg);
+                      }
+                  }
+              }
+          }
+        NS_LOG_FUNCTION("<mohamed> ------------- 4 ------------- <mohamed>");
+        // send the relative DCI
+        Ptr<DlDciLteControlMessage> msg = Create<DlDciLteControlMessage> ();
+        msg->SetDci (ind.m_buildDataList.at (i).m_dci);
+        m_enbPhySapProvider->SendLteControlMessage (msg);
       }
-      if(ind.m_phyId==2)
-            {// send the relative DCI
-                Ptr<DlDciLteControlMessage> msg2 = Create<DlDciLteControlMessage> ();
-                msg2->SetDci (ind.m_buildDataList.at (i).m_dci);
-                m_enbPhySapProvider2->SendLteControlMessage (msg2);
-            }
 
-    }
+    // Fire the trace with the DL information
+    for (  uint32_t i  = 0; i < ind.m_buildDataList.size (); i++ )
+      {
+    	NS_LOG_FUNCTION("<mohamed> ------------- 5 ------------- <mohamed>");
+        // Only one TB used
+        if (ind.m_buildDataList.at (i).m_dci.m_tbsSize.size () == 1)
+          {
+            m_dlScheduling (m_frameNo, m_subframeNo, ind.m_buildDataList.at (i).m_dci.m_rnti,
+                            ind.m_buildDataList.at (i).m_dci.m_mcs.at (0),
+                            ind.m_buildDataList.at (i).m_dci.m_tbsSize.at (0),
+                            0, 0
+                            );
 
-  // Fire the trace with the DL information
-  for (  uint32_t i  = 0; i < ind.m_buildDataList.size (); i++ )
-    {
-      // Only one TB used
-      if (ind.m_buildDataList.at (i).m_dci.m_tbsSize.size () == 1)
-        {
-          m_dlScheduling (m_frameNo, m_subframeNo, ind.m_buildDataList.at (i).m_dci.m_rnti,
-                          ind.m_buildDataList.at (i).m_dci.m_mcs.at (0),
-                          ind.m_buildDataList.at (i).m_dci.m_tbsSize.at (0),
-                          0, 0
-                          );
-
-        }
-      // Two TBs used
-      else if (ind.m_buildDataList.at (i).m_dci.m_tbsSize.size () == 2)
-        {
-          m_dlScheduling (m_frameNo, m_subframeNo, ind.m_buildDataList.at (i).m_dci.m_rnti,
-                          ind.m_buildDataList.at (i).m_dci.m_mcs.at (0),
-                          ind.m_buildDataList.at (i).m_dci.m_tbsSize.at (0),
-                          ind.m_buildDataList.at (i).m_dci.m_mcs.at (1),
-                          ind.m_buildDataList.at (i).m_dci.m_tbsSize.at (1)
-                          );
-        }
-      else
-        {
-          NS_FATAL_ERROR ("Found element with more than two transport blocks");
-        }
-    }
-
-  // Random Access procedure: send RARs
-  Ptr<RarLteControlMessage> rarMsg = Create<RarLteControlMessage> ();
-  // see TS 36.321 5.1.4;  preambles were sent two frames ago
-  // (plus 3GPP counts subframes from 0, not 1)
-  uint16_t raRnti;
-  if (m_subframeNo < 3)
-    {
-      raRnti = m_subframeNo + 7; // equivalent to +10-3
-    }
-  else
-    {
-      raRnti = m_subframeNo - 3;
-    }
-  rarMsg->SetRaRnti (raRnti);
-  for (unsigned int i = 0; i < ind.m_buildRarList.size (); i++)
+          }
+        // Two TBs used
+        else if (ind.m_buildDataList.at (i).m_dci.m_tbsSize.size () == 2)
+          {
+            m_dlScheduling (m_frameNo, m_subframeNo, ind.m_buildDataList.at (i).m_dci.m_rnti,
+                            ind.m_buildDataList.at (i).m_dci.m_mcs.at (0),
+                            ind.m_buildDataList.at (i).m_dci.m_tbsSize.at (0),
+                            ind.m_buildDataList.at (i).m_dci.m_mcs.at (1),
+                            ind.m_buildDataList.at (i).m_dci.m_tbsSize.at (1)
+                            );
+          }
+        else
+          {
+            NS_FATAL_ERROR ("Found element with more than two transport blocks");
+          }
+      }
+    NS_LOG_FUNCTION("<mohamed> ------------- 7 ------------- <mohamed>");
+    // Random Access procedure: send RARs
+    Ptr<RarLteControlMessage> rarMsg = Create<RarLteControlMessage> ();
+    // see TS 36.321 5.1.4;  preambles were sent two frames ago
+    // (plus 3GPP counts subframes from 0, not 1)
+    uint16_t raRnti;
+    if (m_subframeNo < 3)
+      {
+        raRnti = m_subframeNo + 7; // equivalent to +10-3
+      }
+    else
+      {
+        raRnti = m_subframeNo - 3;
+      }
+    rarMsg->SetRaRnti (raRnti);
+    for (unsigned int i = 0; i < ind.m_buildRarList.size (); i++)
+      {
+    	NS_LOG_FUNCTION("<mohamed> ------------- 8 ------------- <mohamed>");
+        std::map <uint8_t, uint32_t>::iterator itRapId = m_rapIdRntiMap.find (ind.m_buildRarList.at (i).m_rnti);
+        if (itRapId == m_rapIdRntiMap.end ())
+          {
+            NS_FATAL_ERROR ("Unable to find rapId of RNTI " << ind.m_buildRarList.at (i).m_rnti);
+          }
+        RarLteControlMessage::Rar rar;
+        rar.rapId = itRapId->second;
+        rar.rarPayload = ind.m_buildRarList.at (i);
+        rarMsg->AddRar (rar);
+        NS_LOG_INFO (this << " Send RAR message to RNTI " << ind.m_buildRarList.at (i).m_rnti << " rapId " << itRapId->second);
+      }
+    if (ind.m_buildRarList.size () > 0)
+      {
+    	NS_LOG_FUNCTION("<mohamed> ------------- 9 ------------- <mohamed>");
+        m_enbPhySapProvider->SendLteControlMessage (rarMsg);
+      }
+    NS_LOG_FUNCTION("<mohamed> ------------- 10 ------------- <mohamed>");
+    m_rapIdRntiMap.clear ();
+  }
+  else if(ind.m_phyId == 2)
   {
-	  if(ind.m_phyId==1)
-	  {
-		  std::map <uint8_t, uint32_t>::iterator itRapId = m_rapIdRntiMap.find (ind.m_buildRarList.at (i).m_rnti);
-       if (itRapId == m_rapIdRntiMap.end ())
-         {
-           NS_FATAL_ERROR ("Unable to find rapId of RNTI " << ind.m_buildRarList.at (i).m_rnti);
-         }
-     RarLteControlMessage::Rar rar;
-     rar.rapId = itRapId->second;
-     rar.rarPayload = ind.m_buildRarList.at (i);
-     rarMsg->AddRar (rar);
-     NS_LOG_INFO (this << " Send RAR message to RNTI " << ind.m_buildRarList.at (i).m_rnti << " rapId " << itRapId->second);
-	  }
-	  if(ind.m_phyId==2)
-	 	  {
-	 		  std::map <uint8_t, uint32_t>::iterator itRapId = m_rapIdRntiMap2.find (ind.m_buildRarList.at (i).m_rnti);
+	  for (unsigned int i = 0; i < ind.m_buildDataList.size (); i++)
+	      {
+	        for (uint16_t layer = 0; layer < ind.m_buildDataList.at (i).m_dci.m_ndi.size (); layer++)
+	          {
+	            if (ind.m_buildDataList.at (i).m_dci.m_ndi.at (layer) == 1)
+	              {
+	                // new data -> force emptying correspondent harq pkt buffer
+	          	  // <mohamed> it da ele hwa bymlah fe el 2a5r f mmkn n7tag mno etnen
+	                std::map <uint16_t, DlHarqProcessesBuffer_t>::iterator it = m_miDlHarqProcessesPackets2.find (ind.m_buildDataList.at (i).m_rnti);
+	                NS_ASSERT (it != m_miDlHarqProcessesPackets2.end ());
+	                for (uint16_t lcId = 0; lcId < (*it).second.size (); lcId++)
+	                  {
+	                    Ptr<PacketBurst> pb = CreateObject <PacketBurst> ();
+	                    (*it).second.at (lcId).at (ind.m_buildDataList.at (i).m_dci.m_harqProcess) = pb;
+	                  }
+	              }
+	          }
+	        for (unsigned int j = 0; j < ind.m_buildDataList.at (i).m_rlcPduList.size (); j++)
+	          {
+	            for (uint16_t k = 0; k < ind.m_buildDataList.at (i).m_rlcPduList.at (j).size (); k++)
+	              {
+	                if (ind.m_buildDataList.at (i).m_dci.m_ndi.at (k) == 1)
+	                  {
+	                    // New Data -> retrieve it from RLC
+	                    uint16_t rnti = ind.m_buildDataList.at (i).m_rnti;
+	                    uint8_t lcid = ind.m_buildDataList.at (i).m_rlcPduList.at (j).at (k).m_logicalChannelIdentity;
+	                    std::map <uint16_t, std::map<uint8_t, LteMacSapUser*> >::iterator rntiIt = m_rlcAttached.find (rnti);
+	                    NS_ASSERT_MSG (rntiIt != m_rlcAttached.end (), "could not find RNTI" << rnti);
+	                    std::map<uint8_t, LteMacSapUser*>::iterator lcidIt = rntiIt->second.find (lcid);
+	                    NS_ASSERT_MSG (lcidIt != rntiIt->second.end (), "could not find LCID" << lcid);
+	                    NS_LOG_DEBUG (this << " rnti= " << rnti << " lcid= " << (uint32_t) lcid << " layer= " << k);
+	                    (*lcidIt).second->NotifyTxOpportunity (ind.m_buildDataList.at (i).m_rlcPduList.at (j).at (k).m_size, k, ind.m_buildDataList.at (i).m_dci.m_harqProcess);
+	                  }
+	                else
+	                  {
+	                    if (ind.m_buildDataList.at (i).m_dci.m_tbsSize.at (k) > 0)
+	                      {
+	                        // HARQ retransmission -> retrieve TB from HARQ buffer
+	                        std::map <uint16_t, DlHarqProcessesBuffer_t>::iterator it = m_miDlHarqProcessesPackets2.find (ind.m_buildDataList.at (i).m_rnti);
+	                        NS_ASSERT (it != m_miDlHarqProcessesPackets2.end ());
+	                        Ptr<PacketBurst> pb = (*it).second.at (k).at ( ind.m_buildDataList.at (i).m_dci.m_harqProcess);
+	                        for (std::list<Ptr<Packet> >::const_iterator j = pb->Begin (); j != pb->End (); ++j)
+	                          {
+	                            Ptr<Packet> pkt = (*j)->Copy ();
+	                            m_enbPhySapProvider2->SendMacPdu (pkt);
+	                          }
+	                      }
+	                  }
+	              }
+	          }
+	        // send the relative DCI
+	        Ptr<DlDciLteControlMessage> msg = Create<DlDciLteControlMessage> ();
+	        msg->SetDci (ind.m_buildDataList.at (i).m_dci);
+	        m_enbPhySapProvider2->SendLteControlMessage (msg);
+	      }
+
+	    // Fire the trace with the DL information
+	    for (  uint32_t i  = 0; i < ind.m_buildDataList.size (); i++ )
+	      {
+	        // Only one TB used
+	        if (ind.m_buildDataList.at (i).m_dci.m_tbsSize.size () == 1)
+	          {
+	            m_dlScheduling (m_frameNo, m_subframeNo, ind.m_buildDataList.at (i).m_dci.m_rnti,
+	                            ind.m_buildDataList.at (i).m_dci.m_mcs.at (0),
+	                            ind.m_buildDataList.at (i).m_dci.m_tbsSize.at (0),
+	                            0, 0
+	                            );
+
+	          }
+	        // Two TBs used
+	        else if (ind.m_buildDataList.at (i).m_dci.m_tbsSize.size () == 2)
+	          {
+	            m_dlScheduling (m_frameNo, m_subframeNo, ind.m_buildDataList.at (i).m_dci.m_rnti,
+	                            ind.m_buildDataList.at (i).m_dci.m_mcs.at (0),
+	                            ind.m_buildDataList.at (i).m_dci.m_tbsSize.at (0),
+	                            ind.m_buildDataList.at (i).m_dci.m_mcs.at (1),
+	                            ind.m_buildDataList.at (i).m_dci.m_tbsSize.at (1)
+	                            );
+	          }
+	        else
+	          {
+	            NS_FATAL_ERROR ("Found element with more than two transport blocks");
+	          }
+	      }
+
+	    // Random Access procedure: send RARs
+	    Ptr<RarLteControlMessage> rarMsg = Create<RarLteControlMessage> ();
+	    // see TS 36.321 5.1.4;  preambles were sent two frames ago
+	    // (plus 3GPP counts subframes from 0, not 1)
+	    uint16_t raRnti;
+	    if (m_subframeNo < 3)
+	      {
+	        raRnti = m_subframeNo + 7; // equivalent to +10-3
+	      }
+	    else
+	      {
+	        raRnti = m_subframeNo - 3;
+	      }
+	    rarMsg->SetRaRnti (raRnti);
+	    for (unsigned int i = 0; i < ind.m_buildRarList.size (); i++)
+	      {
+	        std::map <uint8_t, uint32_t>::iterator itRapId = m_rapIdRntiMap2.find (ind.m_buildRarList.at (i).m_rnti);
 	        if (itRapId == m_rapIdRntiMap2.end ())
 	          {
 	            NS_FATAL_ERROR ("Unable to find rapId of RNTI " << ind.m_buildRarList.at (i).m_rnti);
 	          }
-	      RarLteControlMessage::Rar rar;
-	      rar.rapId = itRapId->second;
-	      rar.rarPayload = ind.m_buildRarList.at (i);
-	      rarMsg->AddRar (rar);
-	      NS_LOG_INFO (this << " Send RAR message to RNTI " << ind.m_buildRarList.at (i).m_rnti << " rapId " << itRapId->second);
-	 	  }
-    }
-  if (ind.m_buildRarList.size () > 0 && ind.m_phyId==1)
-    {
-      m_enbPhySapProvider->SendLteControlMessage (rarMsg);
-    }
-  if (ind.m_buildRarList.size () > 0 && ind.m_phyId==2)
-      {
-        m_enbPhySapProvider2->SendLteControlMessage (rarMsg);
-      }
+	        RarLteControlMessage::Rar rar;
+	        rar.rapId = itRapId->second;
+	        rar.rarPayload = ind.m_buildRarList.at (i);
+	        rarMsg->AddRar (rar);
+	        NS_LOG_INFO (this << " Send RAR message to RNTI " << ind.m_buildRarList.at (i).m_rnti << " rapId " << itRapId->second);
+	      }
+	    if (ind.m_buildRarList.size () > 0)
+	      {
+	        m_enbPhySapProvider2->SendLteControlMessage (rarMsg);
+	      }
+	    m_rapIdRntiMap2.clear ();
+  }
+  else
+  {
+	  std::cerr << this << "LteEnbMac::DoSchedDlConfigInd --- phy Id isn't set correctly -> phyId = " << ind.m_phyId << std::endl;
+  }
 
-}
-  if(ind.m_phyId==1)
-    {
-    m_rapIdRntiMap.clear ();
-    }
-  if(ind.m_phyId==2)
-    {
-    m_rapIdRntiMap2.clear ();
-    }
 }
 //-------------------------------------------done------------------------------
 void
