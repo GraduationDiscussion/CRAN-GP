@@ -50,7 +50,6 @@ LteControlMessage::SetMessageType (LteControlMessage::MessageType type)
 LteControlMessage::MessageType
 LteControlMessage::GetMessageType (void)
 {
-  std::clog << this << " LteControlMessage::GetMessageType <mohamed>" << std::endl;
   return m_type;
 }
 

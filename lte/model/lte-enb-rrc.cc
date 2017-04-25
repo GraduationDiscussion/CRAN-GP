@@ -146,7 +146,6 @@ UeManager::UeManager (Ptr<LteEnbRrc> rrc, uint16_t rnti, State s , uint16_t phyI
 { 
     m_phyId = phyId;
 	NS_LOG_FUNCTION (this);
-	std::clog << "<mohamed> PhyId=" << phyId << std::endl;
 }
 
 void
@@ -165,7 +164,7 @@ UeManager::DoInitialize ()
   m_physicalConfigDedicated.pdschConfigDedicated.pa = LteRrcSap::PdschConfigDedicated::dB0;
 
   m_rrc->m_cmacSapProvider->AddUe (m_rnti , m_phyId);
-
+  NS_LOG_FUNCTION(this << "<Abdelrhman > ------====> phyid" <<m_phyId);
   switch(m_phyId){
   case 1:
   {
@@ -180,7 +179,7 @@ UeManager::DoInitialize ()
   }
   if (m_phyId !=1 && m_phyId !=2 )
   {
-	  NS_LOG_FUNCTION(this << "<el esh> Error in adding UE<el esh>");
+	  NS_LOG_FUNCTION(this << "<mohamed> Error in adding UE<mohamed>");
   }
 
 
@@ -259,9 +258,28 @@ UeManager::DoInitialize ()
   req.m_transmissionMode = m_physicalConfigDedicated.antennaInfo.transmissionMode;
   m_rrc->m_cmacSapProvider->UeUpdateConfigurationReq (req);
 
+
+  ///-----Modified  <Abdelrhman>
   // configure PHY
-  m_rrc->m_cphySapProvider->SetTransmissionMode (m_rnti, m_physicalConfigDedicated.antennaInfo.transmissionMode);
-  m_rrc->m_cphySapProvider->SetSrsConfigurationIndex (m_rnti, m_physicalConfigDedicated.soundingRsUlConfigDedicated.srsConfigIndex);
+  if (m_phyId == 1)
+  {
+	  m_rrc->m_cphySapProvider->SetTransmissionMode (m_rnti, m_physicalConfigDedicated.antennaInfo.transmissionMode);
+	  m_rrc->m_cphySapProvider->SetSrsConfigurationIndex (m_rnti, m_physicalConfigDedicated.soundingRsUlConfigDedicated.srsConfigIndex);
+  }
+  else if(m_phyId == 2)
+  {
+	  //---------------Added <Abdelrhman>---------------------------------------
+	  m_rrc->m_cphySapProvider2->SetTransmissionMode (m_rnti, m_physicalConfigDedicated.antennaInfo.transmissionMode);
+	  m_rrc->m_cphySapProvider2->SetSrsConfigurationIndex (m_rnti, m_physicalConfigDedicated.soundingRsUlConfigDedicated.srsConfigIndex);
+  }
+  else
+  {
+	  std::clog << "<Abdelrhman>  error in phy configuration  <m_cphySapProvider>";
+  }
+
+
+  //------------------------------------------------------------------------
+
 
   // schedule this UeManager instance to be deleted if the UE does not give any sign of life within a reasonable time
   Time maxConnectionDelay;
@@ -412,7 +430,7 @@ UeManager::SetupDataRadioBearer (EpsBearer bearer, uint8_t bearerId, uint32_t gt
   lcinfo.mbrDl = bearer.gbrQosInfo.mbrDl;
   lcinfo.gbrUl = bearer.gbrQosInfo.gbrUl;
   lcinfo.gbrDl = bearer.gbrQosInfo.gbrDl;
-  lcinfo.phyId = m_phyId; // added
+  lcinfo.phyId = m_phyId;
   m_rrc->m_cmacSapProvider->AddLc (lcinfo, rlc->GetLteMacSapUser ());
 
   if (rlcTypeId == LteRlcAm::GetTypeId ())
@@ -451,26 +469,26 @@ UeManager::RecordDataRadioBearersToBeStarted ()
       m_drbsToBeStarted.push_back (it->first);
     }
 }
-//-------------------------done-------------------------------
+
 void
 UeManager::StartDataRadioBearers ()
 {
-  NS_LOG_FUNCTION (this << (uint32_t) m_rnti);
+	NS_LOG_FUNCTION (this << (uint32_t) m_rnti << " PhyId " << m_phyId);
 
-  for (std::list <uint8_t>::iterator drbIdIt = m_drbsToBeStarted.begin ();
-       drbIdIt != m_drbsToBeStarted.end ();
-       ++drbIdIt)
-    {
-      std::map <uint8_t, Ptr<LteDataRadioBearerInfo> >::iterator drbIt = m_drbMap.find (*drbIdIt);
-      NS_ASSERT (drbIt != m_drbMap.end ());
-      drbIt->second->m_rlc->m_phyId = m_phyId;//added
-      drbIt->second->m_rlc->Initialize ();
-      if (drbIt->second->m_pdcp)
-        {
-          drbIt->second->m_pdcp->Initialize ();
-        }
-    }
-  m_drbsToBeStarted.clear ();
+	  for (std::list <uint8_t>::iterator drbIdIt = m_drbsToBeStarted.begin ();
+	       drbIdIt != m_drbsToBeStarted.end ();
+	       ++drbIdIt)
+	    {
+	      std::map <uint8_t, Ptr<LteDataRadioBearerInfo> >::iterator drbIt = m_drbMap.find (*drbIdIt);
+	      NS_ASSERT (drbIt != m_drbMap.end ());
+	      drbIt->second->m_rlc->m_phyId = m_phyId;//added
+	      drbIt->second->m_rlc->Initialize ();
+	      if (drbIt->second->m_pdcp)
+	        {
+	          drbIt->second->m_pdcp->Initialize ();
+	        }
+	    }
+	  m_drbsToBeStarted.clear ();
 }
 
 
@@ -908,14 +926,36 @@ UeManager::RecvRrcConnectionReconfigurationCompleted (LteRrcSap::RrcConnectionRe
           // configure MAC (and scheduler)
           LteEnbCmacSapProvider::UeConfig req;
           req.m_rnti = m_rnti;
+          req.m_phyId = m_phyId;
           req.m_transmissionMode = m_physicalConfigDedicated.antennaInfo.transmissionMode;
           m_rrc->m_cmacSapProvider->UeUpdateConfigurationReq (req);
 
           // configure PHY
-          m_rrc->m_cphySapProvider->SetTransmissionMode (req.m_rnti, req.m_transmissionMode);
+
+         // m_rrc->m_cphySapProvider->SetTransmissionMode (req.m_rnti, req.m_transmissionMode);
+          // doha modified
+
+          if(m_phyId == 1)
+          {
+              m_rrc->m_cphySapProvider->SetTransmissionMode (req.m_rnti, req.m_transmissionMode);
+          }
+          else if(m_phyId == 2)
+          {
+              m_rrc->m_cphySapProvider2->SetTransmissionMode (req.m_rnti, req.m_transmissionMode);
+           }
 
           double paDouble = LteRrcSap::ConvertPdschConfigDedicated2Double (m_physicalConfigDedicated.pdschConfigDedicated);
-          m_rrc->m_cphySapProvider->SetPa (m_rnti, paDouble);
+
+          // doha modifeid
+        //  m_physicalConfigDedicated , may need duplication #####################
+          if(m_phyId == 1)
+          {
+        	  m_rrc->m_cphySapProvider->SetPa (m_rnti, paDouble);
+          }
+          else if (m_phyId == 2)
+          {
+        	  m_rrc->m_cphySapProvider2->SetPa (m_rnti, paDouble);
+          }
 
           m_needPhyMacConfiguration = false;
         }
@@ -1099,7 +1139,18 @@ UeManager::SetSrsConfigurationIndex (uint16_t srsConfIndex)
 {
   NS_LOG_FUNCTION (this);
   m_physicalConfigDedicated.soundingRsUlConfigDedicated.srsConfigIndex = srsConfIndex;
+  //---------Mod <Abdelrhman>------------------------
+
+  switch (m_phyId)
+  {case 1 :
   m_rrc->m_cphySapProvider->SetSrsConfigurationIndex (m_rnti, srsConfIndex);
+  break ;
+  case 2:
+  m_rrc->m_cphySapProvider2->SetSrsConfigurationIndex (m_rnti, srsConfIndex);
+  break;
+//--------Mod end--------------------------------------
+
+  }
   switch (m_state)
     {
     case INITIAL_RANDOM_ACCESS:
@@ -1326,7 +1377,7 @@ LteEnbRrc::LteEnbRrc ()
     m_macSapProvider (0),
     m_s1SapProvider (0),
     m_cphySapProvider (0),
-	m_cphySapProvider2(0),		//added
+	m_cphySapProvider2(0),
     m_configured (false),
     m_lastAllocatedRnti (0),
     m_srsCurrentPeriodicityId (0),
@@ -1342,7 +1393,6 @@ LteEnbRrc::LteEnbRrc ()
   m_x2SapUser = new EpcX2SpecificEpcX2SapUser<LteEnbRrc> (this);
   m_s1SapUser = new MemberEpcEnbS1SapUser<LteEnbRrc> (this);
   m_cphySapUser = new MemberLteEnbCphySapUser<LteEnbRrc> (this);
-  m_cphySapUser2 = new MemberLteEnbCphySapUser<LteEnbRrc> (this);		//added
 }
 
 
@@ -1365,7 +1415,6 @@ LteEnbRrc::DoDispose ()
   delete m_x2SapUser;
   delete m_s1SapUser;
   delete m_cphySapUser;
-  delete m_cphySapUser2;
 }
 
 TypeId
@@ -1634,7 +1683,7 @@ LteEnbRrc::SetLteEnbCphySapProvider (LteEnbCphySapProvider * s)
 }
 
 void
-LteEnbRrc::SetLteEnbCphySapProvider2 (LteEnbCphySapProvider * s)		//added
+LteEnbRrc::SetLteEnbCphySapProvider2 (LteEnbCphySapProvider * s)
 {
   NS_LOG_FUNCTION (this << s);
   m_cphySapProvider2 = s;
@@ -1649,7 +1698,7 @@ LteEnbRrc::GetLteEnbCphySapUser ()
 }
 /////////////////////////////
 LteEnbCphySapUser*
-LteEnbRrc::GetLteEnbCphySapUser2 ()		//added
+LteEnbRrc::GetLteEnbCphySapUser2 ()
 {
   NS_LOG_FUNCTION (this);
   return m_cphySapUser2;
@@ -1772,19 +1821,25 @@ LteEnbRrc::ConfigureCell (uint8_t ulBandwidth, uint8_t dlBandwidth,
   m_cmacSapProvider->ConfigureMac (ulBandwidth, dlBandwidth);
   m_cphySapProvider->SetBandwidth (ulBandwidth, dlBandwidth);
   m_cphySapProvider->SetEarfcn (ulEarfcn, dlEarfcn);
-  //-----------added
+//-----------------
+  //----MOd <Abdelrhman>
   m_cphySapProvider2->SetBandwidth (ulBandwidth, dlBandwidth);
   m_cphySapProvider2->SetEarfcn (ulEarfcn, dlEarfcn);
-  //-----------added
+
+
   m_dlEarfcn = dlEarfcn;
   m_ulEarfcn = ulEarfcn;
   m_dlBandwidth = dlBandwidth;
   m_ulBandwidth = ulBandwidth;
   m_cellId = cellId;
+
+
+
   m_cphySapProvider->SetCellId (cellId);
-  //-------------added
+  //----MOd <Abdelrhman>
   m_cphySapProvider2->SetCellId (cellId);
-  //-------------added
+
+
   m_ffrRrcSapProvider->SetCellId (cellId);
   m_ffrRrcSapProvider->SetBandwidth(ulBandwidth, dlBandwidth);
 
@@ -1814,7 +1869,10 @@ LteEnbRrc::ConfigureCell (uint8_t ulBandwidth, uint8_t dlBandwidth,
   // Enabling MIB transmission
   LteRrcSap::MasterInformationBlock mib;
   mib.dlBandwidth = m_dlBandwidth;
+
   m_cphySapProvider->SetMasterInformationBlock (mib);
+  //----MOd <Abdelrhman>
+  m_cphySapProvider2->SetMasterInformationBlock (mib);
 
   // Enabling SIB1 transmission with default values
   m_sib1.cellAccessRelatedInfo.cellIdentity = cellId;
@@ -1823,7 +1881,10 @@ LteEnbRrc::ConfigureCell (uint8_t ulBandwidth, uint8_t dlBandwidth,
   m_sib1.cellAccessRelatedInfo.plmnIdentityInfo.plmnIdentity = 0; // not used
   m_sib1.cellSelectionInfo.qQualMin = -34; // not used, set as minimum value
   m_sib1.cellSelectionInfo.qRxLevMin = m_qRxLevMin; // set as minimum value
+
   m_cphySapProvider->SetSystemInformationBlockType1 (m_sib1);
+  //----MOd <Abdelrhman>
+  m_cphySapProvider2->SetSystemInformationBlockType1 (m_sib1);
 
   /*
    * Enabling transmission of other SIB. The first time System Information is
@@ -1846,7 +1907,9 @@ LteEnbRrc::SetCellId (uint16_t cellId)
   // update SIB1 too
   m_sib1.cellAccessRelatedInfo.cellIdentity = cellId;
   m_cphySapProvider->SetSystemInformationBlockType1 (m_sib1);
+  //----MOd <Abdelrhman>
   m_cphySapProvider2->SetSystemInformationBlockType1 (m_sib1);
+
 }
 
 bool
@@ -2342,7 +2405,6 @@ LteEnbRrc::RemoveUe (uint16_t rnti)
   m_ueMap.erase (it);
   m_cmacSapProvider->RemoveUe (rnti , phyId);
   m_cphySapProvider->RemoveUe (rnti);
-  m_cphySapProvider2->RemoveUe (rnti);			//added
   if (m_s1SapProvider != 0)
     {
       m_s1SapProvider->UeContextRelease (rnti);
@@ -2404,7 +2466,10 @@ LteEnbRrc::SetCsgId (uint32_t csgId, bool csgIndication)
   m_sib1.cellAccessRelatedInfo.csgIdentity = csgId;
   m_sib1.cellAccessRelatedInfo.csgIndication = csgIndication;
   m_cphySapProvider->SetSystemInformationBlockType1 (m_sib1);
-  m_cphySapProvider2->SetSystemInformationBlockType1 (m_sib1);		//added
+  //----
+  m_cphySapProvider2->SetSystemInformationBlockType1 (m_sib1);
+
+
 }
 
 
@@ -2540,11 +2605,11 @@ LteEnbRrc::GetLogicalChannelPriority (EpsBearer bearer)
 {
   return bearer.qci;
 }
-//need to modify
+
 void
 LteEnbRrc::SendSystemInformation ()
 {
-  // NS_LOG_FUNCTION (this);
+  NS_LOG_FUNCTION (this);
 
   /*
    * For simplicity, we use the same periodicity for all SIBs. Note that in real
@@ -2554,7 +2619,12 @@ LteEnbRrc::SendSystemInformation ()
   si.haveSib2 = true;
   si.sib2.freqInfo.ulCarrierFreq = m_ulEarfcn;
   si.sib2.freqInfo.ulBandwidth = m_ulBandwidth;
-  si.sib2.radioResourceConfigCommon.pdschConfigCommon.referenceSignalPower = m_cphySapProvider->GetReferenceSignalPower();
+  //------- <Abdelrhman>
+//  if (m_phyId == 1)
+  {//  Ask !!! ===------>> referenceSignalPower value ue dependent ?
+	  si.sib2.radioResourceConfigCommon.pdschConfigCommon.referenceSignalPower = m_cphySapProvider->GetReferenceSignalPower();
+
+  }
   si.sib2.radioResourceConfigCommon.pdschConfigCommon.pb = 0;
 
   LteEnbCmacSapProvider::RachConfig rc = m_cmacSapProvider->GetRachConfig ();
