@@ -255,7 +255,7 @@ private:
   * \param rnti the RNTI of the UE to be updated
   * \return the process id  value
   */
-  uint8_t HarqProcessAvailability (uint16_t rnti);
+  uint8_t HarqProcessAvailability (uint16_t rnti, uint16_t PhyId);
 
   /**
   * \brief Refresh HARQ processes according to the timers

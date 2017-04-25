@@ -832,7 +832,7 @@ void
 LteEnbMac::DoReceiveLteControlMessage  (Ptr<LteControlMessage> msg,uint16_t id)
 {
   NS_LOG_FUNCTION (this << msg);
-  NS_LOG_FUNCTION (this  << "Abdelrhman ==--- >  phyid"  << id << msg->GetMessageType ()) ;
+  NS_LOG_FUNCTION (this  << "Abdelrhman ==--- >  phyid"  << id << "msg type"<< msg->GetMessageType ()) ;
 
   if (msg->GetMessageType () == LteControlMessage::DL_CQI)
     {
@@ -871,6 +871,9 @@ LteEnbMac::DoReceiveRachPreamble  (uint8_t rapId, uint16_t id)
 void
 LteEnbMac::DoUlCqiReport (FfMacSchedSapProvider::SchedUlCqiInfoReqParameters ulcqi,uint16_t id)
 { 
+	ulcqi.m_phyId = id;
+	NS_LOG_FUNCTION("<mohamed> PhyId " << id << "PhyId(inside other buffer)" << ulcqi.m_phyId << "<mohamed>");
+
   if (ulcqi.m_ulCqi.m_type == UlCqi_s::PUSCH)
     {
       NS_LOG_DEBUG (this << "<abdlrhman> phyid " << id << " eNB rxed an PUSCH UL-CQI");

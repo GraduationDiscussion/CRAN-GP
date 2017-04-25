@@ -664,6 +664,7 @@ LteEnbPhy::StartSubFrame (void)
 
   // process the current burst of control messages
   std::list<Ptr<LteControlMessage> > ctrlMsg = GetControlMessages ();
+  NS_LOG_FUNCTION("ctrl msg size" << ctrlMsg.size() << "<mohamed>");
   m_dlDataRbMap.clear ();
   m_dlPowerAllocationMap.clear ();
   if (ctrlMsg.size () > 0)
