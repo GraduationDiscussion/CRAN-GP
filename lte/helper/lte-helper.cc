@@ -80,6 +80,7 @@ LteHelper::LteHelper (void)
   m_ueNetDeviceFactory.SetTypeId (LteUeNetDevice::GetTypeId ());
   m_ueAntennaModelFactory.SetTypeId (IsotropicAntennaModel::GetTypeId ());
   m_channelFactory.SetTypeId (MultiModelSpectrumChannel::GetTypeId ());
+  m_enbMobilityModelFactory.SetTypeId("ns3::ConstantPositionMobilityModel");
 }
 
 void 
@@ -88,105 +89,43 @@ LteHelper::DoInitialize (void)
   NS_LOG_FUNCTION (this);
   m_downlinkChannel = m_channelFactory.Create<SpectrumChannel> ();
   m_uplinkChannel = m_channelFactory.Create<SpectrumChannel> ();
+
   m_downlinkPathlossModel = m_dlPathlossModelFactory.Create ();
   Ptr<SpectrumPropagationLossModel> dlSplm = m_downlinkPathlossModel->GetObject<SpectrumPropagationLossModel> ();
-
-  //------------------added
-  m_downlinkChannel2 = m_channelFactory.Create<SpectrumChannel> ();
-  m_uplinkChannel2 = m_channelFactory.Create<SpectrumChannel> ();
-  m_downlinkPathlossModel2 = m_dlPathlossModelFactory.Create ();
-  Ptr<SpectrumPropagationLossModel> dlSplm2 = m_downlinkPathlossModel2->GetObject<SpectrumPropagationLossModel> ();
-  //------------------added
-
-  if (dlSplm != 0 && dlSplm2 != 0)	// dlSplm2 is -------------added
+  if (dlSplm != 0)
     {
-      //---------------added
-	  NS_LOG_FUNCTION(this << "<mohamed> DL spectrum propagation loss model is [set] <moahmed>");
-	  //---------------added
-
-	  NS_LOG_LOGIC (this << " using a SpectrumPropagationLossModel in DL");
+      NS_LOG_LOGIC (this << " using a SpectrumPropagationLossModel in DL");
       m_downlinkChannel->AddSpectrumPropagationLossModel (dlSplm);
-
-      //----------------------added
-      m_downlinkChannel2->AddSpectrumPropagationLossModel (dlSplm);
-      // -----------------------added
     }
   else
     {
-	  //---------added
-	  NS_LOG_FUNCTION(this << "<mohamed> DL spectrum propagation loss model is [NOT set] <mohamed> ");
-	  //---------added
-
-	  NS_LOG_LOGIC (this << " using a PropagationLossModel in DL<pathloss model is not set>");
+      NS_LOG_LOGIC (this << " using a PropagationLossModel in DL");
       Ptr<PropagationLossModel> dlPlm = m_downlinkPathlossModel->GetObject<PropagationLossModel> ();
       NS_ASSERT_MSG (dlPlm != 0, " " << m_downlinkPathlossModel << " is neither PropagationLossModel nor SpectrumPropagationLossModel");
       m_downlinkChannel->AddPropagationLossModel (dlPlm);
-
-      //-----------------added
-      Ptr<PropagationLossModel> dlPlm2 = m_downlinkPathlossModel2->GetObject<PropagationLossModel> ();
-      NS_ASSERT_MSG (dlPlm2 != 0, " " << m_downlinkPathlossModel2 << " is neither PropagationLossModel nor SpectrumPropagationLossModel");
-      m_downlinkChannel2->AddPropagationLossModel (dlPlm2);
-      //----------------added
-
     }
 
   m_uplinkPathlossModel = m_ulPathlossModelFactory.Create ();
   Ptr<SpectrumPropagationLossModel> ulSplm = m_uplinkPathlossModel->GetObject<SpectrumPropagationLossModel> ();
-
-  //-------------------added
-  m_uplinkPathlossModel2 = m_ulPathlossModelFactory.Create ();
-  Ptr<SpectrumPropagationLossModel> ulSplm2 = m_uplinkPathlossModel2->GetObject<SpectrumPropagationLossModel> ();
-  //-------------------added
-
-  if (ulSplm != 0 && ulSplm2 != 0)	//ulSplm2 is-------added
+  if (ulSplm != 0)
     {
-      //---------added
-	  NS_LOG_FUNCTION("<mohamed> UL spectrum propagation loss model is [set] <mohamed>");
-	  //---------added
-
-	  NS_LOG_LOGIC (this << " using a SpectrumPropagationLossModel in UL");
+      NS_LOG_LOGIC (this << " using a SpectrumPropagationLossModel in UL");
       m_uplinkChannel->AddSpectrumPropagationLossModel (ulSplm);
-
-      //--------------added
-      m_uplinkChannel2->AddSpectrumPropagationLossModel (ulSplm);
-      //-------------added
     }
   else
     {
-	  //---------added
-	  NS_LOG_FUNCTION("<mohamed> UL spectrum propagation loss model is [not set] <mohamed>");
-	  //---------added
-
       NS_LOG_LOGIC (this << " using a PropagationLossModel in UL");
       Ptr<PropagationLossModel> ulPlm = m_uplinkPathlossModel->GetObject<PropagationLossModel> ();
       NS_ASSERT_MSG (ulPlm != 0, " " << m_uplinkPathlossModel << " is neither PropagationLossModel nor SpectrumPropagationLossModel");
       m_uplinkChannel->AddPropagationLossModel (ulPlm);
-
-      //------------added
-      Ptr<PropagationLossModel> ulPlm2 = m_uplinkPathlossModel2->GetObject<PropagationLossModel> ();
-      NS_ASSERT_MSG (ulPlm2 != 0, " " << m_uplinkPathlossModel2 << " is neither PropagationLossModel nor SpectrumPropagationLossModel");
-      m_uplinkChannel2->AddPropagationLossModel (ulPlm2);
-      //------------added
     }
   if (!m_fadingModelType.empty ())
     {
-	  //------------added
-	  NS_LOG_FUNCTION("L:174, LteHelper CLASS ,DoInitialze method ,If fading model type is [not set] it will be initialized");
-	  //------------added
-
       m_fadingModule = m_fadingModelFactory.Create<SpectrumPropagationLossModel> ();
       m_fadingModule->Initialize ();
       m_downlinkChannel->AddSpectrumPropagationLossModel (m_fadingModule);
       m_uplinkChannel->AddSpectrumPropagationLossModel (m_fadingModule);
-      //--------------added
-      m_downlinkChannel2->AddSpectrumPropagationLossModel (m_fadingModule);
-      m_uplinkChannel2->AddSpectrumPropagationLossModel (m_fadingModule);
-      //-------------added
     }
-  else
-  {
-	  NS_LOG_FUNCTION(this << m_fadingModelType << "<mohamed> No Fading model exists yet <mohamed>");
-  }
   m_phyStats = CreateObject<PhyStatsCalculator> ();
   m_phyTxStats = CreateObject<PhyTxStatsCalculator> ();
   m_phyRxStats = CreateObject<PhyRxStatsCalculator> ();
@@ -274,9 +213,10 @@ LteHelper::DoDispose ()
   m_downlinkChannel = 0;
   m_uplinkChannel = 0;
   //----------------added
-  m_downlinkChannel2 = 0;
+  /*m_downlinkChannel2 = 0;
   m_uplinkChannel2 = 0;
   //----------------added
+  */
   Object::DoDispose ();
 }
 
@@ -531,19 +471,16 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
  * modification process: repeat them then pass them to phy2
  * ------------------------------mohamed----------------------------
  */
-  NS_LOG_FUNCTION("start Of HARQ section inside this method");
   Ptr<LteHarqPhy> harq = Create<LteHarqPhy> ();
   dlPhy->SetHarqPhyModule (harq);
   ulPhy->SetHarqPhyModule (harq);
   phy->SetHarqPhyModule (harq);
-  NS_LOG_FUNCTION("End Of HARQ 1 inside this method");
 
   //------------------------------------added
   Ptr<LteHarqPhy> harq2 = Create<LteHarqPhy> ();
   dlPhy2->SetHarqPhyModule (harq2);
   ulPhy2->SetHarqPhyModule (harq2);
   phy2->SetHarqPhyModule (harq2);
-  NS_LOG_FUNCTION("End Of HARQ 2 inside this method");
   //------------------------------------added
 
 // --------------------------- >>>>>>>>>>>>>>>> check call backs first <<<<<<<<<<<<<<<<<<<<-------------------------------
@@ -575,13 +512,12 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
   ulPhy2->AddInterferenceDataChunkProcessor (pInterf2); // for interference power tracing
   //----------------------------------added
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
   dlPhy->SetChannel (m_downlinkChannel);
   ulPhy->SetChannel (m_uplinkChannel);
 
   //------------------------------------added
-  dlPhy2->SetChannel (m_downlinkChannel2);
-  ulPhy2->SetChannel (m_uplinkChannel2);
+  dlPhy2->SetChannel (m_downlinkChannel);
+  ulPhy2->SetChannel (m_uplinkChannel);
   //------------------------------------added
 
 /*--------------------------------------------mohamed---------------------------
@@ -593,7 +529,6 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
   Ptr<MobilityModel> mm = n->GetObject<MobilityModel> ();
 
   //----------added
-  m_enbMobilityModelFactory.SetTypeId("ns3::ConstantPositionMobilityModel");
   Ptr<MobilityModel> mm2 = m_enbMobilityModelFactory.Create()->GetObject<MobilityModel> ();
   //---------added
 
@@ -936,7 +871,7 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
    * ---------------------mohamed--------------------
    */
   //------------------added
-  NS_LOG_LOGIC ("<mohamed> set the propagation model frequencies for the second PHY <mohamed>");
+  /*NS_LOG_LOGIC ("<mohamed> set the propagation model frequencies for the second PHY <mohamed>");
   NS_LOG_LOGIC ("DL freq2: " << dlFreq);
   dlFreqOk = m_downlinkPathlossModel2->SetAttributeFailSafe ("Frequency", DoubleValue (dlFreq));
   if (!dlFreqOk)
@@ -950,7 +885,7 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
       NS_LOG_WARN ("UL propagation model does not have a Frequency attribute");
     }
   //-------------------added
-
+*/
   /*-----------------------------------------------mohamed-----------------------------------------
    * Invoke DoInitialize on all Objects aggregated to this one.
    *
@@ -969,7 +904,8 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
     * ---------------------------------------------mohamed----------------------------------------
     */
   m_uplinkChannel->AddRx (ulPhy);
-  m_uplinkChannel2-> AddRx(ulPhy2);
+  m_uplinkChannel-> AddRx(ulPhy2);
+
   if (m_epcHelper != 0)
     {
       NS_LOG_INFO ("adding this eNB to the EPC");
@@ -1053,8 +989,11 @@ LteHelper::InstallSingleUeDevice (Ptr<Node> n,const char PhyId)
       pCtrl->AddCallback (MakeCallback (&LteUePhy::GenerateCtrlCqiReport, phy));
     }
 
+  dlPhy->SetChannel (m_downlinkChannel);
+  ulPhy->SetChannel (m_uplinkChannel);
 
-  if(PhyId == 1)
+
+ /* if(PhyId == 1)
   {
 	  NS_LOG_FUNCTION("<mohamed> UE channel is connected to PHY [1] <mohamed>");
 	  dlPhy->SetChannel (m_downlinkChannel);
@@ -1072,7 +1011,7 @@ LteHelper::InstallSingleUeDevice (Ptr<Node> n,const char PhyId)
   {
 	NS_LOG_ERROR("L120,<mohamed> Indicate the spectrum channel to connect to <mohamed>");
   }
-
+*/
   Ptr<MobilityModel> mm = n->GetObject<MobilityModel> ();
   NS_ASSERT_MSG (mm, "MobilityModel needs to be set on node before calling LteHelper::InstallUeDevice ()");
   dlPhy->SetMobility (mm);
@@ -1108,7 +1047,8 @@ LteHelper::InstallSingleUeDevice (Ptr<Node> n,const char PhyId)
       rrc->SetUseRlcSm (false);
     }
   Ptr<EpcUeNas> nas = CreateObject<EpcUeNas> ();
- 
+
+  // connection between nas layer and RRC
   nas->SetAsSapProvider (rrc->GetAsSapProvider ());
   rrc->SetAsSapUser (nas->GetAsSapUser ());
 

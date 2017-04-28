@@ -2396,7 +2396,7 @@ void
 LteEnbRrc::RemoveUe (uint16_t rnti)
 {
 	 //Added dummy variable
-	 uint16_t phyId =1;
+	 uint16_t phyId =2;
 
   NS_LOG_FUNCTION (this << (uint32_t) rnti);
   std::map <uint16_t, Ptr<UeManager> >::iterator it = m_ueMap.find (rnti);

@@ -794,20 +794,20 @@ private:
   /// The uplink LTE channel used in the simulation.
   Ptr<SpectrumChannel> m_uplinkChannel;
   //---------------------------------added
-  Ptr<SpectrumChannel> m_downlinkChannel2;
-  Ptr<SpectrumChannel> m_uplinkChannel2;
+  //Ptr<SpectrumChannel> m_downlinkChannel2;
+  //Ptr<SpectrumChannel> m_uplinkChannel2;
   //---------------------------------added
   /// The path loss model used in the downlink channel.
   Ptr<Object> m_downlinkPathlossModel;
 
   //------------------------added
-  Ptr<Object> m_downlinkPathlossModel2;
+  //Ptr<Object> m_downlinkPathlossModel2;
   //------------------------added
 
   /// The path loss model used in the uplink channel.
   Ptr<Object> m_uplinkPathlossModel;
   //-------------------added
-  Ptr<Object> m_uplinkPathlossModel2;
+  //Ptr<Object> m_uplinkPathlossModel2;
   //-------------------added
   /// Factory of MAC scheduler object.
   ObjectFactory m_schedulerFactory;

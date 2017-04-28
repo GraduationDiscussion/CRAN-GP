@@ -405,7 +405,7 @@ LteEnbPhy::DeleteUePhy (uint16_t rnti)
     }
   else
     {
-      m_ueAttached.erase (it);
+      m_ueAttached.erase(it);
       return (true);
     }
 }

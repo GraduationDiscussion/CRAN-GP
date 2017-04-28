@@ -153,6 +153,7 @@ MultiModelSpectrumChannel::AddRx (Ptr<SpectrumPhy> phy)
   SpectrumModelUid_t rxSpectrumModelUid = rxSpectrumModel->GetUid ();
 
   std::vector<Ptr<SpectrumPhy> >::const_iterator it;
+  std::clog << this << "Uid" << rxSpectrumModel->GetUid () << "spectrum model object" << phy->GetRxSpectrumModel () << std::endl;
 
   // remove a previous entry of this phy if it exists
   // we need to scan for all rxSpectrumModel values since we don't
@@ -263,30 +264,25 @@ MultiModelSpectrumChannel::StartTx (Ptr<SpectrumSignalParameters> txParams)
 
   NS_ASSERT (txParams->txPhy);
   NS_ASSERT (txParams->psd);
-  std::clog << this << " MultiModelSpectrumChannel::StartTx <mohamed> ------------1----------<mohamed>" << std::endl;
+  // gets the moility model of the transmitting phy.
   Ptr<MobilityModel> txMobility = txParams->txPhy->GetMobility ();
-  std::clog << " MultiModelSpectrumChannel::StartTx <mohamed> -----------2----------- <mohamed>" << std::endl;
   SpectrumModelUid_t txSpectrumModelUid = txParams->psd->GetSpectrumModelUid ();
-  std::clog << " MultiModelSpectrumChannel::StartTx <mohamed> -----------3----------- <mohamed>" << std::endl;
   NS_LOG_LOGIC (" txSpectrumModelUid " << txSpectrumModelUid);
 
-  //
+  // gets the info of the rxers attached to this txer
   TxSpectrumModelInfoMap_t::const_iterator txInfoIteratorerator = FindAndEventuallyAddTxSpectrumModel (txParams->psd->GetSpectrumModel ());
-  std::clog << " MultiModelSpectrumChannel::StartTx <mohamed> -----------4----------- <mohamed>" << std::endl;
 
   NS_ASSERT (txInfoIteratorerator != m_txSpectrumModelInfoMap.end ());
 
   NS_LOG_LOGIC ("converter map for TX SpectrumModel with Uid " << txInfoIteratorerator->first);
   NS_LOG_LOGIC ("converter map size: " << txInfoIteratorerator->second.m_spectrumConverterMap.size ());
   NS_LOG_LOGIC ("converter map first element: " << txInfoIteratorerator->second.m_spectrumConverterMap.begin ()->first);
-  std::clog << " MultiModelSpectrumChannel::StartTx <mohamed> -----------5----------- <mohamed> " << m_rxSpectrumModelInfoMap.begin()->first << " " << txParams->psd->GetSpectrumModelUid () << std::endl;
 
 
   for (RxSpectrumModelInfoMap_t::const_iterator rxInfoIterator = m_rxSpectrumModelInfoMap.begin ();
        rxInfoIterator != m_rxSpectrumModelInfoMap.end ();
        ++rxInfoIterator)
     {
-	  std::clog << this << " MultiModelSpectrumChannel::StartTx <mohamed> -----------6----------- <mohamed>" << std::endl;
 
 	  SpectrumModelUid_t rxSpectrumModelUid = rxInfoIterator->second.m_rxSpectrumModel->GetUid ();
       NS_LOG_LOGIC (" rxSpectrumModelUids " << rxSpectrumModelUid);

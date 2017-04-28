@@ -749,7 +749,7 @@ LteSpectrumPhy::StartRxData (Ptr<LteSpectrumSignalParametersDataFrame> params)
 void
 LteSpectrumPhy::StartRxDlCtrl (Ptr<LteSpectrumSignalParametersDlCtrlFrame> lteDlCtrlRxParams)
 {
-  NS_LOG_FUNCTION (this);
+  NS_LOG_FUNCTION (this << "<mohamed> m_cellId" << m_cellId << "cellId" << lteDlCtrlRxParams->cellId);
 
   // To check if we're synchronized to this signal, we check
   // for the CellId which is reported in the
@@ -785,7 +785,8 @@ LteSpectrumPhy::StartRxDlCtrl (Ptr<LteSpectrumSignalParametersDlCtrlFrame> lteDl
       switch (m_state)
         {
         case RX_DL_CTRL:
-          NS_ASSERT_MSG (m_cellId != cellId, "any other DlCtrl should be from a different cell");
+          //NS_LOG_FUNCTION (this << "<mohamed> m_cellId" << m_cellId << "cellId" << cellId);
+         // NS_ASSERT_MSG (m_cellId != cellId, "any other DlCtrl should be from a different cell");
           NS_LOG_LOGIC (this << " ignoring other DlCtrl (cellId=" 
                         << cellId  << ", m_cellId=" << m_cellId << ")");      
           break;
@@ -1187,6 +1188,7 @@ LteSpectrumPhy::EndRxUlSrs ()
 void 
 LteSpectrumPhy::SetCellId (uint16_t cellId)
 {
+	NS_LOG_FUNCTION("<mohamed> cellId" << cellId);
   m_cellId = cellId;
 }
 
