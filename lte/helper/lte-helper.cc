@@ -440,12 +440,12 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
   NS_LOG_FUNCTION("L490 ,LteHelper::InstallSingleEnbDevice , initializing the spectrum for both PHYs");
   //------------added
 
-  Ptr<LteSpectrumPhy> dlPhy = CreateObject<LteSpectrumPhy> ();
-  Ptr<LteSpectrumPhy> ulPhy = CreateObject<LteSpectrumPhy> ();
+  Ptr<LteSpectrumPhy> dlPhy = CreateObject<LteSpectrumPhy> (1);
+  Ptr<LteSpectrumPhy> ulPhy = CreateObject<LteSpectrumPhy> (1);
 
   //---------------added
-  Ptr<LteSpectrumPhy> dlPhy2 = CreateObject<LteSpectrumPhy> ();
-  Ptr<LteSpectrumPhy> ulPhy2 = CreateObject<LteSpectrumPhy> ();
+  Ptr<LteSpectrumPhy> dlPhy2 = CreateObject<LteSpectrumPhy> (2);
+  Ptr<LteSpectrumPhy> ulPhy2 = CreateObject<LteSpectrumPhy> (2);
   //---------------added
 
 
@@ -946,11 +946,21 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
  * -------------------mohamed---------------
  */
 Ptr<NetDevice>
-LteHelper::InstallSingleUeDevice (Ptr<Node> n,const char PhyId)
+LteHelper::InstallSingleUeDevice (Ptr<Node> n,const uint16_t PhyId)
 {
   NS_LOG_FUNCTION (this);
-  Ptr<LteSpectrumPhy> dlPhy = CreateObject<LteSpectrumPhy> ();
-  Ptr<LteSpectrumPhy> ulPhy = CreateObject<LteSpectrumPhy> ();
+  Ptr<LteSpectrumPhy> dlPhy = CreateObject<LteSpectrumPhy> (300);
+  Ptr<LteSpectrumPhy> ulPhy = CreateObject<LteSpectrumPhy> (300);
+
+  if(PhyId == 1 || PhyId == 2)
+    {
+	 NS_LOG_FUNCTION(this << "<mohamed> Rxer PhyId: " << PhyId);
+	 ulPhy->SetRxer(PhyId);
+    }
+  else
+    {
+  	  NS_FATAL_ERROR(this << " PhyId: " << PhyId << " Is not correct");
+    }
 
   Ptr<LteUePhy> phy = CreateObject<LteUePhy> (dlPhy, ulPhy);
 
@@ -992,8 +1002,7 @@ LteHelper::InstallSingleUeDevice (Ptr<Node> n,const char PhyId)
   dlPhy->SetChannel (m_downlinkChannel);
   ulPhy->SetChannel (m_uplinkChannel);
 
-
- /* if(PhyId == 1)
+   /* if(PhyId == 1)
   {
 	  NS_LOG_FUNCTION("<mohamed> UE channel is connected to PHY [1] <mohamed>");
 	  dlPhy->SetChannel (m_downlinkChannel);

@@ -368,12 +368,17 @@ MultiModelSpectrumChannel::StartTx (Ptr<SpectrumSignalParameters> txParams)
               }
 
               Ptr<NetDevice> netDev = (*rxPhyIterator)->GetDevice ();
+
               if (netDev)
                 {
-                  // the receiver has a NetDevice, so we expect that it is attached to a Node
+            	  rxParams->tx_PhyId = txParams->tx_PhyId;
+            	  rxParams->rx_PhyId = txParams->rx_PhyId;
+
+            	  // the receiver has a NetDevice, so we expect that it is attached to a Node
                   uint32_t dstNode =  netDev->GetNode ()->GetId ();
                   Simulator::ScheduleWithContext (dstNode, delay, &MultiModelSpectrumChannel::StartRx, this,
                                                   rxParams, *rxPhyIterator);
+
                 }
               else
                 {
@@ -391,6 +396,8 @@ MultiModelSpectrumChannel::StartTx (Ptr<SpectrumSignalParameters> txParams)
 void
 MultiModelSpectrumChannel::StartRx (Ptr<SpectrumSignalParameters> params, Ptr<SpectrumPhy> receiver)
 {
+	std::clog << "<mohamed>multimodel Rx Rxparams " << params->tx_PhyId << " " << params->rx_PhyId <<std::endl;
+
   NS_LOG_FUNCTION (this);
   receiver->StartRx (params);
 }

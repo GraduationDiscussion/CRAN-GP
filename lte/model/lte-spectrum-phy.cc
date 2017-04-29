@@ -130,6 +130,26 @@ LteSpectrumPhy::LteSpectrumPhy ()
     }
 }
 
+LteSpectrumPhy::LteSpectrumPhy (uint16_t PhyId)
+  : m_state (IDLE),
+    m_cellId (0),
+  m_transmissionMode (0),
+  m_layersNum (1)
+{
+  NS_LOG_FUNCTION (this);
+  m_random = CreateObject<UniformRandomVariable> ();
+  m_random->SetAttribute ("Min", DoubleValue (0.0));
+  m_random->SetAttribute ("Max", DoubleValue (1.0));
+  m_interferenceData = CreateObject<LteInterference> ();
+  m_interferenceCtrl = CreateObject<LteInterference> ();
+  m_PhyId = PhyId;
+  m_RxPhyId = 300;
+  for (uint8_t i = 0; i < 7; i++)
+    {
+      m_txModeGain.push_back (1.0);
+    }
+}
+
 
 LteSpectrumPhy::~LteSpectrumPhy ()
 {
@@ -282,6 +302,17 @@ LteSpectrumPhy::GetChannel ()
   return m_channel;
 }
 
+/*-------mohamed
+ * -------------added
+ */
+void
+LteSpectrumPhy::SetRxer(const uint16_t rxPhyId)
+{
+	NS_ASSERT(m_PhyId == 300);
+	m_RxPhyId = rxPhyId;
+	NS_LOG_FUNCTION(this << " <mohamed> Current Phy: " << m_PhyId << " RxerPhy: " << m_RxPhyId);
+}
+
 Ptr<const SpectrumModel>
 LteSpectrumPhy::GetRxSpectrumModel () const
 {
@@ -423,7 +454,7 @@ bool
 LteSpectrumPhy::StartTxDataFrame (Ptr<PacketBurst> pb, std::list<Ptr<LteControlMessage> > ctrlMsgList, Time duration)
 {
   NS_LOG_FUNCTION (this << pb);
-  NS_LOG_LOGIC (this << " state: " << m_state);
+  NS_LOG_LOGIC (this << " state: " << m_state << " TxPhyId: " << m_PhyId << " RxPhyId: " << m_RxPhyId);
   
   m_phyTxStartTrace (pb);
   
@@ -465,6 +496,9 @@ LteSpectrumPhy::StartTxDataFrame (Ptr<PacketBurst> pb, std::list<Ptr<LteControlM
       txParams->packetBurst = pb;
       txParams->ctrlMsgList = ctrlMsgList;
       txParams->cellId = m_cellId;
+      txParams->tx_PhyId = m_PhyId;
+      txParams->rx_PhyId = m_RxPhyId;
+      NS_LOG_FUNCTION(this << "<mohamed> tx " << txParams->tx_PhyId << " Rx " << txParams->rx_PhyId);
       m_channel->StartTx (txParams);
       m_endTxEvent = Simulator::Schedule (duration, &LteSpectrumPhy::EndTxData, this);
     }
@@ -579,6 +613,8 @@ LteSpectrumPhy::StartTxUlSrsFrame ()
       txParams->txAntenna = m_antenna;
       txParams->psd = m_txPsd;
       txParams->cellId = m_cellId;
+      txParams->tx_PhyId = m_PhyId;
+      txParams->rx_PhyId = m_RxPhyId;
       m_channel->StartTx (txParams);
       m_endTxEvent = Simulator::Schedule (UL_SRS_DURATION, &LteSpectrumPhy::EndTxUlSrs, this);
     }
@@ -671,7 +707,7 @@ LteSpectrumPhy::StartRx (Ptr<SpectrumSignalParameters> spectrumRxParams)
 void
 LteSpectrumPhy::StartRxData (Ptr<LteSpectrumSignalParametersDataFrame> params)
 {
-  NS_LOG_FUNCTION (this);
+  NS_LOG_FUNCTION (this << " PhyId: " << m_PhyId << " rxerPhyId: " << params->rx_PhyId);
   switch (m_state)
     {
       case TX_DATA:
@@ -691,8 +727,9 @@ LteSpectrumPhy::StartRxData (Ptr<LteSpectrumSignalParametersDataFrame> params)
           // To check if we're synchronized to this signal, we check
           // for the CellId which is reported in the
           //  LteSpectrumSignalParametersDataFrame
-          if (params->cellId  == m_cellId)
-            {
+          //if (params->cellId  == m_cellId)
+          if(params -> rx_PhyId == m_PhyId)
+        	{
               NS_LOG_LOGIC (this << " synchronized with this signal (cellId=" << params->cellId << ")");
               if ((m_rxPacketBurstList.empty ())&&(m_rxControlMessageList.empty ()))
                 {
@@ -859,8 +896,9 @@ LteSpectrumPhy::StartRxUlSrs (Ptr<LteSpectrumSignalParametersUlSrsFrame> lteUlSr
         // LteSpectrumSignalParametersDlCtrlFrame
         uint16_t cellId;
         cellId = lteUlSrsRxParams->cellId;
-        if (cellId  == m_cellId)
-          {
+        //if (cellId  == m_cellId)
+        if(lteUlSrsRxParams-> rx_PhyId == m_PhyId)
+        	{
             NS_LOG_LOGIC (this << " synchronized with this signal (cellId=" << cellId << ")");
             if (m_state == IDLE)
               {

@@ -752,7 +752,7 @@ private:
    * \param n the node where the device is to be installed
    * \return pointer to the created device
    */
-  Ptr<NetDevice> InstallSingleUeDevice (Ptr<Node> n, const char PhyId);
+  Ptr<NetDevice> InstallSingleUeDevice (Ptr<Node> n, const uint16_t PhyId);
 
   /**
    * The actual function to trigger a manual handover.

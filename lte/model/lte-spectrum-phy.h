@@ -154,8 +154,9 @@ class LteSpectrumPhy : public SpectrumPhy
 {
 
 public:
-  LteSpectrumPhy ();
-  virtual ~LteSpectrumPhy ();
+	LteSpectrumPhy ();
+	LteSpectrumPhy (uint16_t PhyId);
+	virtual ~LteSpectrumPhy ();
 
   /**
    *  PHY states
@@ -407,6 +408,12 @@ public:
    */
   Ptr<SpectrumChannel> GetChannel ();
 
+  /*------------mohamed
+   * setting the rxer for the Ue
+   * ---------mohamed
+   */
+  void SetRxer(const uint16_t rxPhyId);
+
   friend class LteUePhy;
   
  /**
@@ -430,7 +437,8 @@ private:
   
   void SetTxModeGain (uint8_t txMode, double gain);
   
-
+  uint16_t m_PhyId;
+  uint16_t m_RxPhyId;
   Ptr<MobilityModel> m_mobility;
   Ptr<AntennaModel> m_antenna;
   Ptr<NetDevice> m_device;
