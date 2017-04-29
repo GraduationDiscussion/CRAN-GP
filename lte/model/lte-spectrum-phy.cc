@@ -556,6 +556,7 @@ LteSpectrumPhy::StartTxDlCtrlFrame (std::list<Ptr<LteControlMessage> > ctrlMsgLi
       txParams->cellId = m_cellId;
       txParams->pss = pss;
       txParams->ctrlMsgList = ctrlMsgList;
+      txParams->tx_PhyId = m_PhyId;
       NS_LOG_FUNCTION(this << " <mohamed> state " << m_state << " spectrumPhy " << txParams->txPhy << " Antenna " << txParams->txAntenna << "<mohamed>");
       m_channel->StartTx (txParams);
       m_endTxEvent = Simulator::Schedule (DL_CTRL_DURATION, &LteSpectrumPhy::EndTxDlCtrl, this);
@@ -829,8 +830,9 @@ LteSpectrumPhy::StartRxDlCtrl (Ptr<LteSpectrumSignalParametersDlCtrlFrame> lteDl
           break;
           
         case IDLE:
-          if (cellId  == m_cellId)
-            {
+          //if (cellId  == m_cellId)
+         if(lteDlCtrlRxParams-> tx_PhyId == m_RxPhyId)
+        	{
               NS_LOG_LOGIC (this << " synchronized with this signal (cellId=" << cellId << ")");
               
               NS_ASSERT (m_rxControlMessageList.empty ());

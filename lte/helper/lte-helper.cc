@@ -956,6 +956,7 @@ LteHelper::InstallSingleUeDevice (Ptr<Node> n,const uint16_t PhyId)
     {
 	 NS_LOG_FUNCTION(this << "<mohamed> Rxer PhyId: " << PhyId);
 	 ulPhy->SetRxer(PhyId);
+	 dlPhy->SetRxer(PhyId);
     }
   else
     {
