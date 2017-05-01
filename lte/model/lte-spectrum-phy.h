@@ -439,6 +439,9 @@ private:
   
   uint16_t m_PhyId;
   uint16_t m_RxPhyId;
+  uint16_t m_CtrlPhyId;
+  uint16_t m_DataPhyId;
+
   Ptr<MobilityModel> m_mobility;
   Ptr<AntennaModel> m_antenna;
   Ptr<NetDevice> m_device;

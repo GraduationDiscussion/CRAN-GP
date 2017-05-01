@@ -1153,7 +1153,9 @@ LteHelper::Attach (NetDeviceContainer ueDevices, Ptr<NetDevice> enbDevice)
   NS_LOG_FUNCTION (this << "<mohamed *******************attach*********************** <mohamed>>");
   for (NetDeviceContainer::Iterator i = ueDevices.Begin (); i != ueDevices.End (); ++i)
     {
+	  NS_LOG_FUNCTION(this << "<mohamed> ---- 1 ----- <mohamed>");
       Attach (*i, enbDevice);
+      NS_LOG_FUNCTION(this << "<mohamed> ---- 2 ----- <mohamed>");
     }
   NS_LOG_FUNCTION (this << "<mohamed *******************attach*********************** <mohamed>>");
 

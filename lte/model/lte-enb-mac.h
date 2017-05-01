@@ -35,7 +35,6 @@
 #include "ns3/trace-source-accessor.h"
 #include <ns3/packet.h>
 #include <ns3/packet-burst.h>
-#include <semaphore.h>
 
 
 namespace ns3 {
@@ -213,9 +212,6 @@ private:
   void DoUlInfoListElementHarqFeeback (UlInfoListElement_s params);
   void DoDlInfoListElementHarqFeeback (DlInfoListElement_s params);
 
-  //----------added
-  sem_t sem;
-  //----------added
 
   //            rnti,             lcid, SAP of the RLC instance
   std::map <uint16_t, std::map<uint8_t, LteMacSapUser*> > m_rlcAttached;

@@ -1295,7 +1295,7 @@ LteEnbMac::DoAllocateNcRaPreamble (uint16_t rnti)
 void
 LteEnbMac::DoTransmitPdu (LteMacSapProvider::TransmitPduParameters params)
 {
-  NS_LOG_FUNCTION (this);
+  NS_LOG_FUNCTION (this << "<mohamed> PhyId "<<params.phyId);
   LteRadioBearerTag tag (params.rnti, params.lcid, params.layer); //,params.phyId);
   params.pdu->AddPacketTag (tag);
   if(params.phyId==1)
@@ -1314,7 +1314,7 @@ LteEnbMac::DoTransmitPdu (LteMacSapProvider::TransmitPduParameters params)
   	  // Store pkt in HARQ buffer
   	    std::map <uint16_t, DlHarqProcessesBuffer_t>::iterator it =  m_miDlHarqProcessesPackets2.find (params.rnti);
   	    NS_ASSERT (it != m_miDlHarqProcessesPackets2.end ());
-  	    NS_LOG_DEBUG (this << " LAYER 2" << (uint16_t)tag.GetLayer () << " HARQ ID " << (uint16_t)params.harqProcessId);
+  	    NS_LOG_DEBUG (this << " LAYER2 " << (uint16_t)tag.GetLayer () << " HARQ ID " << (uint16_t)params.harqProcessId);
 
   	    //(*it).second.at (params.layer).at (params.harqProcessId) = params.pdu;//->Copy ();
   	    (*it).second.at (params.layer).at (params.harqProcessId)->AddPacket (params.pdu);

@@ -312,6 +312,8 @@ LteSpectrumPhy::SetRxer(const uint16_t rxPhyId)
 	m_RxPhyId = rxPhyId;
 	NS_LOG_FUNCTION(this << " <mohamed> Current Phy: " << m_PhyId << " RxerPhy: " << m_RxPhyId);
 }
+//------------------added
+
 
 Ptr<const SpectrumModel>
 LteSpectrumPhy::GetRxSpectrumModel () const
@@ -498,6 +500,7 @@ LteSpectrumPhy::StartTxDataFrame (Ptr<PacketBurst> pb, std::list<Ptr<LteControlM
       txParams->cellId = m_cellId;
       txParams->tx_PhyId = m_PhyId;
       txParams->rx_PhyId = m_RxPhyId;
+
       NS_LOG_FUNCTION(this << "<mohamed> tx " << txParams->tx_PhyId << " Rx " << txParams->rx_PhyId);
       m_channel->StartTx (txParams);
       m_endTxEvent = Simulator::Schedule (duration, &LteSpectrumPhy::EndTxData, this);
@@ -708,7 +711,7 @@ LteSpectrumPhy::StartRx (Ptr<SpectrumSignalParameters> spectrumRxParams)
 void
 LteSpectrumPhy::StartRxData (Ptr<LteSpectrumSignalParametersDataFrame> params)
 {
-  NS_LOG_FUNCTION (this << " PhyId: " << m_PhyId << " rxerPhyId: " << params->rx_PhyId);
+  NS_LOG_FUNCTION (this << " PhyId: " << m_PhyId << " rxerPhyId: " << params->rx_PhyId << "txphyid " << params->tx_PhyId);
   switch (m_state)
     {
       case TX_DATA:
@@ -729,7 +732,10 @@ LteSpectrumPhy::StartRxData (Ptr<LteSpectrumSignalParametersDataFrame> params)
           // for the CellId which is reported in the
           //  LteSpectrumSignalParametersDataFrame
           //if (params->cellId  == m_cellId)
-          if(params -> rx_PhyId == m_PhyId)
+        if(params->tx_PhyId == 300)
+        	{
+        	NS_LOG_FUNCTION(this << "<mohamed> Ue txed data to UE m_phyId " << m_PhyId);
+         if(params -> rx_PhyId == m_PhyId)
         	{
               NS_LOG_LOGIC (this << " synchronized with this signal (cellId=" << params->cellId << ")");
               if ((m_rxPacketBurstList.empty ())&&(m_rxControlMessageList.empty ()))
@@ -771,6 +777,54 @@ LteSpectrumPhy::StartRxData (Ptr<LteSpectrumSignalParametersDataFrame> params)
               NS_LOG_LOGIC (this << " not in sync with this signal (cellId=" 
               << params->cellId  << ", m_cellId=" << m_cellId << ")");
             }
+        }
+        else
+        {
+        	NS_LOG_FUNCTION(this << "<mohamed> enb txed data to UE m_phyId " << m_PhyId);
+        	if(params -> tx_PhyId == m_RxPhyId)
+        	  {
+        	    NS_LOG_LOGIC (this << " synchronized with this signal (cellId=" << params->cellId << ")");
+        	    if ((m_rxPacketBurstList.empty ())&&(m_rxControlMessageList.empty ()))
+        	    {
+        	       NS_ASSERT (m_state == IDLE);
+        	         // first transmission, i.e., we're IDLE and we
+        	         // start RX
+        	                  m_firstRxStart = Simulator::Now ();
+        	                  m_firstRxDuration = params->duration;
+        	                  NS_LOG_LOGIC (this << " scheduling EndRx with delay " << params->duration.GetSeconds () << "s");
+        	                  m_endRxDataEvent = Simulator::Schedule (params->duration, &LteSpectrumPhy::EndRxData, this);
+        	                }
+        	              else
+        	                {
+        	                  NS_ASSERT (m_state == RX_DATA);
+        	                  // sanity check: if there are multiple RX events, they
+        	                  // should occur at the same time and have the same
+        	                  // duration, otherwise the interference calculation
+        	                  // won't be correct
+        	                  NS_ASSERT ((m_firstRxStart == Simulator::Now ())
+        	                  && (m_firstRxDuration == params->duration));
+        	                }
+
+        	              ChangeState (RX_DATA);
+        	              if (params->packetBurst)
+        	                {
+        	                  m_rxPacketBurstList.push_back (params->packetBurst);
+        	                  m_interferenceData->StartRx (params->psd);
+
+        	                  m_phyRxStartTrace (params->packetBurst);
+        	                }
+        	                NS_LOG_DEBUG (this << " insert msgs " << params->ctrlMsgList.size ());
+        	              m_rxControlMessageList.insert (m_rxControlMessageList.end (), params->ctrlMsgList.begin (), params->ctrlMsgList.end ());
+
+        	              NS_LOG_LOGIC (this << " numSimultaneousRxEvents = " << m_rxPacketBurstList.size ());
+        	            }
+        	          else
+        	            {
+        	              NS_LOG_LOGIC (this << " not in sync with this signal (cellId="
+        	              << params->cellId  << ", m_cellId=" << m_cellId << ")");
+        	            }
+
+        }
         }
         break;
         
