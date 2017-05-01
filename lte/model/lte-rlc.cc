@@ -232,9 +232,10 @@ LteRlcSm::DoReceivePdu (Ptr<Packet> p)
 void
 LteRlcSm::DoNotifyTxOpportunity (uint32_t bytes, uint8_t layer, uint8_t harqId)
 {
-  NS_LOG_FUNCTION (this << bytes);
+  NS_LOG_FUNCTION (this << bytes << "<mohamed> phyId= " << m_phyId << " <mohamed>");
   LteMacSapProvider::TransmitPduParameters params;
   params.pdu = Create<Packet> (bytes);
+  params.phyId = m_phyId;
   params.rnti = m_rnti;
   params.lcid = m_lcid;
   params.layer = layer;
@@ -264,12 +265,15 @@ LteRlcSm::ReportBufferStatus ()
   NS_LOG_FUNCTION (this);
   LteMacSapProvider::ReportBufferStatusParameters p;
   p.rnti = m_rnti;
+  p.phyId = m_phyId;
   p.lcid = m_lcid;
+  p.phyId = m_phyId;
   p.txQueueSize = 80000;
   p.txQueueHolDelay = 10;
   p.retxQueueSize = 0;
   p.retxQueueHolDelay = 0;
   p.statusPduSize = 0;
+  std::clog << "<mohamed> LteRlcSm::ReportBufferStatus phyId= " << m_phyId << " <mohamed>" << std::endl;
   m_macSapProvider->ReportBufferStatus (p);
 }
 

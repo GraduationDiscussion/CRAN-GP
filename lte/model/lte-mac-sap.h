@@ -46,6 +46,7 @@ public:
   {
     Ptr<Packet> pdu;  /**< the RLC PDU */
     uint16_t    rnti; /**< the C-RNTI identifying the UE */
+    uint16_t    phyId;
     uint8_t     lcid; /**< the logical channel id corresponding to the sending RLC instance */
     uint8_t     layer; /**< the layer value that was passed by the MAC in the call to NotifyTxOpportunity that generated this PDU */
     uint8_t     harqProcessId; /**< the HARQ process id that was passed by the MAC in the call to NotifyTxOpportunity that generated this PDU */
@@ -66,6 +67,7 @@ public:
   struct ReportBufferStatusParameters
   {
     uint16_t rnti;  /**< the C-RNTI identifying the UE */
+     uint16_t phyId;
     uint8_t lcid;  /**< the logical channel id corresponding to the sending RLC instance */
     uint32_t txQueueSize;  /**< the current size of the RLC transmission queue */
     uint16_t txQueueHolDelay;  /**< the Head Of Line delay of the transmission queue */

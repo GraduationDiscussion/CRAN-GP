@@ -224,10 +224,11 @@ LtePhy::GetControlMessages (void)
   NS_LOG_FUNCTION (this);
   if (m_controlMessagesQueue.at (0).size () > 0)
     {
-      std::list<Ptr<LteControlMessage> > ret = m_controlMessagesQueue.at (0);
+	  std::list<Ptr<LteControlMessage> > ret = m_controlMessagesQueue.at (0);
       m_controlMessagesQueue.erase (m_controlMessagesQueue.begin ());
       std::list<Ptr<LteControlMessage> > newlist;
       m_controlMessagesQueue.push_back (newlist);
+      NS_LOG_FUNCTION(this << "<mohamed> size > 0");
       return (ret);
     }
   else
@@ -236,6 +237,7 @@ LtePhy::GetControlMessages (void)
       std::list<Ptr<LteControlMessage> > newlist;
       m_controlMessagesQueue.push_back (newlist);
       std::list<Ptr<LteControlMessage> > emptylist;
+      NS_LOG_FUNCTION(this << "<mohamed> empty list <mohamed>");
       return (emptylist);
     }
 }

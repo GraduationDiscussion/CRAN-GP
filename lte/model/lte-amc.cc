@@ -285,7 +285,6 @@ int
 LteAmc::GetTbSizeFromMcs (int mcs, int nprb)
 {
   NS_LOG_FUNCTION (mcs);
-
   NS_ASSERT_MSG (mcs < 29, "MCS=" << mcs);
   NS_ASSERT_MSG (nprb < 111, "NPRB=" << nprb);
 

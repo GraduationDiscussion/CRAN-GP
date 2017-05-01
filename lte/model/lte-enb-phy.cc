@@ -157,7 +157,6 @@ LteEnbPhy::LteEnbPhy (Ptr<LteSpectrumPhy> dlPhy, Ptr<LteSpectrumPhy> ulPhy)
 TypeId
 LteEnbPhy::GetTypeId (void)
 {
-  NS_LOG_FUNCTION("<mohamed> calling the GetTypeId <mohamed>");
   static TypeId tid = TypeId ("ns3::LteEnbPhy")
     .SetParent<LtePhy> ()
     .SetGroupName("Lte")
@@ -278,21 +277,19 @@ LteEnbPhy::DoInitialize ()
 void
 LteEnbPhy::SetLteEnbPhySapUser (LteEnbPhySapUser* s)
 {
-  NS_LOG_FUNCTION(this << s << "<mohamed> L:280,LteEnbPac::SetLteEnbSapUser, Connecting connecting PHY to MAC <mohamed>");
   m_enbPhySapUser = s;
 }
 
 LteEnbPhySapProvider*
 LteEnbPhy::GetLteEnbPhySapProvider ()
 {
-  NS_LOG_FUNCTION(this << "<mohamed> L:287,LteEnbPac::SetLteEnbSapUser, Connecting connecting PHY to MAC <mohamed>");
   return (m_enbPhySapProvider);
 }
 
 void
 LteEnbPhy::SetLteEnbCphySapUser (LteEnbCphySapUser* s)
 {
-  NS_LOG_FUNCTION (this << s);
+  NS_LOG_FUNCTION (this);
   m_enbCphySapUser = s;
 }
 
@@ -408,7 +405,7 @@ LteEnbPhy::DeleteUePhy (uint16_t rnti)
     }
   else
     {
-      m_ueAttached.erase (it);
+      m_ueAttached.erase(it);
       return (true);
     }
 }
@@ -480,7 +477,7 @@ Ptr<SpectrumValue>
 LteEnbPhy::CreateTxPowerSpectralDensity ()
 {
   NS_LOG_FUNCTION (this);
-
+  std::clog << this << " LteEnbPhy::CreateTxPowerSpectralDensity <mohamed> carrier= " << m_dlEarfcn << " DL B.W= " << (int)m_dlBandwidth << " Tx Power= " << m_txPower << " <mohamed>" << std::endl;
   Ptr<SpectrumValue> psd = LteSpectrumValueHelper::CreateTxPowerSpectralDensity (m_dlEarfcn, m_dlBandwidth, m_txPower, GetDownlinkSubChannels ());
 
   return psd;
@@ -601,6 +598,8 @@ LteEnbPhy::StartFrame (void)
 void
 LteEnbPhy::StartSubFrame (void)
 {
+
+
   NS_LOG_FUNCTION (this);
 
   ++m_nrSubFrames;
@@ -665,6 +664,7 @@ LteEnbPhy::StartSubFrame (void)
 
   // process the current burst of control messages
   std::list<Ptr<LteControlMessage> > ctrlMsg = GetControlMessages ();
+  NS_LOG_FUNCTION("ctrl msg size" << ctrlMsg.size() << "<mohamed>");
   m_dlDataRbMap.clear ();
   m_dlPowerAllocationMap.clear ();
   if (ctrlMsg.size () > 0)
@@ -746,7 +746,6 @@ LteEnbPhy::StartSubFrame (void)
 
         }
     }
-
   SendControlChannels (ctrlMsg);
 
   // send data frame
@@ -784,7 +783,7 @@ LteEnbPhy::SendControlChannels (std::list<Ptr<LteControlMessage> > ctrlMsgList)
     {
       pss = true;
     }
-  m_downlinkSpectrumPhy->StartTxDlCtrlFrame (ctrlMsgList, pss);
+   m_downlinkSpectrumPhy->StartTxDlCtrlFrame (ctrlMsgList, pss);
 
 }
 
@@ -1108,7 +1107,6 @@ LteEnbPhy::DoSetSystemInformationBlockType1 (LteRrcSap::SystemInformationBlockTy
 void
 LteEnbPhy::SetHarqPhyModule (Ptr<LteHarqPhy> harq)
 {
-  NS_LOG_FUNCTION("<mohamed>Set the HARQ PHY module for the LTE eNB PHY<mohamed>");
   m_harqPhyModule = harq;
 }
 

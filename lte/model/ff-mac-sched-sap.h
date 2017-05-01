@@ -59,6 +59,7 @@ public:
   struct SchedDlRlcBufferReqParameters
   {
     uint16_t  m_rnti;
+    uint16_t  m_phyId;
     uint8_t   m_logicalChannelIdentity;
     uint32_t  m_rlcTransmissionQueueSize;
     uint16_t  m_rlcTransmissionQueueHolDelay;
@@ -76,6 +77,7 @@ public:
   struct SchedDlPagingBufferReqParameters
   {
     uint16_t  m_rnti;
+    uint16_t  m_phyId;
     std::vector <struct PagingInfoListElement_s> m_pagingInfoList;
 
     std::vector <struct VendorSpecificListElement_s> m_vendorSpecificList;
@@ -88,6 +90,7 @@ public:
   struct SchedDlMacBufferReqParameters
   {
     uint16_t  m_rnti;
+    uint16_t  m_phyId;
     enum CeBitmap_e m_ceBitmap;
 
     std::vector <struct VendorSpecificListElement_s> m_vendorSpecificList;
@@ -99,6 +102,8 @@ public:
    */
   struct SchedDlTriggerReqParameters
   {
+	  //added by doha (in scheduler) :
+	uint16_t  m_phyId ;
     uint16_t  m_sfnSf;
     std::vector <struct DlInfoListElement_s> m_dlInfoList;
 
@@ -111,6 +116,8 @@ public:
    */
   struct SchedDlRachInfoReqParameters
   {
+	  //added by doha (in scheduler) :
+	uint16_t  m_phyId;
     uint16_t  m_sfnSf;
     std::vector <struct RachListElement_s> m_rachList;
 
@@ -123,6 +130,8 @@ public:
    */
   struct SchedDlCqiInfoReqParameters
   {
+	// added by doha (in scheduler) :
+	uint16_t  m_phyId;
     uint16_t  m_sfnSf;
     std::vector <struct CqiListElement_s> m_cqiList;
 
@@ -135,6 +144,8 @@ public:
    */
   struct SchedUlTriggerReqParameters
   {
+	// added by doha (in scheduler) :
+	uint16_t  m_phyId;
     uint16_t  m_sfnSf;
     std::vector <struct UlInfoListElement_s> m_ulInfoList;
 
@@ -148,6 +159,7 @@ public:
   struct SchedUlNoiseInterferenceReqParameters
   {
     uint16_t  m_sfnSf;
+    uint16_t  m_phyId;
     uint16_t  m_rip;
     uint16_t  m_tnp;
 
@@ -161,6 +173,7 @@ public:
   struct SchedUlSrInfoReqParameters
   {
     uint16_t  m_sfnSf;
+    uint16_t  m_phyId;
     std::vector <struct SrListElement_s> m_srList;
 
     std::vector <struct VendorSpecificListElement_s> m_vendorSpecificList;
@@ -172,6 +185,8 @@ public:
    */
   struct SchedUlMacCtrlInfoReqParameters
   {
+	// added by doha (in scheduler) :
+	uint16_t  m_phyId;
     uint16_t  m_sfnSf;
     std::vector <struct MacCeListElement_s> m_macCeList;
 
@@ -184,6 +199,8 @@ public:
    */
   struct SchedUlCqiInfoReqParameters
   {
+	// added by doha : (in scheduler)
+	uint16_t  m_phyId ;
     uint16_t  m_sfnSf;
     struct UlCqi_s m_ulCqi;
 
@@ -236,6 +253,8 @@ public:
    */
   struct SchedDlConfigIndParameters
   {
+
+	uint16_t m_phyId;
     std::vector <struct BuildDataListElement_s>      m_buildDataList;
     std::vector <struct BuildRarListElement_s>       m_buildRarList;
     std::vector <struct BuildBroadcastListElement_s> m_buildBroadcastList;
@@ -251,6 +270,8 @@ public:
    */
   struct SchedUlConfigIndParameters
   {
+
+	   uint16_t m_phyId;
     std::vector <struct UlDciListElement_s> m_dciList;
     std::vector <struct PhichListElement_s> m_phichList;
 

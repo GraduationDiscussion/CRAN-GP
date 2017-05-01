@@ -22,7 +22,6 @@
 #ifndef ENB_LTE_PHY_H
 #define ENB_LTE_PHY_H
 
-
 #include <ns3/lte-control-messages.h>
 #include <ns3/lte-enb-phy-sap.h>
 #include <ns3/lte-enb-cphy-sap.h>

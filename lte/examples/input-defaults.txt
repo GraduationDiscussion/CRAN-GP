@@ -1,4 +1,4 @@
-default ns3::LteHelper::Scheduler "ns3::RrFfMacScheduler"
+default ns3::LteHelper::Scheduler "ns3::PfFfMacScheduler"
 default ns3::LteHelper::PathlossModel "ns3::FriisSpectrumPropagationLossModel"
 default ns3::LteEnbNetDevice::UlBandwidth "25"
 default ns3::LteEnbNetDevice::DlBandwidth "25"

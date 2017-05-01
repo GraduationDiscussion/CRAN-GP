@@ -90,6 +90,7 @@ struct LteSpectrumSignalParametersDataFrame : public SpectrumSignalParameters
   std::list<Ptr<LteControlMessage> > ctrlMsgList;
   
   uint16_t cellId;
+
 };
 
 

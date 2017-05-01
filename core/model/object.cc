@@ -251,7 +251,7 @@ Object::UpdateSortedArray (struct Aggregates *aggregates, uint32_t j) const
 void 
 Object::AggregateObject (Ptr<Object> o)
 {
-  NS_LOG_FUNCTION (this << o << "aggregate object method is called");
+  NS_LOG_FUNCTION (this << o);
   NS_ASSERT (!m_disposed);
   NS_ASSERT (!o->m_disposed);
   NS_ASSERT (CheckLoose ());

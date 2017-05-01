@@ -113,7 +113,7 @@ LteNetDevice::GetAddress (void) const
 void
 LteNetDevice::SetNode (Ptr<Node> node)
 {
-  NS_LOG_FUNCTION (this << node << "<mohamed> Setting the Node<mohamed>");
+  NS_LOG_FUNCTION (this << node);
   m_node = node;
 }
 

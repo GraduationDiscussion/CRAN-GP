@@ -35,11 +35,12 @@ namespace ns3 {
 struct LteFlowId_t
 {
   uint16_t  m_rnti;
+  uint16_t  m_phyId;//added
   uint8_t   m_lcId;
 
 public:
   LteFlowId_t ();
-  LteFlowId_t (const uint16_t a, const uint8_t b);
+  LteFlowId_t (const uint16_t a, const uint8_t b); //,const uint16_t c);
 
   friend bool operator == (const LteFlowId_t &a, const LteFlowId_t &b);
   friend bool operator < (const LteFlowId_t &a, const LteFlowId_t &b);

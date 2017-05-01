@@ -80,6 +80,7 @@ LteHelper::LteHelper (void)
   m_ueNetDeviceFactory.SetTypeId (LteUeNetDevice::GetTypeId ());
   m_ueAntennaModelFactory.SetTypeId (IsotropicAntennaModel::GetTypeId ());
   m_channelFactory.SetTypeId (MultiModelSpectrumChannel::GetTypeId ());
+  m_enbMobilityModelFactory.SetTypeId("ns3::ConstantPositionMobilityModel");
 }
 
 void 
@@ -88,105 +89,43 @@ LteHelper::DoInitialize (void)
   NS_LOG_FUNCTION (this);
   m_downlinkChannel = m_channelFactory.Create<SpectrumChannel> ();
   m_uplinkChannel = m_channelFactory.Create<SpectrumChannel> ();
+
   m_downlinkPathlossModel = m_dlPathlossModelFactory.Create ();
   Ptr<SpectrumPropagationLossModel> dlSplm = m_downlinkPathlossModel->GetObject<SpectrumPropagationLossModel> ();
-
-  //------------------added
-  m_downlinkChannel2 = m_channelFactory.Create<SpectrumChannel> ();
-  m_uplinkChannel2 = m_channelFactory.Create<SpectrumChannel> ();
-  m_downlinkPathlossModel2 = m_dlPathlossModelFactory.Create ();
-  Ptr<SpectrumPropagationLossModel> dlSplm2 = m_downlinkPathlossModel2->GetObject<SpectrumPropagationLossModel> ();
-  //------------------added
-
-  if (dlSplm != 0 && dlSplm2 != 0)	// dlSplm2 is -------------added
+  if (dlSplm != 0)
     {
-      //---------------added
-	  NS_LOG_FUNCTION(this << "<mohamed> DL spectrum propagation loss model is [set] <moahmed>");
-	  //---------------added
-
-	  NS_LOG_LOGIC (this << " using a SpectrumPropagationLossModel in DL");
+      NS_LOG_LOGIC (this << " using a SpectrumPropagationLossModel in DL");
       m_downlinkChannel->AddSpectrumPropagationLossModel (dlSplm);
-
-      //----------------------added
-      m_downlinkChannel2->AddSpectrumPropagationLossModel (dlSplm);
-      // -----------------------added
     }
   else
     {
-	  //---------added
-	  NS_LOG_FUNCTION(this << "<mohamed> DL spectrum propagation loss model is [NOT set] <mohamed> ");
-	  //---------added
-
-	  NS_LOG_LOGIC (this << " using a PropagationLossModel in DL<pathloss model is not set>");
+      NS_LOG_LOGIC (this << " using a PropagationLossModel in DL");
       Ptr<PropagationLossModel> dlPlm = m_downlinkPathlossModel->GetObject<PropagationLossModel> ();
       NS_ASSERT_MSG (dlPlm != 0, " " << m_downlinkPathlossModel << " is neither PropagationLossModel nor SpectrumPropagationLossModel");
       m_downlinkChannel->AddPropagationLossModel (dlPlm);
-
-      //-----------------added
-      Ptr<PropagationLossModel> dlPlm2 = m_downlinkPathlossModel2->GetObject<PropagationLossModel> ();
-      NS_ASSERT_MSG (dlPlm2 != 0, " " << m_downlinkPathlossModel2 << " is neither PropagationLossModel nor SpectrumPropagationLossModel");
-      m_downlinkChannel2->AddPropagationLossModel (dlPlm2);
-      //----------------added
-
     }
 
   m_uplinkPathlossModel = m_ulPathlossModelFactory.Create ();
   Ptr<SpectrumPropagationLossModel> ulSplm = m_uplinkPathlossModel->GetObject<SpectrumPropagationLossModel> ();
-
-  //-------------------added
-  m_uplinkPathlossModel2 = m_ulPathlossModelFactory.Create ();
-  Ptr<SpectrumPropagationLossModel> ulSplm2 = m_uplinkPathlossModel2->GetObject<SpectrumPropagationLossModel> ();
-  //-------------------added
-
-  if (ulSplm != 0 && ulSplm2 != 0)	//ulSplm2 is-------added
+  if (ulSplm != 0)
     {
-      //---------added
-	  NS_LOG_FUNCTION("<mohamed> UL spectrum propagation loss model is [set] <mohamed>");
-	  //---------added
-
-	  NS_LOG_LOGIC (this << " using a SpectrumPropagationLossModel in UL");
+      NS_LOG_LOGIC (this << " using a SpectrumPropagationLossModel in UL");
       m_uplinkChannel->AddSpectrumPropagationLossModel (ulSplm);
-
-      //--------------added
-      m_uplinkChannel2->AddSpectrumPropagationLossModel (ulSplm);
-      //-------------added
     }
   else
     {
-	  //---------added
-	  NS_LOG_FUNCTION("<mohamed> UL spectrum propagation loss model is [not set] <mohamed>");
-	  //---------added
-
       NS_LOG_LOGIC (this << " using a PropagationLossModel in UL");
       Ptr<PropagationLossModel> ulPlm = m_uplinkPathlossModel->GetObject<PropagationLossModel> ();
       NS_ASSERT_MSG (ulPlm != 0, " " << m_uplinkPathlossModel << " is neither PropagationLossModel nor SpectrumPropagationLossModel");
       m_uplinkChannel->AddPropagationLossModel (ulPlm);
-
-      //------------added
-      Ptr<PropagationLossModel> ulPlm2 = m_uplinkPathlossModel2->GetObject<PropagationLossModel> ();
-      NS_ASSERT_MSG (ulPlm2 != 0, " " << m_uplinkPathlossModel2 << " is neither PropagationLossModel nor SpectrumPropagationLossModel");
-      m_uplinkChannel2->AddPropagationLossModel (ulPlm2);
-      //------------added
     }
   if (!m_fadingModelType.empty ())
     {
-	  //------------added
-	  NS_LOG_FUNCTION("L:174, LteHelper CLASS ,DoInitialze method ,If fading model type is [not set] it will be initialized");
-	  //------------added
-
       m_fadingModule = m_fadingModelFactory.Create<SpectrumPropagationLossModel> ();
       m_fadingModule->Initialize ();
       m_downlinkChannel->AddSpectrumPropagationLossModel (m_fadingModule);
       m_uplinkChannel->AddSpectrumPropagationLossModel (m_fadingModule);
-      //--------------added
-      m_downlinkChannel2->AddSpectrumPropagationLossModel (m_fadingModule);
-      m_uplinkChannel2->AddSpectrumPropagationLossModel (m_fadingModule);
-      //-------------added
     }
-  else
-  {
-	  NS_LOG_FUNCTION(this << m_fadingModelType << "<mohamed> No Fading model exists yet <mohamed>");
-  }
   m_phyStats = CreateObject<PhyStatsCalculator> ();
   m_phyTxStats = CreateObject<PhyTxStatsCalculator> ();
   m_phyRxStats = CreateObject<PhyRxStatsCalculator> ();
@@ -211,7 +150,7 @@ TypeId LteHelper::GetTypeId (void)
                    "The type of scheduler to be used for eNBs. "
                    "The allowed values for this attributes are the type names "
                    "of any class inheriting from ns3::FfMacScheduler.",
-                   StringValue ("ns3::PfFfMacScheduler"),
+                   StringValue ("ns3::RrFfMacScheduler"),
                    MakeStringAccessor (&LteHelper::SetSchedulerType,
                                        &LteHelper::GetSchedulerType),
                    MakeStringChecker ())
@@ -273,6 +212,11 @@ LteHelper::DoDispose ()
   NS_LOG_FUNCTION (this);
   m_downlinkChannel = 0;
   m_uplinkChannel = 0;
+  //----------------added
+  /*m_downlinkChannel2 = 0;
+  m_uplinkChannel2 = 0;
+  //----------------added
+  */
   Object::DoDispose ();
 }
 
@@ -459,14 +403,15 @@ LteHelper::InstallEnbDevice (NodeContainer c)
 }
 
 NetDeviceContainer
-LteHelper::InstallUeDevice (NodeContainer c)
+LteHelper::InstallUeDevice (NodeContainer c, const char PhyId)
 {
   NS_LOG_FUNCTION (this << "<mohamed>***********************install UE device************************* <moahmed>");
   NetDeviceContainer devices;
   for (NodeContainer::Iterator i = c.Begin (); i != c.End (); ++i)
     {
       Ptr<Node> node = *i;
-      Ptr<NetDevice> device = InstallSingleUeDevice (node);
+      //------------ added <must be changed to be dynamic>
+      Ptr<NetDevice> device = InstallSingleUeDevice (node,PhyId);
       devices.Add (device);
     }
   NS_LOG_FUNCTION (this << "<mohamed>*********************install UE device*************************** <moahmed>");
@@ -495,12 +440,12 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
   NS_LOG_FUNCTION("L490 ,LteHelper::InstallSingleEnbDevice , initializing the spectrum for both PHYs");
   //------------added
 
-  Ptr<LteSpectrumPhy> dlPhy = CreateObject<LteSpectrumPhy> ();
-  Ptr<LteSpectrumPhy> ulPhy = CreateObject<LteSpectrumPhy> ();
+  Ptr<LteSpectrumPhy> dlPhy = CreateObject<LteSpectrumPhy> (1);
+  Ptr<LteSpectrumPhy> ulPhy = CreateObject<LteSpectrumPhy> (1);
 
   //---------------added
-  Ptr<LteSpectrumPhy> dlPhy2 = CreateObject<LteSpectrumPhy> ();
-  Ptr<LteSpectrumPhy> ulPhy2 = CreateObject<LteSpectrumPhy> ();
+  Ptr<LteSpectrumPhy> dlPhy2 = CreateObject<LteSpectrumPhy> (2);
+  Ptr<LteSpectrumPhy> ulPhy2 = CreateObject<LteSpectrumPhy> (2);
   //---------------added
 
 
@@ -526,19 +471,16 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
  * modification process: repeat them then pass them to phy2
  * ------------------------------mohamed----------------------------
  */
-  NS_LOG_FUNCTION("start Of HARQ section inside this method");
   Ptr<LteHarqPhy> harq = Create<LteHarqPhy> ();
   dlPhy->SetHarqPhyModule (harq);
   ulPhy->SetHarqPhyModule (harq);
   phy->SetHarqPhyModule (harq);
-  NS_LOG_FUNCTION("End Of HARQ 1 inside this method");
 
   //------------------------------------added
   Ptr<LteHarqPhy> harq2 = Create<LteHarqPhy> ();
   dlPhy2->SetHarqPhyModule (harq2);
   ulPhy2->SetHarqPhyModule (harq2);
   phy2->SetHarqPhyModule (harq2);
-  NS_LOG_FUNCTION("End Of HARQ 2 inside this method");
   //------------------------------------added
 
 // --------------------------- >>>>>>>>>>>>>>>> check call backs first <<<<<<<<<<<<<<<<<<<<-------------------------------
@@ -570,31 +512,35 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
   ulPhy2->AddInterferenceDataChunkProcessor (pInterf2); // for interference power tracing
   //----------------------------------added
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
   dlPhy->SetChannel (m_downlinkChannel);
   ulPhy->SetChannel (m_uplinkChannel);
 
   //------------------------------------added
-  dlPhy2->SetChannel (m_downlinkChannel2);
-  ulPhy2->SetChannel (m_uplinkChannel2);
+  dlPhy2->SetChannel (m_downlinkChannel);
+  ulPhy2->SetChannel (m_uplinkChannel);
   //------------------------------------added
 
 /*--------------------------------------------mohamed---------------------------
- * you need to set the mobiltity model to constant and set the different phys in different postions.
+ * you need to set the mobility model to constant and set the different phys in different postions.
  * ------------------------------------------mohamed----------------------------
  */
+
   // mm will store the mobility model attribute set by the user in the script
   Ptr<MobilityModel> mm = n->GetObject<MobilityModel> ();
-  Ptr<MobilityModel> mm2 = n->GetObject<MobilityModel> ();
+
+  //----------added
+  Ptr<MobilityModel> mm2 = m_enbMobilityModelFactory.Create()->GetObject<MobilityModel> ();
+  //---------added
+
   NS_LOG_FUNCTION("mobility model type:" << mm->GetTypeId() << "	" << mm2->GetTypeId());
   // assert_msg checks the size of mm so if the size is zero will print the assert msg.
   NS_ASSERT_MSG (mm,"MobilityModel needs to be set on node before calling LteHelper::InstallUeDevice ()");
-  mm -> SetPosition(Vector(0,0,0));
+  mm -> SetPosition(Vector(-3000,0,0));
   dlPhy->SetMobility (mm);
   ulPhy->SetMobility (mm);
 
   //-------------------------------------added <there is a problem here that the mobility model contains the position so the 2 positions are the same>
-  mm2 -> SetPosition(Vector(50,50,50));
+  mm2 -> SetPosition(Vector(3000,0,0));
   dlPhy2->SetMobility (mm2);
   ulPhy2->SetMobility (mm2);
   //-------------------------------------added
@@ -604,14 +550,17 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
    * ------------------------------------------mohamed----------------------------
    */
 
-  Ptr<AntennaModel> antenna = (m_enbAntennaModelFactory.Create ())->GetObject<AntennaModel> ();
+  Ptr<AntennaModel> antenna = (m_enbAntennaModelFactory.Create())->GetObject<AntennaModel> ();
+  Ptr<AntennaModel> antenna2 = (m_enbAntennaModelFactory.Create())->GetObject<AntennaModel> ();
+
   NS_ASSERT_MSG (antenna, "error in creating the AntennaModel object");
   dlPhy->SetAntenna (antenna);
   ulPhy->SetAntenna (antenna);
 
   //----------------------------added
-  dlPhy2->SetAntenna (antenna);
-  ulPhy2->SetAntenna (antenna);
+  NS_ASSERT_MSG (antenna2, "error in creating the AntennaModel object");
+  dlPhy2->SetAntenna (antenna2);
+  ulPhy2->SetAntenna (antenna2);
   //----------------------------added
 
   /*--------------------------------------------mohamed---------------------------
@@ -730,6 +679,7 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
   rrc->SetLteHandoverManagementSapProvider (handoverAlgorithm->GetLteHandoverManagementSapProvider ());
   handoverAlgorithm->SetLteHandoverManagementSapUser (rrc->GetLteHandoverManagementSapUser ());
 
+
   /*---------------------------------------------mohamed------------------------------------------------------------
    * Both are from the MAC layer --towards--> MAC scheduler
    * sched : is used in the data Plane
@@ -738,14 +688,29 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
    * --------------------------------------------mohamed-------------------------------------------------------------
    */
 
-  mac->SetFfMacSchedSapProvider (sched->GetFfMacSchedSapProvider ());
-  mac->SetFfMacCschedSapProvider (sched->GetFfMacCschedSapProvider ());
+  /*-------------------------el esh----------------------
+  *
+  * -----------------------el esh----------------------
+  */
+
+  mac->SetFfMacSchedSapProvider (sched->GetFfMacSchedSapProvider (1),sched->GetFfMacSchedSapProvider (2));
+  mac->SetFfMacCschedSapProvider (sched->GetFfMacCschedSapProvider (1),sched->GetFfMacCschedSapProvider (2));
   /*--------------------------------------------mohamed------------------------------------------------------
    *all the way around the previous comment
    * --------------------------------------------mohamed--------------------------------------------------
    */
-  sched->SetFfMacSchedSapUser (mac->GetFfMacSchedSapUser ());
-  sched->SetFfMacCschedSapUser (mac->GetFfMacCschedSapUser ());
+  sched->SetFfMacSchedSapUser (mac->GetFfMacSchedSapUser (1),mac->GetFfMacSchedSapUser (2));
+  sched->SetFfMacCschedSapUser (mac->GetFfMacCschedSapUser (1),mac->GetFfMacCschedSapUser (2));
+
+//  mac->SetFfMacSchedSapProvider (sched->GetFfMacSchedSapProvider ());
+//  mac->SetFfMacCschedSapProvider (sched->GetFfMacCschedSapProvider ());
+  /*--------------------------------------------mohamed------------------------------------------------------
+   *all the way around the previous comment
+   * --------------------------------------------mohamed--------------------------------------------------
+   */
+//  sched->SetFfMacSchedSapUser (mac->GetFfMacSchedSapUser ());
+//  sched->SetFfMacCschedSapUser (mac->GetFfMacCschedSapUser ());
+
   /*---------------------------------------------mohamed------------------------------------------------------
    * connects the Saps between teh PHY and MAC layers
    * provider: from MAC ---towards---> PHY
@@ -758,12 +723,11 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
    * da lazm yt3dl 3la asas ele badria w doha 3mleno
    * ---------------------------mohamed
    */
-  phy->SetLteEnbPhySapUser (mac->GetLteEnbPhySapUser ());
-  mac->SetLteEnbPhySapProvider (phy->GetLteEnbPhySapProvider ());
+  phy->SetLteEnbPhySapUser (mac->GetLteEnbPhySapUser (1));
+  mac->SetLteEnbPhySapProvider (phy->GetLteEnbPhySapProvider (),phy2 ->GetLteEnbPhySapProvider());
 
   //----------------------added
-  phy2->SetLteEnbPhySapUser(mac->GetLteEnbPhy2SapUser());
-  mac->SetLteEnbPhy2SapProvider (phy2->GetLteEnbPhySapProvider ());
+  phy2->SetLteEnbPhySapUser(mac->GetLteEnbPhySapUser(2));
   //----------------------added
 
   /*-------------------------------------------mohamed--------------------------------------------------------
@@ -778,8 +742,8 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
   rrc->SetLteEnbCphySapProvider (phy->GetLteEnbCphySapProvider ());
 
   //------------added
-  phy2->SetLteEnbCphySapUser (rrc->GetLteEnbCphy2SapUser ());
-  rrc->SetLteEnbCphy2SapProvider (phy2->GetLteEnbCphySapProvider ());
+  phy2->SetLteEnbCphySapUser (rrc->GetLteEnbCphySapUser2 ());
+  rrc->SetLteEnbCphySapProvider2 (phy2->GetLteEnbCphySapProvider ());
   //------------added
 
    /*-------------------------------------------mohamed------------------------------------------------------
@@ -788,8 +752,8 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
     * ------------------------------------------mohamed-----------------------------------------------------
     */
   //FFR SAP
-  sched->SetLteFfrSapProvider (ffrAlgorithm->GetLteFfrSapProvider ());
-  ffrAlgorithm->SetLteFfrSapUser (sched->GetLteFfrSapUser ());
+  sched->SetLteFfrSapProvider (ffrAlgorithm->GetLteFfrSapProvider () ,ffrAlgorithm->GetLteFfrSapProvider () );
+  ffrAlgorithm->SetLteFfrSapUser (sched->GetLteFfrSapUser (1));
 
   rrc->SetLteFfrRrcSapProvider (ffrAlgorithm->GetLteFfrRrcSapProvider ());
   ffrAlgorithm->SetLteFfrRrcSapUser (rrc->GetLteFfrRrcSapUser ());
@@ -907,7 +871,7 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
    * ---------------------mohamed--------------------
    */
   //------------------added
-  NS_LOG_LOGIC ("<mohamed> set the propagation model frequencies for the second PHY <mohamed>");
+  /*NS_LOG_LOGIC ("<mohamed> set the propagation model frequencies for the second PHY <mohamed>");
   NS_LOG_LOGIC ("DL freq2: " << dlFreq);
   dlFreqOk = m_downlinkPathlossModel2->SetAttributeFailSafe ("Frequency", DoubleValue (dlFreq));
   if (!dlFreqOk)
@@ -921,7 +885,7 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
       NS_LOG_WARN ("UL propagation model does not have a Frequency attribute");
     }
   //-------------------added
-
+*/
   /*-----------------------------------------------mohamed-----------------------------------------
    * Invoke DoInitialize on all Objects aggregated to this one.
    *
@@ -940,6 +904,7 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
     * ---------------------------------------------mohamed----------------------------------------
     */
   m_uplinkChannel->AddRx (ulPhy);
+  m_uplinkChannel-> AddRx(ulPhy2);
 
   if (m_epcHelper != 0)
     {
@@ -958,15 +923,45 @@ LteHelper::InstallSingleEnbDevice (Ptr<Node> n)
       rrc->SetEpcX2SapProvider (x2->GetEpcX2SapProvider ());
     }
 
+  /* ----------------mohamed------------------
+   * This loop returns the aggregated objects to the node
+   * result: the aggregate buffer of the node contains the node and the mobility model only
+   */
+  /*//-----------added
+  AggregateIterator node_it = n->GetAggregateIterator();
+    do
+    {
+  	  std::cout << (node_it.Next()) << std::endl;
+    }while(node_it.HasNext());
+    //-----------added*/
+
   return dev;
 }
 
+/*--------------------moahmed---------------
+ * this method is modified such that It the UE can choose the PHY to connect to
+ * If phyId = 1 ==> connect to spectrum channel no. 1
+ * if phyId = 2 ==> connect to spectrum channel no. 2
+ * else error
+ * -------------------mohamed---------------
+ */
 Ptr<NetDevice>
-LteHelper::InstallSingleUeDevice (Ptr<Node> n)
+LteHelper::InstallSingleUeDevice (Ptr<Node> n,const uint16_t PhyId)
 {
   NS_LOG_FUNCTION (this);
-  Ptr<LteSpectrumPhy> dlPhy = CreateObject<LteSpectrumPhy> ();
-  Ptr<LteSpectrumPhy> ulPhy = CreateObject<LteSpectrumPhy> ();
+  Ptr<LteSpectrumPhy> dlPhy = CreateObject<LteSpectrumPhy> (300);
+  Ptr<LteSpectrumPhy> ulPhy = CreateObject<LteSpectrumPhy> (300);
+
+  if(PhyId == 1 || PhyId == 2)
+    {
+	 NS_LOG_FUNCTION(this << "<mohamed> Rxer PhyId: " << PhyId);
+	 ulPhy->SetRxer(PhyId);
+	 dlPhy->SetRxer(PhyId);
+    }
+  else
+    {
+  	  NS_FATAL_ERROR(this << " PhyId: " << PhyId << " Is not correct");
+    }
 
   Ptr<LteUePhy> phy = CreateObject<LteUePhy> (dlPhy, ulPhy);
 
@@ -1005,11 +1000,28 @@ LteHelper::InstallSingleUeDevice (Ptr<Node> n)
       pCtrl->AddCallback (MakeCallback (&LteUePhy::GenerateCtrlCqiReport, phy));
     }
 
-
-
   dlPhy->SetChannel (m_downlinkChannel);
   ulPhy->SetChannel (m_uplinkChannel);
 
+   /* if(PhyId == 1)
+  {
+	  NS_LOG_FUNCTION("<mohamed> UE channel is connected to PHY [1] <mohamed>");
+	  dlPhy->SetChannel (m_downlinkChannel);
+	  ulPhy->SetChannel (m_uplinkChannel);
+	  NS_LOG_FUNCTION("<mohamed> end of set -> channel is connected to PHY [1] <mohamed>");
+  }
+  else if(PhyId == 2)
+  {
+	  NS_LOG_FUNCTION("<mohamed> UE channel is connected to PHY [2] <mohamed>");
+	  dlPhy->SetChannel (m_downlinkChannel2);
+	  ulPhy->SetChannel (m_uplinkChannel2);
+	  NS_LOG_FUNCTION("<mohamed> end of set -> channel is connected to PHY [2] <mohamed>");
+  }
+  else
+  {
+	NS_LOG_ERROR("L120,<mohamed> Indicate the spectrum channel to connect to <mohamed>");
+  }
+*/
   Ptr<MobilityModel> mm = n->GetObject<MobilityModel> ();
   NS_ASSERT_MSG (mm, "MobilityModel needs to be set on node before calling LteHelper::InstallUeDevice ()");
   dlPhy->SetMobility (mm);
@@ -1045,7 +1057,8 @@ LteHelper::InstallSingleUeDevice (Ptr<Node> n)
       rrc->SetUseRlcSm (false);
     }
   Ptr<EpcUeNas> nas = CreateObject<EpcUeNas> ();
- 
+
+  // connection between nas layer and RRC
   nas->SetAsSapProvider (rrc->GetAsSapProvider ());
   rrc->SetAsSapUser (nas->GetAsSapUser ());
 
@@ -1087,7 +1100,7 @@ LteHelper::InstallSingleUeDevice (Ptr<Node> n)
       m_epcHelper->AddUe (dev, dev->GetImsi ());
     }
 
-  dev->Initialize ();
+  dev-> Initialize ();
 
   return dev;
 }
@@ -1140,7 +1153,9 @@ LteHelper::Attach (NetDeviceContainer ueDevices, Ptr<NetDevice> enbDevice)
   NS_LOG_FUNCTION (this << "<mohamed *******************attach*********************** <mohamed>>");
   for (NetDeviceContainer::Iterator i = ueDevices.Begin (); i != ueDevices.End (); ++i)
     {
+	  NS_LOG_FUNCTION(this << "<mohamed> ---- 1 ----- <mohamed>");
       Attach (*i, enbDevice);
+      NS_LOG_FUNCTION(this << "<mohamed> ---- 2 ----- <mohamed>");
     }
   NS_LOG_FUNCTION (this << "<mohamed *******************attach*********************** <mohamed>>");
 
@@ -1160,6 +1175,7 @@ LteHelper::Attach (Ptr<NetDevice> ueDevice, Ptr<NetDevice> enbDevice)
 
   if (m_epcHelper != 0)
     {
+	  NS_LOG_FUNCTION("epcHelper exists");
       // activate default EPS bearer
       m_epcHelper->ActivateEpsBearer (ueDevice, ueLteDevice->GetImsi (), EpcTft::Default (), EpsBearer (EpsBearer::NGBR_VIDEO_TCP_DEFAULT));
     }
@@ -1167,6 +1183,7 @@ LteHelper::Attach (Ptr<NetDevice> ueDevice, Ptr<NetDevice> enbDevice)
   // tricks needed for the simplified LTE-only simulations 
   if (m_epcHelper == 0)
     {
+	  NS_LOG_FUNCTION("epcHelper doesn't exist");
       ueDevice->GetObject<LteUeNetDevice> ()->SetTargetEnb (enbDevice->GetObject<LteEnbNetDevice> ());
     }
 }
@@ -1348,6 +1365,7 @@ LteHelper::ActivateDataRadioBearer (Ptr<NetDevice> ueDevice, EpsBearer bearer)
   Ptr<LteEnbNetDevice> enbLteDevice = ueDevice->GetObject<LteUeNetDevice> ()->GetTargetEnb ();
 
   std::ostringstream path;
+  NS_LOG_FUNCTION("<mohamed> EnbNetDevId " << enbLteDevice->GetNode ()->GetId () <<"Node" << enbLteDevice->GetNode () << " /DeviceList/ " << enbLteDevice->GetIfIndex () << " <mohamed>");
   path << "/NodeList/" << enbLteDevice->GetNode ()->GetId () 
        << "/DeviceList/" << enbLteDevice->GetIfIndex ()
        << "/LteEnbRrc/ConnectionEstablished";
@@ -1428,11 +1446,12 @@ LteHelper::DoDeActivateDedicatedEpsBearer (Ptr<NetDevice> ueDevice, Ptr<NetDevic
 void 
 LteHelper::ActivateDataRadioBearer (NetDeviceContainer ueDevices, EpsBearer bearer)
 {
-  NS_LOG_FUNCTION (this);
+  NS_LOG_FUNCTION (this << "<mohamed>-----------------Start of Txion---------------<mohamed>");
   for (NetDeviceContainer::Iterator i = ueDevices.Begin (); i != ueDevices.End (); ++i)
     {
       ActivateDataRadioBearer (*i, bearer);
     }
+  NS_LOG_FUNCTION (this << "<mohamed>-----------------End of Txion---------------<mohamed>");
 }
 
 void
@@ -1447,7 +1466,7 @@ LteHelper::EnableLogComponents (void)
   LogComponentEnable ("LteRlcUm", LOG_LEVEL_ALL);
   LogComponentEnable ("LteRlcAm", LOG_LEVEL_ALL);
   LogComponentEnable ("RrFfMacScheduler", LOG_LEVEL_ALL);
-  LogComponentEnable ("PfFfMacScheduler", LOG_LEVEL_ALL);
+  //LogComponentEnable ("PfFfMacScheduler", LOG_LEVEL_ALL);
 
   LogComponentEnable ("LtePhy", LOG_LEVEL_ALL);
   LogComponentEnable ("LteEnbPhy", LOG_LEVEL_ALL);

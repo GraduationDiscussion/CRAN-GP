@@ -58,6 +58,7 @@ public:
   struct CschedCellConfigReqParameters
   {
     uint8_t m_puschHoppingOffset;
+    uint16_t m_phyId ;
 
     enum HoppingMode_e
     {
@@ -131,6 +132,7 @@ public:
   struct CschedUeConfigReqParameters
   {
     uint16_t  m_rnti;
+    uint16_t  m_phyId;
     bool      m_reconfigureFlag;
     bool      m_drxConfigPresent;
     struct DrxConfig_s m_drxConfig;
@@ -193,6 +195,7 @@ public:
   struct CschedLcConfigReqParameters
   {
     uint16_t  m_rnti;
+    uint16_t m_phyId;
     bool      m_reconfigureFlag;
 
     std::vector <struct LogicalChannelConfigListElement_s> m_logicalChannelConfigList;
@@ -207,6 +210,7 @@ public:
   struct CschedLcReleaseReqParameters
   {
     uint16_t  m_rnti;
+    uint16_t  m_phyId;
 
     std::vector <uint8_t> m_logicalChannelIdentity;
 
@@ -220,6 +224,7 @@ public:
   struct CschedUeReleaseReqParameters
   {
     uint16_t  m_rnti;
+    uint16_t m_phyId;
 
     std::vector <struct VendorSpecificListElement_s> m_vendorSpecificList;
   };
@@ -325,6 +330,7 @@ public:
   struct CschedUeConfigUpdateIndParameters
   {
     uint16_t  m_rnti;
+    uint16_t m_phyId;
     uint8_t   m_transmissionMode;
     bool      m_spsConfigPresent;
     struct SpsConfig_s m_spsConfig;

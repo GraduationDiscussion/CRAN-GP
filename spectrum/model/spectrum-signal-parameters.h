@@ -110,6 +110,8 @@ struct SpectrumSignalParameters : public SimpleRefCount<SpectrumSignalParameters
    * The AntennaModel instance that was used to transmit this signal.
    */
   Ptr<AntennaModel> txAntenna;
+  uint16_t tx_PhyId;
+  uint16_t rx_PhyId;
 };
 
 

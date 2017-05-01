@@ -29,10 +29,10 @@ namespace ns3 {
 
 
 
-class FfMacCschedSapUser;
-class FfMacSchedSapUser;
-class FfMacCschedSapProvider;
-class FfMacSchedSapProvider;
+class FfMacCschedSapUser;      //from Schedular to mac
+class FfMacSchedSapUser;       //from Schedular to mac
+class FfMacCschedSapProvider;  //from mac to Schedular
+class FfMacSchedSapProvider;   //from mac to Schedular
 class LteFfrSapProvider;
 class LteFfrSapUser;
 
@@ -85,7 +85,11 @@ public:
    *
    * \param s
    */
-  virtual void SetFfMacCschedSapUser (FfMacCschedSapUser* s) = 0;
+//  virtual void SetFfMacCschedSapUser (FfMacCschedSapUser* s) = 0;
+//  virtual void SetFfMacCschedSapUser2 (FfMacCschedSapUser* s) = 0;
+  //-------------Mod <Abdelrhman> ---------------
+  virtual void SetFfMacCschedSapUser (FfMacCschedSapUser* s , FfMacCschedSapUser* s2) = 0;
+  //--------------------------------------------------
 
   /**
    *
@@ -94,19 +98,31 @@ public:
    *
    * \param s
    */
-  virtual void SetFfMacSchedSapUser (FfMacSchedSapUser* s) = 0;
+//   virtual void SetFfMacSchedSapUser (FfMacSchedSapUser* s) = 0;
+//   virtual void SetFfMacSchedSapUser2 (FfMacSchedSapUser* s) = 0;
+  //---------Mod <Abdelrhman> ---------------
+  virtual void SetFfMacSchedSapUser (FfMacSchedSapUser* s ,FfMacSchedSapUser* s2) = 0;
+  //=========================================
 
   /**
    *
    * \return the Provider part of the FfMacCschedSap provided by the Scheduler
    */
-  virtual FfMacCschedSapProvider* GetFfMacCschedSapProvider () = 0;
+// virtual FfMacCschedSapProvider* GetFfMacCschedSapProvider () = 0;
+// virtual FfMacCschedSapProvider* GetFfMacCschedSapProvider2 () = 0;
+  //---------Mod <Abdelrhman> ---------------
+  virtual FfMacCschedSapProvider* GetFfMacCschedSapProvider (uint16_t i) = 0;
+  //=============================================
 
   /**
    *
    * \return the Provider part of the FfMacSchedSap provided by the Scheduler
    */
-  virtual FfMacSchedSapProvider* GetFfMacSchedSapProvider () = 0;
+// virtual FfMacSchedSapProvider* GetFfMacSchedSapProvider () = 0;
+// virtual FfMacSchedSapProvider* GetFfMacSchedSapProvider2 () = 0;
+//  //---------Mod <Abdelrhman> ---------------
+  virtual FfMacSchedSapProvider* GetFfMacSchedSapProvider (uint16_t i) = 0;
+  //--------------------------------------------
 
   //FFR SAPs
   /**
@@ -116,13 +132,22 @@ public:
    *
    * \param s
    */
-  virtual void SetLteFfrSapProvider (LteFfrSapProvider* s) = 0;
+//virtual void SetLteFfrSapProvider (LteFfrSapProvider* s) = 0;
+//virtual void SetLteFfrSapProvider2 (LteFfrSapProvider* s) = 0;
+  //---------modified <Abdelrhman>-------------
+ virtual void SetLteFfrSapProvider (LteFfrSapProvider* s , LteFfrSapProvider* s2) = 0;
+  //-------------------------------------------
 
   /**
    *
    * \return the User part of the LteFfrSap provided by the FfrAlgorithm
    */
-  virtual LteFfrSapUser* GetLteFfrSapUser () = 0;
+//  virtual LteFfrSapUser* GetLteFfrSapUser () = 0;
+//  virtual LteFfrSapUser* GetLteFfrSapUser2 () = 0;
+  //---------modified <Abdelrhman>-------------
+  virtual LteFfrSapUser* GetLteFfrSapUser (uint16_t i) = 0;
+  //------------------------------------------
+
   
 protected:
     

@@ -95,7 +95,7 @@ TypeId LteEnbNetDevice::GetTypeId (void)
                    MakePointerChecker <LteEnbPhy> ())
 	//---------------------------added
 	.AddAttribute ("LteEnbPhy2",
-	               "The PHY associated to this EnbNetDevice",
+	               "The PHY2 associated to this EnbNetDevice",
 	               PointerValue (),
 	               MakePointerAccessor (&LteEnbNetDevice::m_phy2),
 	               MakePointerChecker <LteEnbPhy> ())

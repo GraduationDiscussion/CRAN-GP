@@ -393,7 +393,7 @@ public:
    * first thought: we need to know the difference bet. InstallEnb/UeDevice
    * ---------------------mohamed-----------------------------------
    */
-  NetDeviceContainer InstallUeDevice (NodeContainer c);
+  NetDeviceContainer InstallUeDevice (NodeContainer c,const char PhyId);
 
   /**
    * \brief Enables automatic attachment of a set of UE devices to a suitable
@@ -752,7 +752,7 @@ private:
    * \param n the node where the device is to be installed
    * \return pointer to the created device
    */
-  Ptr<NetDevice> InstallSingleUeDevice (Ptr<Node> n);
+  Ptr<NetDevice> InstallSingleUeDevice (Ptr<Node> n, const uint16_t PhyId);
 
   /**
    * The actual function to trigger a manual handover.
@@ -794,20 +794,20 @@ private:
   /// The uplink LTE channel used in the simulation.
   Ptr<SpectrumChannel> m_uplinkChannel;
   //---------------------------------added
-  Ptr<SpectrumChannel> m_downlinkChannel2;
-  Ptr<SpectrumChannel> m_uplinkChannel2;
+  //Ptr<SpectrumChannel> m_downlinkChannel2;
+  //Ptr<SpectrumChannel> m_uplinkChannel2;
   //---------------------------------added
   /// The path loss model used in the downlink channel.
   Ptr<Object> m_downlinkPathlossModel;
 
   //------------------------added
-  Ptr<Object> m_downlinkPathlossModel2;
+  //Ptr<Object> m_downlinkPathlossModel2;
   //------------------------added
 
   /// The path loss model used in the uplink channel.
   Ptr<Object> m_uplinkPathlossModel;
   //-------------------added
-  Ptr<Object> m_uplinkPathlossModel2;
+  //Ptr<Object> m_uplinkPathlossModel2;
   //-------------------added
   /// Factory of MAC scheduler object.
   ObjectFactory m_schedulerFactory;
@@ -832,6 +832,10 @@ private:
     * ---------------------mohamed-----------------------------------
     * */
   ObjectFactory m_enbAntennaModelFactory;
+
+  //----------------added
+  ObjectFactory m_enbMobilityModelFactory;
+  //---------------added
   /// Factory for LteUeNetDevice objects.
   /*
     * ---------------------mohamed-----------------------------------

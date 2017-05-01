@@ -47,16 +47,9 @@ int main (int argc, char *argv[])
   cmd.Parse (argc, argv);
 
   Ptr<LteHelper> lteHelper = CreateObject<LteHelper> ();
-  lteHelper->SetFadingModel("ns3::TraceFadingLossModel");
-  lteHelper->SetFadingModelAttribute ("TraceFilename", StringValue ("src/lte/model/fading-traces/fading_trace_VEH_120kmph.fad"));
-  lteHelper->SetFadingModelAttribute ("TraceLength", TimeValue (Seconds (0.1)));
-  lteHelper->SetFadingModelAttribute ("SamplesNum", UintegerValue (10000));
-  lteHelper->SetFadingModelAttribute ("WindowSize", TimeValue (Seconds (0.5)));
-  lteHelper->SetFadingModelAttribute ("RbNum", UintegerValue (100));
 
-  
   // Uncomment to enable logging
-  //  lteHelper->EnableLogComponents ();
+//  lteHelper->EnableLogComponents ();
 
   // Create Nodes: eNodeB and UE
   NodeContainer enbNodes;
@@ -77,7 +70,7 @@ int main (int argc, char *argv[])
   NetDeviceContainer enbDevs;
   NetDeviceContainer ueDevs;
   // Default scheduler is PF, uncomment to use RR
-  lteHelper->SetSchedulerType ("ns3::RrFfMacScheduler");
+  //lteHelper->SetSchedulerType ("ns3::RrFfMacScheduler");
 
   enbDevs = lteHelper->InstallEnbDevice (enbNodes);
   ueDevs = lteHelper->InstallUeDevice (ueNodes);
@@ -89,8 +82,6 @@ int main (int argc, char *argv[])
   enum EpsBearer::Qci q = EpsBearer::GBR_CONV_VOICE;
   EpsBearer bearer (q);
   lteHelper->ActivateDataRadioBearer (ueDevs, bearer);
-  
-  // configure all the simulation scenario here... 
   lteHelper->EnableTraces ();
 
   Simulator::Stop (Seconds (1.05));
